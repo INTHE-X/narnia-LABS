@@ -1,0 +1,165 @@
+ <!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NARNIA LABS - TECH BLOG</title>
+
+    <link rel="stylesheet" href="../../../assets/css/reset.css">
+    <link rel="stylesheet" href="../../../assets/css/common.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/sub.css">
+    <link rel="stylesheet" href="../../../assets/css/responsive.css">
+     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
+
+    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/plugin/jquery.js"></script>
+    <script src="../../../assets/js/sub.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.18/dist/lenis.min.js"></script> 
+</head>
+<body class="eng">
+    <div id="wrap">
+        <!-- include -->
+        <header id="header"></header>
+
+        <section id="techblog_post">
+            <div class="container tbp_container">
+                <!-- 로딩 상태 -->
+                <div id="tbp_loading" style="padding:80px 0; text-align:center; color:#999;">불러오는 중...</div>
+
+                <!-- 포스트 내용 (JS로 채워짐) -->
+                <div id="tbp_body" style="display:none;">
+                    <div class="tbp_top">
+                        <span class="cate" id="post_cate"></span>
+                        <h2 class="tit" id="post_tit"></h2>
+                        <div class="info">
+                            <span class="name" id="post_author"></span>
+                            <span class="date" id="post_date"></span>
+                        </div>
+                    </div>
+                    <div class="tbp_content">
+                        <aside class="tbp_share">
+                            <a href="#" class="share_btn linkedin" id="share_linkedin" aria-label="LinkedIn 공유">
+                                <img src="../../../assets/img/common/linkedin_gray01.svg" alt="LinkedIn">
+                            </a>
+                            <a href="#" class="share_btn upload" id="share_copy" aria-label="공유하기">
+                                <img src="../../../assets/img/common/upload_01.svg" alt="공유하기">
+                            </a>
+                        </aside>
+
+                        <div class="tbp_text" id="post_body"></div>
+                    </div>
+
+                    <!-- 목록으로 돌아가기 -->
+                    <div style="margin-top:48px; padding-top:24px; border-top:1px solid #e5e5e5;">
+                        <a href="techBlog.html" style="display:inline-flex; align-items:center; gap:8px; font-size:14px; color:#666; text-decoration:none;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                            목록으로 돌아가기
+                        </a>
+                    </div>
+                </div>
+
+                <!-- 오류 상태 -->
+                <div id="tbp_error" style="display:none; padding:80px 0; text-align:center; color:#999;">
+                    <p>게시글을 불러올 수 없습니다.</p>
+                    <a href="techBlog.html" style="margin-top:16px; display:inline-block; color:#333;">← 목록으로</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- include -->
+        <footer id="footer"></footer>
+    </div>
+
+<script>
+(function () {
+    var API = 'https://narnialabs.mycafe24.com/admin/api/tech-blogs';
+
+    function getParam(name) {
+        var params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    function formatDate(str) {
+        if (!str) return '';
+        var d = new Date(str.length === 10 ? str + 'T00:00:00' : str);
+        var y = d.getFullYear(), m = d.getMonth() + 1, day = d.getDate();
+        return y + '년 ' + String(m).padStart(2,'0') + '월 ' + String(day).padStart(2,'0') + '일';
+    }
+
+    function escHtml(s) {
+        return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function render(post) {
+        document.title = (post.title || 'TECH BLOG') + ' | NARNIA LABS';
+
+        document.getElementById('post_cate').textContent = post.category || '';
+        document.getElementById('post_tit').textContent = post.title || '';
+        document.getElementById('post_author').textContent = post.author || '';
+        document.getElementById('post_date').textContent = formatDate(post.published_date);
+
+        // 썸네일
+
+        // 본문: 에디터 HTML 직접 렌더링 (썸네일 이미지 중복 제거)
+        var body = post.description || '<p style="color:#999;">내용이 없습니다.</p>';
+        if (post.thumbnail) {
+            try {
+                var parser = new DOMParser();
+                var doc = parser.parseFromString(body, 'text/html');
+                var thumbFile = post.thumbnail.split('/').pop().split('?')[0];
+                doc.querySelectorAll('img').forEach(function(img) {
+                    var s = img.getAttribute('src') || '';
+                    if (s === post.thumbnail || s.split('/').pop().split('?')[0] === thumbFile) {
+                        img.remove();
+                    }
+                });
+                body = doc.body.innerHTML;
+            } catch(e) {}
+        }
+        document.getElementById('post_body').innerHTML = body;
+
+        // 공유 버튼
+        var pageUrl = encodeURIComponent(window.location.href);
+        document.getElementById('share_linkedin').href =
+            'https://www.linkedin.com/sharing/share-offsite/?url=' + pageUrl;
+        document.getElementById('share_copy').addEventListener('click', function(e) {
+            e.preventDefault();
+            navigator.clipboard && navigator.clipboard.writeText(window.location.href)
+                .then(function(){ alert('링크가 복사되었습니다.'); });
+        });
+
+        document.getElementById('tbp_loading').style.display = 'none';
+        document.getElementById('tbp_body').style.display = 'block';
+    }
+
+    var id = getParam('id');
+    if (!id) {
+        document.getElementById('tbp_loading').style.display = 'none';
+        document.getElementById('tbp_error').style.display = 'block';
+        return;
+    }
+
+    // 전체 목록에서 해당 id 찾기
+    fetch(API)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var post = null;
+            for (var i = 0; i < data.length; i++) {
+                if (String(data[i].id) === String(id)) { post = data[i]; break; }
+            }
+            if (!post) throw new Error('not found');
+            render(post);
+        })
+        .catch(function() {
+            document.getElementById('tbp_loading').style.display = 'none';
+            document.getElementById('tbp_error').style.display = 'block';
+        });
+})();
+</script>
+
+</body>
+</html>

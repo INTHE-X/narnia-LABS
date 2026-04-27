@@ -1,0 +1,165 @@
+ <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NARNIA LABS - CASE STUDIES</title>
+
+    <link rel="stylesheet" href="../../../assets/css/reset.css">
+    <link rel="stylesheet" href="../../../assets/css/common.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/sub.css">
+    <link rel="stylesheet" href="../../../assets/css/responsive.css">
+     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
+
+    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/plugin/jquery.js"></script>
+    <script src="../../../assets/js/sub.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.18/dist/lenis.min.js"></script>
+    <style>
+        .csp_text, .csp_text * {
+            color: #fff !important;
+        }
+    </style>
+</head>
+<body class="jp">
+    <div id="wrap">
+        <!-- include -->
+        <header id="header"></header>
+
+        <section id="caseStudies_post">
+            <div class="container csp_container">
+                <!-- ローディング状態 -->
+                <div id="csp_loading" style="padding:80px 0; text-align:center; color:#999;">読み込み中...</div>
+
+                <!-- ポスト内容 (JS로 入力済み) -->
+                <div id="csp_body" style="display:none;">
+                    <div class="csp_top">
+                        <span class="cate" id="csp_cate"></span>
+                        <h2 class="tit" id="csp_tit"></h2>
+                        <div class="info">
+                            <span class="name" id="csp_author"></span>
+                            <span class="date" id="csp_date"></span>
+                        </div>
+                    </div>
+                    <div class="csp_content">
+                        <aside class="csp_share">
+                            <a href="#" class="share_btn linkedin" id="csp_share_linkedin" aria-label="LinkedIn共有">
+                                <img src="../../../assets/img/common/linkedin_gray01.svg" alt="LinkedIn">
+                            </a>
+                            <a href="#" class="share_btn upload" id="csp_share_copy" aria-label="共有する">
+                                <img src="../../../assets/img/common/upload_01.svg" alt="共有する">
+                            </a>
+                        </aside>
+                        <div class="csp_img" id="csp_img_wrap">
+                            <figure>
+                                <img id="csp_img_el" src="../../../assets/img/sub/techblog_post_img.png" alt="#">
+                            </figure>
+                        </div>
+                        <div class="csp_text" id="csp_body_text"></div>
+                    </div>
+
+                    <!-- 一覧に戻る -->
+                    <div style="margin-top:48px; padding-top:24px; border-top:1px solid #e5e5e5;">
+                        <a href="caseStudies.html" style="display:inline-flex; align-items:center; gap:8px; font-size:14px; color:#666; text-decoration:none;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                            一覧に戻る
+                        </a>
+                    </div>
+                </div>
+
+                <!-- エラー状態 -->
+                <div id="csp_error" style="display:none; padding:80px 0; text-align:center; color:#999;">
+                    <p>記事を読み込めませんでした。</p>
+                    <a href="caseStudies.html" style="margin-top:16px; display:inline-block; color:#333;">← 一覧へ</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- include -->
+        <footer id="footer"></footer>
+    </div>
+
+<script>
+(function () {
+    var API = 'https://narnialabs.mycafe24.com/admin/api/case-studies';
+
+    function getParam(name) {
+        var params = new URLSearchParams(window.location.search);
+        return params.get(name);
+    }
+
+    function formatDate(str) {
+        if (!str) return '';
+        var d = new Date(str.length === 10 ? str + 'T00:00:00' : str);
+        var y = d.getFullYear(), m = d.getMonth() + 1, day = d.getDate();
+        return y + '年 ' + String(m).padStart(2,'0') + '月 ' + String(day).padStart(2,'0') + '日';
+    }
+
+    function escHtml(s) {
+        return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    function render(post) {
+        document.title = (post.title || 'CASE STUDIES') + ' | NARNIA LABS';
+
+        document.getElementById('csp_cate').textContent = post.category || '';
+        document.getElementById('csp_tit').textContent = post.title || '';
+        document.getElementById('csp_author').textContent = (post.tags || []).join('  ');
+        document.getElementById('csp_date').textContent = '';
+
+        // サムネイル (image_url 사용)
+        if (post.image_url) {
+            document.getElementById('csp_img_el').src = post.image_url;
+        } else {
+            document.getElementById('csp_img_wrap').style.display = 'none';
+        }
+
+        // 本文: エディタHTML直接レンダリング
+        var body = post.description || '<p style="color:#999;">内容がありません。</p>';
+        document.getElementById('csp_body_text').innerHTML = body;
+
+        // 共有ボタン
+        var pageUrl = encodeURIComponent(window.location.href);
+        document.getElementById('csp_share_linkedin').href =
+            'https://www.linkedin.com/sharing/share-offsite/?url=' + pageUrl;
+        document.getElementById('csp_share_copy').addEventListener('click', function(e) {
+            e.preventDefault();
+            navigator.clipboard && navigator.clipboard.writeText(window.location.href)
+                .then(function(){ alert('リンクがコピーされました。'); });
+        });
+
+        document.getElementById('csp_loading').style.display = 'none';
+        document.getElementById('csp_body').style.display = 'block';
+    }
+
+    var id = getParam('id');
+    if (!id) {
+        document.getElementById('csp_loading').style.display = 'none';
+        document.getElementById('csp_error').style.display = 'block';
+        return;
+    }
+
+    // 全リストから該当IDを検索
+    fetch(API)
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            var post = null;
+            for (var i = 0; i < data.length; i++) {
+                if (String(data[i].id) === String(id)) { post = data[i]; break; }
+            }
+            if (!post) throw new Error('not found');
+            render(post);
+        })
+        .catch(function() {
+            document.getElementById('csp_loading').style.display = 'none';
+            document.getElementById('csp_error').style.display = 'block';
+        });
+})();
+</script>
+
+</body>
+</html>

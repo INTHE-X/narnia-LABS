@@ -1,0 +1,238 @@
+ <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NARNIA LABS - TECH BLOG</title>
+
+    <link rel="stylesheet" href="../../../assets/css/reset.css">
+    <link rel="stylesheet" href="../../../assets/css/common.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/sub.css">
+    <link rel="stylesheet" href="../../../assets/css/responsive.css">
+     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
+
+    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/plugin/jquery.js"></script>
+    <script src="../../../assets/js/sub.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.18/dist/lenis.min.js"></script> 
+</head>
+<body class="jp">
+    <div id="wrap">
+        <!-- include -->
+        <header id="header"></header>
+
+        <section id="techBlog_main">
+            <div class="container tbm_container">
+                <div class="tbm_box top">
+                    <div class="left">
+                        <div class="tbm_tit_area">
+                            <div class="tbm_tit">
+                                <h2>tech blog</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <span class="cross_deco wh"></span>
+                        <div class="subPage_234_top_deco">
+                            <div class="txt">
+                                <figure>
+                                    <img src="../../../assets/img/common/deco_txt01_gray01.svg" alt="#">
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tbm_box bot">
+                    <div class="left">
+                        <div class="tbm_news_area" id="hero_area">
+                            <div class="txt_area">
+                                <div class="cate"><span id="hero_cate"></span></div>
+                                <h3 class="tit" id="hero_tit"></h3>
+                                <p class="desc" id="hero_desc"></p>
+                                <div class="link">
+                                    <a href="#" id="hero_link">
+                                        READ MORE
+                                        <i><img src="../../../assets/img/common/arrow_3dots.svg" alt="#"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="tbm_img">
+                            <figure>
+                                <img id="hero_img" src="" alt="tech blog main news image" style="display:none;">
+                            </figure>
+                        </div>
+                        <div class="blur_txtDeco">
+                            <div class="inner">
+                                <div class="dots"></div>
+                                <div class="dots"></div>
+                                <figure>
+                                    <img src="../../../assets/img/common/deco_txt01_wh.svg" alt="#">
+                                </figure>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="techBlog_contents">
+            <div class="container">
+                <div class="techBlog_article_area">
+                    <div class="tba_top">
+                        <div class="left">
+                            <div class="filter_area">
+                                <ul>
+                                    <li class="active" data-filter="all">
+                                        <button><span>All</span></button>
+                                    </li>
+                                    <li data-filter="Tech">
+                                        <button><span>Tech</span></button>
+                                    </li>
+                                    <li data-filter="Product">
+                                        <button><span>Product</span></button>
+                                    </li>
+                                    <li data-filter="Culture">
+                                        <button><span>Culture</span></button>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="right">
+                            <div class="tba_search">
+                                <button type="button" class="search_btn">
+                                    <img src="../../../assets/img/common/search_ico01.svg" alt="search">
+                                </button>
+                                <input type="text" id="tba_search_input" name="tba_search_keyword" placeholder="テックブログ検索">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tba_bot">
+                        <ul class="tba_list" id="tba_list">
+                            <!-- JSで動的レンダリング -->
+                        </ul>
+                        <div class="view_more" id="tba-viewmore" style="display:none;">
+                            <button id="tba-more-btn">もっと見る</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- include -->
+        <footer id="footer"></footer>
+    </div>
+
+<script>
+(function () {
+    var API = 'https://narnialabs.mycafe24.com/admin/api/tech-blogs';
+    var FALLBACK_IMG = '../../../assets/img/sub/techblog_list_ex_Img.png';
+    var PAGE_SIZE = 6;
+    var allItems = [];
+    var filtered = [];
+    var shown = 0;
+    var currentFilter = 'all';
+
+    function formatDate(str) {
+        if (!str) return '';
+        // published_date: YYYY-MM-DD or ISO string
+        var d = new Date(str.length === 10 ? str + 'T00:00:00' : str);
+        var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+        return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+    }
+
+    function postUrl(item) {
+        return 'techBlogPost.html?id=' + item.id;
+    }
+
+    function renderHero(item) {
+        if (!item) { document.getElementById('hero_area').style.display = 'none'; return; }
+        document.getElementById('hero_cate').textContent = item.category ? '#' + item.category : '';
+        document.getElementById('hero_tit').textContent = item.title || '';
+        document.getElementById('hero_desc').textContent = item.description ? item.description.substring(0, 100) + '...' : '';
+        var link = document.getElementById('hero_link');
+        link.href = postUrl(item);
+        if (item.thumbnail) {
+            var heroImg = document.getElementById('hero_img');
+            heroImg.src = item.thumbnail;
+            heroImg.style.display = 'block';
+        }
+    }
+
+    function renderItem(item) {
+        var img = item.thumbnail || FALLBACK_IMG;
+        var cate = item.category || '';
+        var date = formatDate(item.published_date);
+        return '<li>' +
+            '<a href="' + postUrl(item) + '">' +
+                '<div class="img"><figure><img src="' + img + '" alt="' + (item.title || '') + '" onerror="this.src=\'' + FALLBACK_IMG + '\'"></figure></div>' +
+                '<div class="txt_area">' +
+                    '<div class="meta">' +
+                        '<span class="cate">' + cate + '</span>' +
+                        (date ? '<span class="date">' + date + '</span>' : '') +
+                    '</div>' +
+                    '<h4 class="tit">' + (item.title || '') + '</h4>' +
+                '</div>' +
+            '</a>' +
+        '</li>';
+    }
+
+    function applyFilter() {
+        var keyword = (document.getElementById('tba_search_input').value || '').trim().toLowerCase();
+        filtered = allItems.filter(function(item) {
+            var matchCat = currentFilter === 'all' || (item.category || '').toLowerCase() === currentFilter.toLowerCase();
+            var matchKey = !keyword || (item.title || '').toLowerCase().includes(keyword) || (item.description || '').toLowerCase().includes(keyword);
+            return matchCat && matchKey;
+        });
+        shown = 0;
+        document.getElementById('tba_list').innerHTML = '';
+        loadMore();
+    }
+
+    function loadMore() {
+        var list = document.getElementById('tba_list');
+        var next = filtered.slice(shown, shown + PAGE_SIZE);
+        next.forEach(function(item) { list.innerHTML += renderItem(item); });
+        shown += next.length;
+        var btn = document.getElementById('tba-viewmore');
+        btn.style.display = shown < filtered.length ? 'block' : 'none';
+    }
+
+    // フィルタクリック
+    document.querySelectorAll('.filter_area li').forEach(function(li) {
+        li.addEventListener('click', function() {
+            document.querySelectorAll('.filter_area li').forEach(function(el){ el.classList.remove('active'); });
+            li.classList.add('active');
+            currentFilter = li.dataset.filter || 'all';
+            applyFilter();
+        });
+    });
+
+    // 検索
+    document.getElementById('tba_search_input').addEventListener('input', applyFilter);
+
+    // もっと見る
+    document.getElementById('tba-more-btn').addEventListener('click', loadMore);
+
+    // API呼び出し
+    fetch(API)
+        .then(function(r){ return r.json(); })
+        .then(function(data) {
+            allItems = data || [];
+            renderHero(allItems[0]);
+            applyFilter();
+        })
+        .catch(function() {
+            document.getElementById('tba_list').innerHTML = '<li style="padding:40px 0; color:#666; text-align:center; list-style:none;">登録されたテックブログがありません。</li>';
+        });
+})();
+</script>
+
+</body>
+</html>

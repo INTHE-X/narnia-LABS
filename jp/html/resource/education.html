@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NARNIA LABS - EDUCATION</title>
+
+    <link rel="stylesheet" href="../../../assets/css/reset.css">
+    <link rel="stylesheet" href="../../../assets/css/common.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/sub.css">
+    <link rel="stylesheet" href="../../../assets/css/responsive.css">
+     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
+
+    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/plugin/jquery.js"></script>
+    <script src="../../../assets/js/sub.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.18/dist/lenis.min.js"></script> 
+</head>
+<body class="jp">
+    <div id="wrap">
+        <!-- include -->
+        <header id="header"></header>
+
+        <section id="education_board">
+            <div class="grid_deco">
+                <div class="grid_deco_inner">
+                    <span class="grid_line vrt"></span>
+                    <span class="grid_line vrt"></span>
+                    <span class="grid_line vrt"></span>
+                    <span class="grid_line vrt"></span>
+                    <span class="grid_line vrt"></span>
+                    <span class="grid_line vrt"></span>
+                </div>
+            </div>
+            <div class="container">
+                <div class="edb_inner">
+                    <div class="tit_area">
+                        <h2>EDUCATION</h2>
+                    </div>
+                    <div class="filter_area">
+                        <ul>
+                            <li class="active">
+                                <button>
+                                    <span>All</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button>
+                                    <span>Education</span>
+                                </button>
+                            </li>
+                            <li>
+                                <button>
+                                    <span>Product</span>
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="board_area">
+                        <ul class="board_list" id="edu-list">
+                            <!-- APIで動的生成 -->
+                        </ul>
+                        <div class="view_more" id="edu-viewmore" style="display:none;">
+                            <button id="edu-more-btn">もっと見る</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </section>
+        <!-- include -->
+        <section id="request"></section>
+
+        <!-- include -->
+        <footer id="footer"></footer>
+    </div>
+
+<script>
+(function() {
+    var API_URL = 'https://narnialabs.mycafe24.com/admin/api/education';
+    var FALLBACK_IMG = '/assets/img/sub/edb_img01.png';
+    var PAGE_SIZE = 8;
+    var allItems = [];
+    var filtered = [];
+    var shown = 0;
+
+    function imgSrc(item) {
+        return item.image_url || FALLBACK_IMG;
+    }
+
+    function renderItems(append) {
+        var list = document.getElementById('edu-list');
+        var batch = filtered.slice(shown, shown + PAGE_SIZE);
+        if (!append) list.innerHTML = '';
+
+        batch.forEach(function(item) {
+            var li = document.createElement('li');
+            li.dataset.category = item.category;
+            var detailUrl = 'educationDetail.html?id=' + item.id;
+            li.innerHTML = '<a href="' + detailUrl + '">'
+                + '<div class="box">'
+                + '<div class="img"><figure><img src="' + imgSrc(item) + '" alt="#"></figure></div>'
+                + '<div class="tags"><span class="cate">' + item.category + '</span><span class="date">' + (item.date || '') + '</span></div>'
+                + '<div class="tit"><h3>' + item.title + '</h3></div>'
+                + '</div></a>';
+            list.appendChild(li);
+        });
+
+        shown += batch.length;
+
+        var moreBtn = document.getElementById('edu-viewmore');
+        if (moreBtn) moreBtn.style.display = shown < filtered.length ? '' : 'none';
+    }
+
+    function applyFilter(cat) {
+        filtered = cat === 'All'
+            ? allItems
+            : allItems.filter(function(i){ return i.category === cat; });
+        shown = 0;
+        renderItems(false);
+
+        // フィルタactive状態
+        document.querySelectorAll('.filter_area li').forEach(function(li) {
+            li.classList.remove('active');
+        });
+        // クリックしたボタンのliにactive
+        var btns = document.querySelectorAll('.filter_area li button span');
+        btns.forEach(function(span) {
+            if (span.textContent === cat) span.closest('li').classList.add('active');
+        });
+    }
+
+    // もっと見る
+    var moreBtn = document.getElementById('edu-more-btn');
+    if (moreBtn) {
+        moreBtn.addEventListener('click', function() { renderItems(true); });
+    }
+
+    // フィルタボタンイベント
+    document.querySelectorAll('.filter_area li button').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            applyFilter(this.querySelector('span').textContent.trim());
+        });
+    });
+
+    fetch(API_URL)
+        .then(function(r){ return r.json(); })
+        .then(function(items) {
+            allItems = items;
+            applyFilter('All');
+        })
+        .catch(function(err) {
+            console.warn('Education API ロード失敗:', err);
+        });
+})();
+</script>
+
+</body>
+</html>

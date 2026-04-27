@@ -1,0 +1,163 @@
+@extends('layouts.admin')
+@section('title', '교육 수정')
+@section('content')
+<div class="content-header">
+    <div class="content-header-inner"><h1 class="page-title">교육 수정</h1></div>
+</div>
+<div class="content-body">
+    <div class="card">
+        <div class="card-header"><div class="card-title">교육 정보 수정</div></div>
+        @if($errors->any())
+            <div style="margin:16px 24px;padding:.75rem 1rem;background:#fee;border:1px solid #f99;border-radius:6px;color:#c00;">
+                <ul style="margin:0;padding-left:1.2rem;">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
+            </div>
+        @endif
+        <form action="{{ route('education.update', $education->id) }}" method="POST" enctype="multipart/form-data">
+            @csrf @method('PUT')
+            <div class="img-form-layout" style="grid-template-columns:360px 1fr;">
+                <div class="img-form-panel">
+                    <div class="img-form-box" onclick="document.getElementById('image').click()" style="width:300px; height:170px;">
+                        @if($education->image_path)
+                            <img id="img-preview" src="{{ $education->image_url }}" alt="이미지" style="width:100%;height:100%;object-fit:cover;">
+                        @else
+                            <div class="img-placeholder" id="img-ph">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+                                이미지 업로드
+                            </div>
+                            <img id="img-preview" style="display:none;width:100%;height:100%;object-fit:cover;" alt="">
+                        @endif
+                    </div>
+                    <input type="file" id="image" name="image" accept="image/*" style="display:none;"
+                        onchange="var p=document.getElementById('img-preview'),ph=document.getElementById('img-ph');if(this.files[0]){var r=new FileReader();r.onload=function(e){p.src=e.target.result;p.style.display='block';if(ph)ph.style.display='none';};r.readAsDataURL(this.files[0]);}">
+                    <span class="img-form-hint">클릭하여 이미지 변경<br>(비워두면 유지)</span>
+                </div>
+                <div class="field-rows">
+                    <div class="field-row">
+                        <div class="field-label">제목 *</div>
+                        <div class="field-value"><input type="text" name="title" value="{{ old('title', $education->title) }}" required></div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-label">제목 (EN)</div>
+                        <div class="field-value"><input type="text" name="title_en" value="{{ old('title_en', $education->title_en) }}" placeholder="Education Title (English)"></div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-label">제목 (JP)</div>
+                        <div class="field-value"><input type="text" name="title_jp" value="{{ old('title_jp', $education->title_jp) }}" placeholder="教育タイトル (日本語)"></div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-label">카테고리 *</div>
+                        <div class="field-value">
+                            <select name="category" required>
+                                @foreach(['Education','Product'] as $cat)
+                                    <option value="{{ $cat }}" {{ old('category', $education->category) == $cat ? 'selected' : '' }}>{{ $cat }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-label">게시 날짜</div>
+                        <div class="field-value"><input type="date" name="published_at" value="{{ old('published_at', $education->published_at?->format('Y-m-d')) }}"></div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-label">외부 링크 URL</div>
+                        <div class="field-value"><input type="url" name="link" value="{{ old('link', $education->link) }}" placeholder="https://..."></div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-label">정렬 순서</div>
+                        <div class="field-value"><input type="number" name="sort_order" value="{{ old('sort_order', $education->sort_order) }}" min="0" style="max-width:120px;"></div>
+                    </div>
+                    <div class="field-row align-top">
+                        <div class="field-label">설명</div>
+                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
+                            <textarea name="description" rows="4">{{ old('description', $education->description) }}</textarea>
+                        </div>
+                    </div>
+                    <div class="field-row align-top">
+                        <div class="field-label">설명 (EN)</div>
+                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
+                            <textarea name="description_en" rows="4" placeholder="Description (English)">{{ old('description_en', $education->description_en) }}</textarea>
+                        </div>
+                    </div>
+                    <div class="field-row align-top">
+                        <div class="field-label">설명 (JP)</div>
+                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
+                            <textarea name="description_jp" rows="4" placeholder="説明 (日本語)">{{ old('description_jp', $education->description_jp) }}</textarea>
+                        </div>
+                    </div>
+
+                    {{-- ── 기존 첨부 자료 ── --}}
+                    @if($education->pdf_files && count($education->pdf_files) > 0)
+                    <div class="field-row align-top">
+                        <div class="field-label">등록된 자료</div>
+                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
+                            <ul id="existing-pdf-list" style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;">
+                                @foreach($education->pdf_files as $index => $pdf)
+                                <li id="pdf-item-{{ $index }}" style="display:flex;align-items:center;gap:8px;font-size:13px;background:#f5f5f5;padding:7px 12px;border-radius:6px;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="#e05" stroke-width="1.8" style="width:14px;height:14px;flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                    <span>{{ $pdf['name'] }}</span>
+                                    <a href="{{ $pdf['url'] }}" target="_blank" style="margin-left:auto;font-size:11px;color:#0066cc;text-decoration:none;">미리보기</a>
+                                    <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:#c00;cursor:pointer;margin-left:8px;">
+                                        <input type="checkbox" name="remove_pdfs[]"
+                                               value="{{ $education->pdf_paths[$index] }}"
+                                               onchange="document.getElementById('pdf-item-{{ $index }}').style.opacity=this.checked?'0.4':'1';">
+                                        삭제
+                                    </label>
+                                </li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    </div>
+                    @endif
+
+                    {{-- ── 새 자료 추가 ── --}}
+                    <div class="field-row align-top">
+                        <div class="field-label" style="display:block;">자료 추가<span style="display:block;font-size:11px;color:#999;font-weight:400;margin-top:2px;">PDF, PPT, DOC, HWP, ZIP</span></div>
+                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
+                            <div style="margin-bottom:8px;">
+                                <span style="font-size:12px;color:#888;">파일당 최대 20MB까지 업로드 가능합니다.</span>
+                            </div>
+                            <label for="pdfs" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;padding:7px 14px;border:1px dashed #aaa;border-radius:6px;font-size:13px;color:#555;background:#fafafa;">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:15px;height:15px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                파일 선택 (복수 가능)
+                            </label>
+                            <input type="file" id="pdfs" name="pdfs[]" multiple
+                                   accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.hwp,.zip"
+                                   style="display:none;" onchange="showPdfList(this)">
+                            <ul id="pdf-preview-list" style="margin:10px 0 0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px;"></ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="img-form-actions">
+                <div class="img-form-actions-left">
+                    <button type="submit" class="btn btn-primary">수정하기</button>
+                    <a href="{{ route('education.index') }}" class="btn btn-secondary">취소</a>
+                </div>
+            </div>
+        </form>
+        {{-- !! 삭제 폼은 반드시 수정 폼 밖에 위치해야 합니다 (중첩 form 금지) !! --}}
+        <div style="padding: 0 24px 24px; display:flex; justify-content:flex-end;">
+            <form method="POST" action="{{ route('education.destroy', $education->id) }}"
+                  onsubmit="return confirm('삭제하시겠습니까?\n이 작업은 되돌릴 수 없습니다.')">
+                @csrf @method('DELETE')
+                <button type="submit" class="btn btn-danger">삭제</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+function showPdfList(input) {
+    var list = document.getElementById('pdf-preview-list');
+    list.innerHTML = '';
+    Array.from(input.files).forEach(function(f) {
+        var li = document.createElement('li');
+        li.style.cssText = 'display:flex;align-items:center;gap:6px;font-size:12px;color:#444;background:#f5f5f5;padding:5px 10px;border-radius:4px;';
+        li.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#e05" stroke-width="1.8" style="width:13px;height:13px;flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>'
+                     + '<span>' + f.name + '</span>'
+                     + '<span style="margin-left:auto;color:#999;">' + (f.size/1024/1024).toFixed(1) + 'MB</span>';
+        list.appendChild(li);
+    });
+}
+</script>
+@endsection

@@ -1,0 +1,133 @@
+<div class="container">
+  <div class="inner">
+    <div class="top">
+      <div class="left">
+        <div class="footer_logo">
+          <i>
+            <img
+              src="{{base}}/assets/img/common/logo_symbol_wh.svg"
+              alt="Narnia Labs symbol"
+            />
+          </i>
+          <figure>
+            <img
+              src="{{base}}/assets/img/common/logo.svg"
+              alt="Narnia Labs logo"
+            />
+          </figure>
+        </div>
+      </div>
+      <div class="right">
+        <ul class="floor1">
+          <li>
+            <strong>AslanX</strong>
+            <ul class="floor2">
+              <li><a href="/eng/html/aslanX/aslanX.html">AslanX</a></li>
+            </ul>
+          </li>
+          <li>
+            <strong>Solution</strong>
+            <ul class="floor2">
+            <li>
+                <a href="/eng/html/solution/deepGenerativeDesign.html">Overview</a>
+              </li>
+              <li>
+                <a href="/eng/html/solution/generation.html">Generation</a>
+              </li>
+              <li>
+                <a href="/eng/html/solution/evaluation.html">Evaluation</a>
+              </li>
+              <li><a href="/eng/html/solution/optimization.html">Optimization</a></li>
+              <li>
+                <a href="/eng/html/solution/recommendation.html">Recommendation</a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong>Resource</strong>
+            <ul class="floor2" id="footer-resource-list">
+              <li>
+                <a href="/eng/html/resource/caseStudies.html">Case studies</a>
+              </li>
+              <li><a href="/eng/html/resource/education.html">Education</a></li>
+              <li><a href="/eng/html/resource/events.html">Events</a></li>
+              <li>
+                <a href="/eng/html/resource/publication.html">Publications</a>
+              </li>
+              <li><a href="/eng/html/resource/techBlog.html">Tech Blog</a></li>
+              <!-- Dynamic menus added from admin are automatically inserted -->
+            </ul>
+          </li>
+          <li>
+            <strong>Company</strong>
+            <ul class="floor2">
+              <li><a href="/eng/html/company/about.html">About</a></li>
+              <li><a href="/eng/html/company/news.html">News</a></li>
+              <li class="outer_link">
+                <a href="https://narnialabs.careers.team/" target="_blank"
+                  >Careers <i class="ico_outer_link"></i
+                ></a>
+              </li>
+              <li><a href="/eng/html/company/team.html">Team</a></li>
+              <li><a href="/eng/html/contact/contactUs.html">Contact us</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="bot">
+      <div class="copy">
+        <div class="cross_deco color1"></div>
+        <p>Copyright © 2025 NARNIA LABS all rights reserved.</p>
+      </div>
+      <div class="sns">
+        <ul>
+          <li>
+            <a href="https://www.linkedin.com/company/narnialabs/" target="_blank">
+              <img
+                src="{{base}}/assets/img/common/linkedin_wh.svg"
+                alt="LinkedIn"
+              />
+            </a>
+          </li>
+          <li>
+            <a href="https://www.youtube.com/@narnialabs" target="_blank">
+              <img
+                src="{{base}}/assets/img/common/youtube_wh.svg"
+                alt="youtube"
+              />
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    var API = "https://narnialabs.mycafe24.com/admin/api/resource-menus";
+    var list = document.getElementById("footer-resource-list");
+    if (!list) return;
+
+    fetch(API)
+      .then(function (r) {
+        return r.json();
+      })
+      .then(function (items) {
+        items.forEach(function (item) {
+          var li = document.createElement("li");
+          li.className = item.is_external ? "outer_link" : "";
+          var a = document.createElement("a");
+          a.href = item.url;
+          if (item.is_external) a.target = "_blank";
+          a.innerHTML =
+            item.title +
+            (item.is_external ? ' <i class="ico_outer_link"></i>' : "");
+          li.appendChild(a);
+          list.appendChild(li);
+        });
+      })
+      .catch(function () {});
+  })();
+</script>

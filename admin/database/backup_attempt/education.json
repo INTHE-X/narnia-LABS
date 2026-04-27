@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "title": "test",
+    "category": "Education",
+    "description": "1234",
+    "image_url": "/admin/uploads/educations/c81e92d8-0220-498d-8cd9-bfa8bd5f0d67.png",
+    "link": "https://narnialabs.mycafe24.com/kor/html/resource/caseStudies.html",
+    "date": "April 24, 2026",
+    "pdf_count": 1
+  }
+]

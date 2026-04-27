@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NARNIA LABS - EDUCATION</title>
+
+    <link rel="stylesheet" href="../../../assets/css/reset.css">
+    <link rel="stylesheet" href="../../../assets/css/common.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/sub.css">
+    <link rel="stylesheet" href="../../../assets/css/responsive.css">
+     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
+
+    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/plugin/jquery.js"></script>
+    <script src="../../../assets/js/sub.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.3.18/dist/lenis.min.js"></script> 
+    <style>
+        /* ── 스켈레톤 UI ── */
+        @keyframes edd-shimmer {
+            0%   { background-position: -600px 0; }
+            100% { background-position:  600px 0; }
+        }
+        .edd-skeleton {
+            position: absolute;
+            inset: 0;
+            z-index: 10;
+            background: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+        .edd-sk-block {
+            border-radius: 6px;
+            background: linear-gradient(90deg, rgba(255,255,255,.06) 25%, rgba(255,255,255,.14) 50%, rgba(255,255,255,.06) 75%);
+            background-size: 600px 100%;
+            animation: edd-shimmer 1.4s infinite linear;
+        }
+        .edd-sk-img   { height: 260px; border-radius: 8px; flex-shrink: 0; }
+        .edd-sk-cate  { height: 16px; width: 80px; }
+        .edd-sk-title { height: 24px; width: 75%; }
+        .edd-sk-title2{ height: 24px; width: 50%; }
+        .edd-sk-date  { height: 14px; width: 100px; margin-top: 6px; }
+        /* 실제 콘텐츠는 로딩 중 숨김 */
+        .edd-loading .edd_img,
+        .edd-loading .edd_desc { visibility: hidden; }
+        /* 유튜브 플레이 오버레이 */
+        .edd_img { position: relative; cursor: pointer; }
+        .edd-play-btn {
+            display: none;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 68px; height: 68px;
+            background: rgba(255,0,0,0.88);
+            border-radius: 50%;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, transform 0.2s;
+            pointer-events: none;
+            z-index: 2;
+        }
+        .edd_img.is-youtube .edd-play-btn { display: flex; }
+        .edd_img.is-youtube:hover .edd-play-btn { background: rgba(200,0,0,1); transform: translate(-50%,-50%) scale(1.1); }
+        .edd-play-btn svg { margin-left: 5px; }
+        .edd_img.is-youtube figure { cursor: pointer; }
+        /* 인라인 유튜브 iframe */
+        .edd-yt-frame {
+            width: 100%; aspect-ratio: 16/9;
+            border: none; border-radius: 8px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap">
+        <!-- include -->
+        <header id="header"></header>
+
+        <section id="education_detail">
+            <div class="grid_deco"></div>
+            <div class="container">
+                <div class="edd_inner">
+                    <div class="edd_tit">
+                        <h2>EDUCATION</h2>
+                    </div>
+                    <div class="box left">
+                        <div class="area">
+                            <div class="cross_deco color1 lt"></div>
+                            <div class="cross_deco color1 rt"></div>
+                            <div class="cross_deco color1 lb"></div>
+                            <div class="cross_deco color1 rb"></div>
+                            <div class="cont edd-loading" id="edd-cont" style="position:relative;">
+                                <!-- 스켈레톤 오버레이 -->
+                                <div class="edd-skeleton" id="edd-skeleton">
+                                    <div class="edd-sk-block edd-sk-img"></div>
+                                    <div class="edd-sk-block edd-sk-cate"></div>
+                                    <div class="edd-sk-block edd-sk-title"></div>
+                                    <div class="edd-sk-block edd-sk-title2"></div>
+                                    <div class="edd-sk-block edd-sk-date"></div>
+                                </div>
+                                <!-- 실제 콘텐츠 -->
+                                <div class="edd_img" id="edd-img-wrap">
+                                    <a href="#" id="edd-link">
+                                        <figure>
+                                            <img id="edd-img" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="#" style="opacity:0; transition: opacity 0.3s ease;">
+                                        </figure>
+                                    </a>
+                                    <div class="edd-play-btn" id="edd-play-btn">
+                                        <svg width="22" height="26" viewBox="0 0 22 26" fill="white"><polygon points="2,1 21,13 2,25"/></svg>
+                                    </div>
+                                </div>
+                                <div class="edd_desc">
+                                    <div class="edd_desc_txt">
+                                        <div class="cate">
+                                            <span id="edd-category"></span>
+                                        </div>
+                                        <h3 class="tit" id="edd-title"></h3>
+                                    </div>
+                                    <span class="edd_date" id="edd-date"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box right">
+                        <div class="area">
+                            <div class="cross_deco color1 lt"></div>
+                            <div class="cross_deco color1 rt"></div>
+                            <div class="cross_deco color1 lb"></div>
+                            <div class="cross_deco color1 rb"></div>
+                            <div class="cont">
+                                <div class="edd_success" id="edd-success" style="display:none; text-align:center; padding: 30px 20px;">
+                                    <div style="font-size:42px; margin-bottom:12px;">✅</div>
+                                    <strong style="font-size:17px; display:block; margin-bottom:6px;">신청이 완료되었습니다!</strong>
+                                    <p style="color:#888; font-size:13px; margin-bottom:20px;">아래 버튼을 클릭하여 자료를 다운로드하세요.</p>
+                                    <!-- 다운로드 버튼 목록 (JS로 주입) -->
+                                    <div id="edd-download-links" style="display:flex;flex-direction:column;gap:8px;align-items:center;"></div>
+                                </div>
+
+                                <!-- 신청 폼 -->
+                                <div id="edd-form-wrap">
+                                    <div class="edd_notice">
+                                        <strong>자료 다운로드를 위해 아래 정보를 입력해주세요.</strong>
+                                    </div>
+                                    <form id="edd_form" class="edd_form">
+                                        <div class="edd_form_area">
+                                            <div class="edd_input_box">
+                                                <div class="edd_form_stack">
+                                                    <label for="edd_name">
+                                                        <span>Name <b>*</b></span>
+                                                    </label>
+                                                    <div class="edd_input_area">
+                                                        <p class="edd_input_placeholder">
+                                                            이름을 입력해주세요 <b>*</b>
+                                                        </p>
+                                                        <input type="text" id="edd_name" name="name" class="edd_txt_input" required>
+                                                    </div>
+                                                </div>
+                                                <div class="edd_form_stack">
+                                                    <label for="edd_email">
+                                                        <span>business mail <b>*</b></span>
+                                                    </label>
+                                                    <div class="edd_input_area">
+                                                        <p class="edd_input_placeholder">
+                                                            이메일을 입력해주세요 <b>*</b>
+                                                        </p>
+                                                        <input type="email" id="edd_email" name="email" class="edd_txt_input" required>
+                                                    </div>
+                                                </div>
+                                                <div class="edd_form_stack">
+                                                    <label for="edd_phone">
+                                                        <span>Phone <b>*</b></span>
+                                                    </label>
+                                                    <div class="edd_input_area">
+                                                        <p class="edd_input_placeholder">
+                                                            '-' 를 제외하고 번호를 입력해주세요 <b>*</b>
+                                                        </p>
+                                                        <input type="tel" id="edd_phone" name="phone" class="edd_txt_input">
+                                                    </div>
+                                                </div>
+                                                <div class="edd_form_stack">
+                                                    <label for="edd_company">
+                                                        <span>company <b>*</b></span>
+                                                    </label>
+                                                    <div class="edd_input_area">
+                                                        <p class="edd_input_placeholder">
+                                                            회사명을 입력해주세요 <b>*</b>
+                                                        </p>
+                                                        <input type="text" id="edd_company" name="company" class="edd_txt_input">
+                                                    </div>
+                                                </div>
+                                                <div class="edd_form_stack">
+                                                    <label for="edd_jobtitle">
+                                                        <span>Job Title <b>*</b></span>
+                                                    </label>
+                                                    <div class="edd_input_area">
+                                                        <p class="edd_input_placeholder">
+                                                            직급을 입력해주세요 <b>*</b>
+                                                        </p>
+                                                        <input type="text" id="edd_jobtitle" name="jobtitle" class="edd_txt_input">
+                                                    </div>
+                                                </div>
+                                                <div class="edd_form_stack">
+                                                    <label for="edd_department">
+                                                        <span>Department <b>*</b></span>
+                                                    </label>
+                                                    <div class="edd_input_area">
+                                                        <p class="edd_input_placeholder">
+                                                            부서를 입력해주세요 <b>*</b>
+                                                        </p>
+                                                        <input type="text" id="edd_department" name="department" class="edd_txt_input">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="edd_download_btn">
+                                                <button type="submit" id="edd-submit-btn">다운로드</button>
+                                            </div>
+                                            <p id="edd-error-msg" style="display:none; color:#e53e3e; font-size:13px; margin-top:8px; text-align:center;"></p>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- include -->
+        <section id="request"></section>
+
+        <!-- include -->
+        <footer id="footer"></footer>
+    </div>
+
+<script>
+(function () {
+    var API_BASE    = 'https://narnialabs.mycafe24.com/admin/api/education';
+    var FALLBACK_IMG = '../../../assets/img/sub/edd_img01.png';
+
+    function getParam(key) {
+        return new URLSearchParams(window.location.search).get(key);
+    }
+
+    var educationId = getParam('id');
+
+    // ── 좌측 교육 콘텐츠 로드 ──────────────────────────
+    if (educationId) {
+        fetch(API_BASE + '/' + educationId)
+            .then(function (r) {
+                if (!r.ok) throw new Error('not found');
+                return r.json();
+            })
+            .then(function (item) {
+                var img      = document.getElementById('edd-img');
+                var link     = document.getElementById('edd-link');
+                var category = document.getElementById('edd-category');
+                var title    = document.getElementById('edd-title');
+                var date     = document.getElementById('edd-date');
+                var skeleton = document.getElementById('edd-skeleton');
+                var cont     = document.getElementById('edd-cont');
+
+                if (img) {
+                    img.src = item.image_url || FALLBACK_IMG;
+                    img.onload = function() { img.style.opacity = '1'; };
+                    if (img.complete) img.style.opacity = '1';
+                }
+
+                // YouTube 링크 처리
+                var imgWrap = document.getElementById('edd-img-wrap');
+                var ytEmbed = getYoutubeEmbed(item.video_url || item.link);
+
+                if (ytEmbed && imgWrap) {
+                    imgWrap.classList.add('is-youtube');
+                    // 이미지 클릭 시 iframe으로 교체
+                    imgWrap.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        imgWrap.innerHTML = '<iframe class="edd-yt-frame" src="' + ytEmbed + '" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+                    });
+                } else if (link && item.link) {
+                    link.href = item.link;
+                    link.target = '_blank';
+                    link.rel = 'noopener';
+                }
+
+                if (category) category.textContent = item.category || 'Education';
+                if (title) title.textContent = item.title || '';
+                if (date)  date.textContent  = item.date  || '';
+                document.title = 'NARNIA LABS - ' + (item.title || 'EDUCATION');
+
+                // 스켈레톤 제거 & 콘텐츠 표시
+                if (skeleton) skeleton.style.display = 'none';
+                if (cont) cont.classList.remove('edd-loading');
+            })
+            .catch(function () {
+                var skeleton = document.getElementById('edd-skeleton');
+                var cont     = document.getElementById('edd-cont');
+                var title    = document.getElementById('edd-title');
+                if (skeleton) skeleton.style.display = 'none';
+                if (cont) cont.classList.remove('edd-loading');
+                if (title) title.textContent = '교육 정보를 불러올 수 없습니다.';
+            });
+    }
+
+    // ── 우측 폼 제출 & 다운로드 ──────────────────────────
+    var form      = document.getElementById('edd_form');
+    var submitBtn = document.getElementById('edd-submit-btn');
+    var errorMsg  = document.getElementById('edd-error-msg');
+    var successEl = document.getElementById('edd-success');
+    var formWrap  = document.getElementById('edd-form-wrap');
+    var dlLinks   = document.getElementById('edd-download-links');
+
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            if (!educationId) {
+                showError('교육 정보를 찾을 수 없습니다. 교육 목록에서 다시 접근해주세요.');
+                return;
+            }
+
+            var name  = document.getElementById('edd_name').value.trim();
+            var email = document.getElementById('edd_email').value.trim();
+            if (!name || !email) {
+                showError('이름과 이메일은 필수 입력입니다.');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = '제출 중...';
+            hideError();
+
+            var payload = {
+                name:       name,
+                email:      email,
+                phone:      document.getElementById('edd_phone').value.trim(),
+                company:    document.getElementById('edd_company').value.trim(),
+                jobtitle:   document.getElementById('edd_jobtitle').value.trim(),
+                department: document.getElementById('edd_department').value.trim(),
+            };
+
+            fetch(API_BASE + '/' + educationId + '/apply', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+                body: JSON.stringify(payload),
+            })
+            .then(function (r) { return r.json(); })
+            .then(function (res) {
+                if (res.success) {
+                    // 폼 숨기기
+                    if (formWrap) formWrap.style.display = 'none';
+                    if (successEl) successEl.style.display = 'block';
+
+                    // PDF 파일 목록이 있으면 다운로드 버튼 표시
+                    var files = res.pdf_files || [];
+                    if (dlLinks) {
+                        if (files.length === 0) {
+                            dlLinks.innerHTML = '<p style="color:#aaa;font-size:13px;">등록된 다운로드 자료가 없습니다.</p>';
+                        } else {
+                            files.forEach(function (f) {
+                                var a = document.createElement('a');
+                                a.href = f.url;
+                                a.download = f.name;
+                                a.target = '_blank';
+                                a.style.cssText = 'display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:#0066cc;color:#fff;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;width:100%;max-width:320px;box-sizing:border-box;justify-content:center;';
+                                a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
+                                           + f.name;
+                                dlLinks.appendChild(a);
+                            });
+                        }
+                    }
+                } else {
+                    throw new Error(res.message || '오류가 발생했습니다.');
+                }
+            })
+            .catch(function (err) {
+                showError(err.message || '제출 중 오류가 발생했습니다. 다시 시도해주세요.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = '다운로드';
+            });
+        });
+    }
+
+    function showError(msg) {
+        if (errorMsg) { errorMsg.textContent = msg; errorMsg.style.display = 'block'; }
+    }
+    function hideError() {
+        if (errorMsg) errorMsg.style.display = 'none';
+    }
+
+    // YouTube URL → embed URL 변환 (단일 영상 + 플레이리스트 모두 지원)
+    function getYoutubeEmbed(url) {
+        if (!url) return null;
+        if (!/youtube\.com|youtu\.be/.test(url)) return null;
+        var embedBase = 'https://www.youtube.com/embed/';
+        var params = '?autoplay=1&rel=0&modestbranding=1';
+        // 플레이리스트
+        var listMatch = url.match(/[?&]list=([\w-]+)/);
+        if (url.indexOf('youtube.com/playlist') !== -1 && listMatch) {
+            return embedBase + 'videoseries?list=' + listMatch[1] + '&autoplay=1&rel=0&modestbranding=1';
+        }
+        // 단일 영상 (watch?v=, youtu.be/, embed/)
+        var vidMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|v\/))([\w-]{11})/);
+        if (vidMatch) {
+            var ep = embedBase + vidMatch[1] + params;
+            if (listMatch) ep += '&list=' + listMatch[1];
+            return ep;
+        }
+        return null;
+    }
+})();
+</script>
+
+</body>
+</html>

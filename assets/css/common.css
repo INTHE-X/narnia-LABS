@@ -1,0 +1,176 @@
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 100;
+    font-style: normal;
+    src: url('../../assets/fonts/Pretendard-Thin.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 200;
+    font-style: normal;
+    src: url('../../assets/fonts/Pretendard-ExtraLight.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 300;
+    font-style: normal;
+    src: url('../../assets/fonts/Pretendard-Light.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../../assets/fonts/Pretendard-Regular.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 500;
+    font-style: normal;
+    src: url('../../assets/fonts/Pretendard-Medium.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 600;
+    font-style: normal;
+    src: url('../../assets/fonts/Pretendard-SemiBold.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 700;
+    font-style: normal;
+    src: url('../../assets/fonts/Pretendard-Bold.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 800;
+    font-style: normal;
+    src: url('../../assets/fonts/Pretendard-ExtraBold.woff') format('woff');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 900;
+    font-style: normal;
+    src: url('../../assets/fonts/Pretendard-Black.woff') format('woff');
+    font-display: swap;
+}
+
+/* Reddit Sans */
+
+@font-face {
+    font-family: 'Reddit Sans';
+    font-weight: 300;
+    font-style: normal;
+    src: url('../../assets/fonts/RedditSans-Light.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reddit Sans';
+    font-weight: 300;
+    font-style: italic;
+    src: url('../../assets/fonts/RedditSans-LightItalic.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reddit Sans';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../../assets/fonts/RedditSans-Regular.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reddit Sans';
+    font-weight: 400;
+    font-style: italic;
+    src: url('../../assets/fonts/RedditSans-Italic.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reddit Sans';
+    font-weight: 600;
+    font-style: normal;
+    src: url('../../assets/fonts/RedditSans-SemiBold.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reddit Sans';
+    font-weight: 600;
+    font-style: italic;
+    src: url('../../assets/fonts/RedditSans-SemiBoldItalic.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reddit Sans';
+    font-weight: 700;
+    font-style: normal;
+    src: url('../../assets/fonts/RedditSans-Bold.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reddit Sans';
+    font-weight: 700;
+    font-style: italic;
+    src: url('../../assets/fonts/RedditSans-BoldItalic.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reddit Sans';
+    font-weight: 800;
+    font-style: normal;
+    src: url('../../assets/fonts/RedditSans-ExtraBold.woff2') format('woff2');
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Reddit Sans';
+    font-weight: 800;
+    font-style: italic;
+    src: url('../../assets/fonts/RedditSans-ExtraBoldItalic.woff2') format('woff2');
+    font-display: swap;
+}
+
+/* D2Coding */
+
+@font-face {
+    font-family: 'D2Coding';
+    font-weight: 400;
+    font-style: normal;
+    src: url('../../assets/fonts/D2Coding-Ver1.3.2-20180524.ttf') format('truetype');
+    font-display: swap;
+}
+
+:root{
+    --font-Pretendard: 'Pretendard', sans-serif;
+    --font-RedditSans: 'Reddit Sans', sans-serif;
+    --font-D2Coding: 'D2Coding', monospace;
+    --main-brand-color: rgba(101, 34, 225, 1);
+    --color-black-01: rgba(25, 25, 25, 1);
+    --color-black-02: rgba(16, 16, 16, 1);
+    --color-gray-01: rgba(0, 0, 0, 0.4);
+    --color-gray-02: rgba(158, 158, 158, 0.4);
+    --color-grid-01: rgba(43, 43, 43, 1);
+}
+
