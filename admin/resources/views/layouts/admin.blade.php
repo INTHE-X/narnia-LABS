@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', '어드민') — NARNIA LABS</title>
     <meta name="description" content="@yield('description', '나니아랩스 관리자 페이지')">
-    <link rel="stylesheet" href="https://narnialabs.mycafe24.com/admin/css/admin.css?v=20260426">
+    <link rel="stylesheet" href="https://narnialabs.mycafe24.com/admin/css/admin.css?v=20260428">
     @stack('head')
 </head>
 <body>
@@ -38,20 +38,11 @@
         <!-- 로그인 사용자 정보 -->
         <div class="sidebar-user">
             <div class="user-info">
-                <div class="user-avatar">
-                    {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
-                </div>
-                <div class="user-name">{{ Auth::user()->name ?? '관리자' }}</div>
+                <div class="user-name">{{ Auth::user()->username ?? Auth::user()->name ?? '관리자' }}</div>
             </div>
             <form action="{{ route('logout') }}" method="POST">
                 @csrf
-                <button type="submit" class="btn-logout" title="로그아웃">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                        <polyline points="16 17 21 12 16 7"/>
-                        <line x1="21" y1="12" x2="9" y2="12"/>
-                    </svg>
-                </button>
+                <button type="submit" class="btn-logout">로그아웃</button>
             </form>
         </div>
 
@@ -61,28 +52,21 @@
             <!-- 컨텐츠 관리 -->
             <div class="nav-section-title">컨텐츠 관리</div>
 
-            <a href="{{ route('case-studies.index') }}" class="nav-link">
+            <a href="{{ route('case-studies.index') }}" class="nav-link {{ request()->routeIs('case-studies.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
                 </svg>
                 케이스스터디
             </a>
 
-            <a href="{{ route('education.index') }}" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                </svg>
-                에듀케이션
-            </a>
-
-            <a href="{{ route('events.index') }}" class="nav-link">
+            <a href="{{ route('events.index') }}" class="nav-link {{ request()->routeIs('events.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
                 </svg>
                 이벤트 관리
             </a>
 
-            <a href="{{ route('publications.index') }}" class="nav-link">
+            <a href="{{ route('publications.index') }}" class="nav-link {{ request()->routeIs('publications.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M9 12h6"/><path d="M9 16h6"/><path d="M9 8h2"/>
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
@@ -90,7 +74,7 @@
                 퍼블리케이션
             </a>
 
-            <a href="{{ route('tech-blogs.index') }}" class="nav-link">
+            <a href="{{ route('tech-blogs.index') }}" class="nav-link {{ request()->routeIs('tech-blogs.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline points="14 2 14 8 20 8"/>
@@ -101,7 +85,7 @@
                 테크블로그
             </a>
 
-            <a href="{{ route('news.index') }}" class="nav-link">
+            <a href="{{ route('news.index') }}" class="nav-link {{ request()->routeIs('news.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline points="14 2 14 8 20 8"/>
@@ -112,7 +96,7 @@
                 뉴스 관리
             </a>
 
-            <a href="{{ route('popup.index') }}" class="nav-link">
+            <a href="{{ route('popup.index') }}" class="nav-link {{ request()->routeIs('popup.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
                     <line x1="9" y1="3" x2="9" y2="21"/>
@@ -120,7 +104,7 @@
                 팝업 관리
             </a>
 
-            <a href="{{ route('team.index') }}" class="nav-link">
+            <a href="{{ route('team.index') }}" class="nav-link {{ request()->routeIs('team.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                     <circle cx="9" cy="7" r="4"/>
@@ -133,7 +117,7 @@
             <!-- 교육 -->
             <div class="nav-section-title">교육</div>
 
-            <div class="nav-item" data-submenu>
+            <div class="nav-item {{ request()->routeIs('education.*') || request()->routeIs('applicants.*') ? 'open' : '' }}" data-submenu>
                 <div class="nav-link">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                         <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
@@ -145,15 +129,15 @@
                     </svg>
                 </div>
                 <div class="nav-submenu">
-                    <a href="{{ route('education.index') }}" class="nav-link">교육 관리</a>
-                    <a href="{{ route('applicants.index') }}" class="nav-link">신청자 관리</a>
+                    <a href="{{ route('education.index') }}" class="nav-link {{ request()->routeIs('education.*') ? 'active' : '' }}">교육 관리</a>
+                    <a href="{{ route('applicants.index') }}" class="nav-link {{ request()->routeIs('applicants.*') ? 'active' : '' }}">신청자 관리</a>
                 </div>
             </div>
 
             <!-- 상담 관리 -->
             <div class="nav-section-title">상담 관리</div>
 
-            <a href="{{ route('inquiry.index') }}" class="nav-link">
+            <a href="{{ route('inquiry.index') }}" class="nav-link {{ request()->routeIs('inquiry.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
                 </svg>
@@ -163,7 +147,7 @@
             <!-- 운영 설정 -->
             <div class="nav-section-title">운영 설정</div>
 
-            <a href="{{ route('resource-menus.index') }}" class="nav-link">
+            <a href="{{ route('resource-menus.index') }}" class="nav-link {{ request()->routeIs('resource-menus.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
                     <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
@@ -171,7 +155,7 @@
                 Resource 메뉴 관리
             </a>
 
-            <a href="{{ route('seo.index') }}" class="nav-link">
+            <a href="{{ route('seo.index') }}" class="nav-link {{ request()->routeIs('seo.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <circle cx="11" cy="11" r="8"/>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -179,7 +163,7 @@
                 SEO 도구
             </a>
 
-            <a href="{{ route('members.index') }}" class="nav-link">
+            <a href="{{ route('members.index') }}" class="nav-link {{ request()->routeIs('members.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                     <circle cx="12" cy="12" r="3"/>
                     <path d="M19.07 4.93l-1.41 1.41M21 12h-2M19.07 19.07l-1.41-1.41M12 21v-2M4.93 19.07l1.41-1.41M2 12h2M4.93 4.93l1.41 1.41"/>
@@ -227,7 +211,7 @@
     </div>
 </div>
 
-<script src="https://narnialabs.mycafe24.com/admin/js/admin.js"></script>
+<script src="https://narnialabs.mycafe24.com/admin/js/admin.js?v=20260428"></script>
 @stack('scripts')
 
 </body>

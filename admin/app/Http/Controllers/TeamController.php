@@ -23,11 +23,13 @@ class TeamController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'title'       => 'required|string|max:255',
-            'category'    => 'nullable|string|max:100',
-            'description' => 'required|string',
-            'image'       => 'nullable|image|max:5120',
-            'sort_order'  => 'nullable|integer',
+            'title'          => 'required|string|max:255',
+            'category'       => 'nullable|string|max:100',
+            'description'    => 'required|string',
+            'description_en' => 'nullable|string',
+            'description_jp' => 'nullable|string',
+            'image'          => 'nullable|image|max:5120',
+            'sort_order'     => 'nullable|integer',
         ]);
 
         if ($request->hasFile('image')) {
@@ -56,11 +58,13 @@ class TeamController extends Controller
         $team = Team::findOrFail($id);
 
         $data = $request->validate([
-            'title'       => 'required|string|max:255',
-            'category'    => 'nullable|string|max:100',
-            'description' => 'required|string',
-            'image'       => 'nullable|image|max:5120',
-            'sort_order'  => 'nullable|integer',
+            'title'          => 'required|string|max:255',
+            'category'       => 'nullable|string|max:100',
+            'description'    => 'required|string',
+            'description_en' => 'nullable|string',
+            'description_jp' => 'nullable|string',
+            'image'          => 'nullable|image|max:5120',
+            'sort_order'     => 'nullable|integer',
         ]);
 
         if ($request->hasFile('image')) {
@@ -104,12 +108,14 @@ class TeamController extends Controller
     {
         $teams = Team::orderBy('sort_order')->orderBy('created_at')->get()->map(function ($t) {
             return [
-                'id'          => $t->id,
-                'title'       => $t->title,
-                'category'    => $t->category,
-                'description' => $t->description,
-                'image_url'   => $t->image_path ? '/admin/' . $t->image_path : null,
-                'sort_order'  => $t->sort_order,
+                'id'             => $t->id,
+                'title'          => $t->title,
+                'category'       => $t->category,
+                'description'    => $t->description,
+                'description_en' => $t->description_en,
+                'description_jp' => $t->description_jp,
+                'image_url'      => $t->image_path ? '/admin/' . $t->image_path : null,
+                'sort_order'     => $t->sort_order,
             ];
         });
 

@@ -104,10 +104,10 @@
     }
 
     function render(post) {
-        document.title = (post.title || 'CASE STUDIES') + ' | NARNIA LABS';
+        document.title = (post.title_en || post.title || 'CASE STUDIES') + ' | NARNIA LABS';
 
         document.getElementById('csp_cate').textContent = post.category || '';
-        document.getElementById('csp_tit').textContent = post.title || '';
+        document.getElementById('csp_tit').textContent = post.title_en || post.title || '';
         document.getElementById('csp_author').textContent = (post.tags || []).join('  ');
         document.getElementById('csp_date').textContent = '';
 
@@ -119,7 +119,7 @@
         }
 
         // 본문: 에디터 HTML 직접 렌더링
-        var body = post.description || '<p style="color:#999;">내용이 없습니다.</p>';
+        var body = post.description_en || post.description || '';
         document.getElementById('csp_body_text').innerHTML = body;
 
         // 공유 버튼

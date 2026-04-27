@@ -45,6 +45,18 @@
                             <textarea name="description" rows="6" required>{{ old('description', $team->description) }}</textarea>
                         </div>
                     </div>
+                    <div class="field-row align-top">
+                        <div class="field-label">내용 (EN)</div>
+                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
+                            <textarea name="description_en" rows="6" placeholder="영문 내용을 입력하세요">{{ old('description_en', $team->description_en) }}</textarea>
+                        </div>
+                    </div>
+                    <div class="field-row align-top">
+                        <div class="field-label">내용 (JP)</div>
+                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
+                            <textarea name="description_jp" rows="6" placeholder="일본어 내용을 입력하세요">{{ old('description_jp', $team->description_jp) }}</textarea>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="img-form-actions">

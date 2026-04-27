@@ -12,21 +12,23 @@ class SeoController extends Controller
     public static function pages(): array
     {
         return [
-            ['key' => 'home',           'name' => '메인',              'url' => '/'],
-            ['key' => 'about',          'name' => '회사 소개 (About)',   'url' => '/kor/html/company/about.html'],
-            ['key' => 'team',           'name' => '팀 (Team)',           'url' => '/kor/html/company/team.html'],
-            ['key' => 'news',           'name' => '뉴스 (News)',         'url' => '/kor/html/company/news.html'],
-            ['key' => 'aslanx',         'name' => 'AslanX',             'url' => '/kor/html/aslanX/aslanX.html'],
-            ['key' => 'case_studies',   'name' => '케이스스터디',          'url' => '/kor/html/resource/caseStudies.html'],
-            ['key' => 'education',      'name' => '에듀케이션',            'url' => '/kor/html/resource/education.html'],
-            ['key' => 'publication',    'name' => '퍼블리케이션',          'url' => '/kor/html/resource/publication.html'],
-            ['key' => 'events',         'name' => '이벤트',              'url' => '/kor/html/resource/events.html'],
-            ['key' => 'deep_gen',       'name' => 'Deep Generative Design', 'url' => '/kor/html/solution/deepGenerativeDesign.html'],
-            ['key' => 'evaluation',     'name' => 'Evaluation',          'url' => '/kor/html/solution/evaluation.html'],
-            ['key' => 'generation',     'name' => 'Generation',          'url' => '/kor/html/solution/generation.html'],
-            ['key' => 'optimization',   'name' => 'Optimization',        'url' => '/kor/html/solution/optimization.html'],
-            ['key' => 'recommendation', 'name' => 'Recommendation',      'url' => '/kor/html/solution/recommendation.html'],
-            ['key' => 'global',         'name' => '전역 설정 (공통 스크립트)', 'url' => 'ALL PAGES'],
+            ['key' => 'global',         'name' => 'Global Settings',         'url' => 'ALL PAGES'],
+            ['key' => 'home',           'name' => 'Main',                    'url' => '/'],
+            ['key' => 'about',          'name' => 'About',                   'url' => '/kor/html/company/about.html'],
+            ['key' => 'news',           'name' => 'News',                    'url' => '/kor/html/company/news.html'],
+            ['key' => 'team',           'name' => 'Team',                    'url' => '/kor/html/company/team.html'],
+            ['key' => 'aslanx',         'name' => 'AslanX',                  'url' => '/kor/html/aslanX/aslanX.html'],
+            ['key' => 'case_studies',   'name' => 'Case Studies',            'url' => '/kor/html/resource/caseStudies.html'],
+            ['key' => 'education',      'name' => 'Education',               'url' => '/kor/html/resource/education.html'],
+            ['key' => 'publication',    'name' => 'Publication',             'url' => '/kor/html/resource/publication.html'],
+            ['key' => 'events',         'name' => 'Events',                  'url' => '/kor/html/resource/events.html'],
+            ['key' => 'deep_gen',       'name' => 'Deep Generative Design',  'url' => '/kor/html/solution/deepGenerativeDesign.html'],
+            ['key' => 'evaluation',     'name' => 'Evaluation',              'url' => '/kor/html/solution/evaluation.html'],
+            ['key' => 'generation',     'name' => 'Generation',              'url' => '/kor/html/solution/generation.html'],
+            ['key' => 'optimization',   'name' => 'Optimization',            'url' => '/kor/html/solution/optimization.html'],
+            ['key' => 'recommendation', 'name' => 'Recommendation',          'url' => '/kor/html/solution/recommendation.html'],
+            ['key' => 'tech_blog',      'name' => 'Tech Blog',               'url' => '/kor/html/resource/techBlog.html'],
+            ['key' => 'contact',        'name' => 'Contact Us',              'url' => '/kor/html/contact/contactUs.html'],
         ];
     }
 

@@ -33,11 +33,11 @@
                         <div class="field-value"><input type="text" name="title" value="{{ old('title') }}" placeholder="케이스스터디 제목" required></div>
                     </div>
                     <div class="field-row">
-                        <div class="field-label">Title (English)</div>
+                        <div class="field-label">제목 (EN)</div>
                         <div class="field-value"><input type="text" name="title_en" value="{{ old('title_en') }}" placeholder="Title in English"></div>
                     </div>
                     <div class="field-row">
-                        <div class="field-label">제목 (일문)</div>
+                        <div class="field-label">제목 (JP)</div>
                         <div class="field-value"><input type="text" name="title_jp" value="{{ old('title_jp') }}" placeholder="Title in Japanese"></div>
                     </div>
                     <div class="field-row">
@@ -73,7 +73,7 @@
                         </label>
                     </div>
                     <div class="field-row">
-                        <div class="field-label">게시 공개<br><span style="font-size:11px;color:#999;font-weight:400;">OFF 시 프론트 숨김</span></div>
+                        <div class="field-label">게시 공개</div>
                         <label class="img-toggle-wrap" for="is_published">
                             <input type="checkbox" id="is_published" name="is_published" value="1" checked>
                             <span class="img-toggle-btn"></span>
@@ -86,13 +86,13 @@
                         </div>
                     </div>
                     <div class="field-row align-top">
-                        <div class="field-label">Description (English)</div>
+                        <div class="field-label">설명 (EN)</div>
                         <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
                             <textarea name="description_en" rows="4" placeholder="Description in English">{{ old('description_en') }}</textarea>
                         </div>
                     </div>
                     <div class="field-row align-top">
-                        <div class="field-label">설명 (일문)</div>
+                        <div class="field-label">설명 (JP)</div>
                         <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
                             <textarea name="description_jp" rows="4" placeholder="Description in Japanese">{{ old('description_jp') }}</textarea>
                         </div>

@@ -79,14 +79,6 @@
                 <div id="editor" style="min-height:400px;"></div>
                 <textarea name="description" id="description-hidden" style="display:none;">{{ old('description', $techBlog->description) }}</textarea>
             </div>
-                    <div class="field-row">
-                        <div class="field-label">Description (EN)<br><span style="font-size:11px;color:#999;font-weight:400;">English</span></div>
-                        <div class="field-value"><textarea name="description_en" rows="3" placeholder="Description in English">{{ old('description_en', $techBlog->description_en ?? '') }}</textarea></div>
-                    </div>
-                    <div class="field-row">
-                        <div class="field-label">Description (JP)<br><span style="font-size:11px;color:#999;font-weight:400;">Japanese</span></div>
-                        <div class="field-value"><textarea name="description_jp" rows="3" placeholder="Description in Japanese">{{ old('description_jp', $techBlog->description_jp ?? '') }}</textarea></div>
-                    </div>
 
             <div class="img-form-actions" style="justify-content:space-between;">
                 <div class="img-form-actions-left">

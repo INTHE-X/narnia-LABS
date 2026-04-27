@@ -83,24 +83,6 @@
                             <span class="img-toggle-btn"></span>
                         </label>
                     </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">내용/요약</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="content" rows="4">{{ old('content', $newsItem->content) }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">Content (English)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="content_en" rows="4" placeholder="Content in English">{{ old('content_en', $newsItem->content_en ?? '') }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">내용 (일문)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="content_jp" rows="4" placeholder="Content in Japanese">{{ old('content_jp', $newsItem->content_jp ?? '') }}</textarea>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="img-form-actions">

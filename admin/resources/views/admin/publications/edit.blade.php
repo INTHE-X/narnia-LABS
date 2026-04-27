@@ -19,10 +19,14 @@
                     <div class="field-label">제목 *</div>
                     <div class="field-value"><input type="text" name="title" value="{{ old('title', $publication->title) }}" required></div>
                 </div>
-                    <div class="field-row">
-                        <div class="field-label">Title (English)</div>
-                        <div class="field-value"><input type="text" name="title_en" value="{{ old('title_en', $publication->title_en ?? '') }}" placeholder="Title in English"></div>
-                    </div>
+                <div class="field-row">
+                    <div class="field-label">제목 (EN)</div>
+                    <div class="field-value"><input type="text" name="title_en" value="{{ old('title_en', $publication->title_en ?? '') }}" placeholder="Title in English"></div>
+                </div>
+                <div class="field-row">
+                    <div class="field-label">제목 (JP)</div>
+                    <div class="field-value"><input type="text" name="title_jp" value="{{ old('title_jp', $publication->title_jp ?? '') }}" placeholder="Title in Japanese"></div>
+                </div>
                 <div class="field-row">
                     <div class="field-label">카테고리 *</div>
                     <div class="field-value">
@@ -39,27 +43,33 @@
                 </div>
                 <div class="field-row">
                     <div class="field-label">외부 링크 URL</div>
-                    <div class="field-value"><input type="url" name="link" value="{{ old('link', $publication->link) }}" placeholder="https://..."></div>
+                    <div class="field-value"><input type="text" name="link" value="{{ old('link', $publication->link) }}" placeholder="https://..."></div>
                 </div>
                 <div class="field-row">
                     <div class="field-label">정렬 순서</div>
                     <div class="field-value"><input type="number" name="sort_order" value="{{ old('sort_order', $publication->sort_order) }}" min="0" style="max-width:120px;"></div>
                 </div>
+                <div class="field-row">
+                    <div class="field-label">출처</div>
+                    <div class="field-value"><input type="text" name="source" value="{{ old('source', $publication->source) }}" placeholder="출처 (예: Journal of Mechanical Design)"></div>
+                </div>
                 <div class="field-row align-top">
-                    <div class="field-label">초록 / 설명</div>
+                    <div class="field-label">설명</div>
                     <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
                         <textarea name="description" rows="6">{{ old('description', $publication->description) }}</textarea>
                     </div>
                 </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">Description (English)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_en" rows="4" placeholder="Description in English">{{ old('description_en', $publication->description_en ?? '') }}</textarea>
-                        </div>
+                <div class="field-row align-top">
+                    <div class="field-label">설명 (EN)</div>
+                    <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
+                        <textarea name="description_en" rows="6" placeholder="Description in English">{{ old('description_en', $publication->description_en ?? '') }}</textarea>
                     </div>
-                <div class="field-row">
-                    <div class="field-label">출처</div>
-                    <div class="field-value"><input type="text" name="source" value="{{ old('source', $publication->source) }}" placeholder="출처 (예: Journal of Mechanical Design)"></div>
+                </div>
+                <div class="field-row align-top">
+                    <div class="field-label">설명 (JP)</div>
+                    <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
+                        <textarea name="description_jp" rows="6" placeholder="Description in Japanese">{{ old('description_jp', $publication->description_jp ?? '') }}</textarea>
+                    </div>
                 </div>
             </div>
             <div class="img-form-actions">

@@ -105,7 +105,7 @@
         // サムネイル
 
         // 本文: エディタHTML直接レンダリング (サムネイル イメージ 重複削除)
-        var body = post.description || '<p style="color:#999;">内容がありません。</p>';
+        var body = post.description || '';
         if (post.thumbnail) {
             try {
                 var parser = new DOMParser();

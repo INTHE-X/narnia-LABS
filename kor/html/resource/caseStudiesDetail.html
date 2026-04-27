@@ -119,7 +119,7 @@
         }
 
         // 본문: 에디터 HTML 직접 렌더링
-        var body = post.description || '<p style="color:#999;">내용이 없습니다.</p>';
+        var body = post.description || '';
         document.getElementById('csp_body_text').innerHTML = body;
 
         // 공유 버튼

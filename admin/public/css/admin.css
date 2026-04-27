@@ -331,7 +331,7 @@ ul, ol {
     color: var(--sidebar-text-hover);
     background: var(--sidebar-active-bg);
     border-left-color: var(--white);
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .nav-link svg {
@@ -378,6 +378,7 @@ ul, ol {
     background: rgba(255,255,255,0.08);
     border-left: none;
     color: var(--white);
+    font-weight: 700;
 }
 
 /* 사이드바 하단 */
@@ -1006,24 +1007,24 @@ ul, ol {
 
 .btn-logout {
     background: none;
-    border: none;
+    border: 1px solid rgba(255,255,255,0.25);
     cursor: pointer;
-    color: var(--gray-500);
-    display: flex;
+    color: var(--sidebar-text);
+    display: inline-flex;
     align-items: center;
-    padding: 4px;
+    padding: 5px 10px;
     border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
     transition: var(--transition);
+    white-space: nowrap;
 }
 
 .btn-logout:hover {
     color: var(--white);
+    border-color: rgba(255,255,255,0.6);
     background: rgba(255,255,255,0.08);
-}
-
-.btn-logout svg {
-    width: 14px;
-    height: 14px;
 }
 
 /* ============================================================

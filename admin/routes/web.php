@@ -62,6 +62,75 @@ Route::get('/run-seo-autofill', function() {
     return "SEO 전용 데이터 자동 채우기 완료!";
 });
 
+// SEO 전체 100점 업데이트 (임시)
+Route::get('/admin/run-seo-full-update', function() {
+    require base_path('seo_full_update.php');
+    return "완료";
+});
+
+// teams 테이블 마이그레이션 실행 (임시)
+Route::get('/admin/run-migrate-teams', function() {
+    try {
+        Artisan::call('migrate', ['--force' => true, '--path' => 'database/migrations/2026_04_27_222101_add_description_en_jp_to_teams_table.php']);
+        return '✅ 마이그레이션 완료: ' . Artisan::output();
+    } catch (\Exception $e) {
+        return '⚠️ ' . $e->getMessage();
+    }
+});
+
+// 에러 로그 확인 (임시)
+Route::get('/admin/show-log', function() {
+    $log = storage_path('logs/laravel.log');
+    if (!file_exists($log)) return '로그 없음';
+    $lines = array_slice(file($log), -80);
+    return '<pre style="font-size:12px;white-space:pre-wrap;">' . htmlspecialchars(implode('', $lines)) . '</pre>';
+});
+
+// news 다국어 컬럼 마이그레이션 (임시)
+Route::get('/admin/run-migrate-news', function() {
+    try {
+        // 이미 실행된 경우 기록 삭제 후 재실행
+        \DB::table('migrations')->where('migration', '2026_04_27_223829_add_multilang_to_news_table')->delete();
+        Artisan::call('migrate', ['--force' => true, '--path' => 'database/migrations/2026_04_27_223829_add_multilang_to_news_table.php']);
+        return '✅ ' . Artisan::output();
+    } catch (\Exception $e) {
+        return '⚠️ ' . $e->getMessage();
+    }
+});
+
+// tech_blogs 다국어 컬럼 마이그레이션 (임시)
+Route::get('/admin/run-migrate-tech-blogs', function() {
+    try {
+        \DB::table('migrations')->where('migration', '2026_04_27_224813_add_multilang_to_tech_blogs_table')->delete();
+        Artisan::call('migrate', ['--force' => true, '--path' => 'database/migrations/2026_04_27_224813_add_multilang_to_tech_blogs_table.php']);
+        return '✅ ' . Artisan::output();
+    } catch (\Exception $e) {
+        return '⚠️ ' . $e->getMessage();
+    }
+});
+
+// publications 다국어 컬럼 마이그레이션 (임시)
+Route::get('/admin/run-migrate-publications', function() {
+    try {
+        \DB::table('migrations')->where('migration', '2026_04_27_225151_add_multilang_to_publications_table')->delete();
+        Artisan::call('migrate', ['--force' => true, '--path' => 'database/migrations/2026_04_27_225151_add_multilang_to_publications_table.php']);
+        return '✅ ' . Artisan::output();
+    } catch (\Exception $e) {
+        return '⚠️ ' . $e->getMessage();
+    }
+});
+
+// case_studies 다국어 컬럼 마이그레이션 (임시)
+Route::get('/admin/run-migrate-case-studies', function() {
+    try {
+        \DB::table('migrations')->where('migration', '2026_04_27_225803_add_multilang_to_case_studies_table')->delete();
+        Artisan::call('migrate', ['--force' => true, '--path' => 'database/migrations/2026_04_27_225803_add_multilang_to_case_studies_table.php']);
+        return '✅ ' . Artisan::output();
+    } catch (\Exception $e) {
+        return '⚠️ ' . $e->getMessage();
+    }
+});
+
 // ── Public API (인증 불필요) ──────────────────────────────
 Route::get('/admin/api/events', [EventController::class, 'apiIndex']);
 Route::get('/admin/api/case-studies', [CaseStudyController::class, 'apiIndex']);

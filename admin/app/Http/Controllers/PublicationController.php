@@ -30,7 +30,7 @@ class PublicationController extends Controller
             'title_jp'       => 'nullable|string|max:500',
             'description_jp' => 'nullable|string',
             'source'      => 'nullable|string|max:500',
-            'link'        => 'nullable|url|max:500',
+            'link'        => 'nullable|string|max:500',
             'sort_order'  => 'nullable|integer',
         ]);
 
@@ -60,7 +60,7 @@ class PublicationController extends Controller
             'title_jp'       => 'nullable|string|max:500',
             'description_jp' => 'nullable|string',
             'source'      => 'nullable|string|max:500',
-            'link'        => 'nullable|url|max:500',
+            'link'        => 'nullable|string|max:500',
             'sort_order'  => 'nullable|integer',
         ]);
 

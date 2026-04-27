@@ -278,7 +278,7 @@
                         var isActive = index === 0 ? 'active' : '';
                         var num = index + 1;
                         var title = item.title;
-                        var description = item.description ? item.description.replace(/\n/g, '<br>') : '';
+                        var description = (item.description_jp || item.description || '').replace(/\n/g, '<br>');
                         var category = item.category || '';
                         var imageUrl = item.image_url || '../../../assets/img/sub/team_dep_01.png';
                         

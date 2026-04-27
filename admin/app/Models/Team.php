@@ -13,6 +13,8 @@ class Team extends Model
         'title',
         'category',
         'description',
+        'description_en',
+        'description_jp',
         'image_path',
         'sort_order',
     ];

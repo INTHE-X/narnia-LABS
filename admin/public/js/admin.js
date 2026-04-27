@@ -40,22 +40,34 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // 현재 URL 기준 활성 메뉴 자동 설정
-    const currentPath = window.location.pathname;
+    const currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
     const allLinks = document.querySelectorAll('.nav-link[href]');
 
+    let bestMatch = null;
+    let bestMatchLen = 0;
+
     allLinks.forEach(link => {
-        if (link.getAttribute('href') && currentPath.startsWith(link.getAttribute('href'))) {
-            link.classList.add('active');
-            // 하위 메뉴인 경우 부모도 열기 (sessionStorage도 동기화)
-            const parentItem = link.closest('.nav-submenu')?.closest('.nav-item');
-            if (parentItem) {
-                parentItem.classList.add('open');
-                if (parentItem.dataset.menuKey) {
-                    sessionStorage.setItem(parentItem.dataset.menuKey, 'open');
-                }
+        const href = link.getAttribute('href')?.replace(/\/+$/, '') || '';
+        if (!href || href === '#') return;
+
+        if (currentPath === href || currentPath.startsWith(href + '/')) {
+            if (href.length > bestMatchLen) {
+                bestMatchLen = href.length;
+                bestMatch = link;
             }
         }
     });
+
+    if (bestMatch) {
+        bestMatch.classList.add('active');
+        const parentItem = bestMatch.closest('.nav-submenu')?.closest('.nav-item');
+        if (parentItem) {
+            parentItem.classList.add('open');
+            if (parentItem.dataset.menuKey) {
+                sessionStorage.setItem(parentItem.dataset.menuKey, 'open');
+            }
+        }
+    }
 
 
     // ============================================================

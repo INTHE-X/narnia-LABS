@@ -81,14 +81,6 @@
                     <button type="button" class="btn btn-primary" onclick="submitForm()">등록하기</button>
                     <a href="{{ route('tech-blogs.index') }}" class="btn btn-secondary">취소</a>
                 </div>
-                    <div class="field-row">
-                        <div class="field-label">Description (EN)<br><span style="font-size:11px;color:#999;font-weight:400;">English</span></div>
-                        <div class="field-value"><textarea name="description_en" rows="3" placeholder="Description in English">{{ old('description_en') }}</textarea></div>
-                    </div>
-                    <div class="field-row">
-                        <div class="field-label">Description (JP)<br><span style="font-size:11px;color:#999;font-weight:400;">Japanese</span></div>
-                        <div class="field-value"><textarea name="description_jp" rows="3" placeholder="Description in Japanese">{{ old('description_jp') }}</textarea></div>
-                    </div>
             </div>
         </form>
     </div>

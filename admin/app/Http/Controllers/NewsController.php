@@ -25,17 +25,15 @@ class NewsController extends Controller
             'title'        => 'required|string|max:500',
             'source'       => 'nullable|string|max:300',
             'category'     => 'nullable|string|max:100',
-            'content'      => 'nullable|string',
-            'title_en'    => 'nullable|string|max:500',
-            'content_en'  => 'nullable|string',
-            'title_jp'    => 'nullable|string|max:500',
-            'content_jp'  => 'nullable|string',
+            'title_en'     => 'nullable|string|max:500',
+            'title_jp'     => 'nullable|string|max:500',
             'image'        => 'nullable|image|max:5120',
-            'link'         => 'nullable|url|max:500',
+            'link'         => 'nullable|string|max:500',
             'is_featured'  => 'nullable|boolean',
             'published_at' => 'nullable|date',
             'sort_order'   => 'nullable|integer',
         ]);
+
 
         if ($request->hasFile('image')) {
             $uploadDir = public_path('uploads/news');
@@ -67,17 +65,15 @@ class NewsController extends Controller
             'title'        => 'required|string|max:500',
             'source'       => 'nullable|string|max:300',
             'category'     => 'nullable|string|max:100',
-            'content'      => 'nullable|string',
-            'title_en'    => 'nullable|string|max:500',
-            'content_en'  => 'nullable|string',
-            'title_jp'    => 'nullable|string|max:500',
-            'content_jp'  => 'nullable|string',
+            'title_en'     => 'nullable|string|max:500',
+            'title_jp'     => 'nullable|string|max:500',
             'image'        => 'nullable|image|max:5120',
-            'link'         => 'nullable|url|max:500',
+            'link'         => 'nullable|string|max:500',
             'is_featured'  => 'nullable|boolean',
             'published_at' => 'nullable|date',
             'sort_order'   => 'nullable|integer',
         ]);
+
 
         if ($request->hasFile('image')) {
             if ($newsItem->image_path) {

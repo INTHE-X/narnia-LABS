@@ -105,7 +105,7 @@
         // 썸네일
 
         // 본문: 에디터 HTML 직접 렌더링 (썸네일 이미지 중복 제거)
-        var body = post.description || '<p style="color:#999;">내용이 없습니다.</p>';
+        var body = post.description || '';
         if (post.thumbnail) {
             try {
                 var parser = new DOMParser();
