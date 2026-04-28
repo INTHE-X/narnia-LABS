@@ -31,12 +31,17 @@ class EventController extends Controller
             'title_jp'       => 'nullable|string|max:500',
             'description_jp' => 'nullable|string',
             'start_date'  => 'required|date',
-            'end_date'    => 'required|date|after_or_equal:start_date',
+            'end_date'    => 'nullable|date|after_or_equal:start_date',
             'image'       => 'nullable|image|max:5120',
-            'link'        => 'nullable|url|max:500',
+            'link'        => 'nullable|string|max:500',
             'is_featured' => 'nullable|boolean',
             'sort_order'  => 'nullable|integer',
         ]);
+
+        // end_date 미입력 시 start_date와 동일하게 처리
+        if (empty($data['end_date'])) {
+            $data['end_date'] = $data['start_date'];
+        }
 
         if ($request->hasFile('image')) {
             $uploadDir = public_path('uploads/events');
@@ -73,12 +78,17 @@ class EventController extends Controller
             'title_jp'       => 'nullable|string|max:500',
             'description_jp' => 'nullable|string',
             'start_date'  => 'required|date',
-            'end_date'    => 'required|date|after_or_equal:start_date',
+            'end_date'    => 'nullable|date|after_or_equal:start_date',
             'image'       => 'nullable|image|max:5120',
-            'link'        => 'nullable|url|max:500',
+            'link'        => 'nullable|string|max:500',
             'is_featured' => 'nullable|boolean',
             'sort_order'  => 'nullable|integer',
         ]);
+
+        // end_date 미입력 시 start_date와 동일하게 처리
+        if (empty($data['end_date'])) {
+            $data['end_date'] = $data['start_date'];
+        }
 
         if ($request->hasFile('image')) {
             // 기존 이미지 삭제

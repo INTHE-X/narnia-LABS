@@ -139,6 +139,13 @@
     var shown = 0;
     var currentFilter = 'all';
 
+    function stripHtml(html) {
+        if (!html) return '';
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || '';
+    }
+
     function formatDate(str) {
         if (!str) return '';
         // published_date: YYYY-MM-DD or ISO string
@@ -155,7 +162,7 @@
         if (!item) { document.getElementById('hero_area').style.display = 'none'; return; }
         document.getElementById('hero_cate').textContent = item.category ? '#' + item.category : '';
         document.getElementById('hero_tit').textContent = item.title || '';
-        document.getElementById('hero_desc').textContent = item.description ? item.description.substring(0, 100) + '...' : '';
+        document.getElementById('hero_desc').textContent = item.description ? stripHtml(item.description).substring(0, 100) + '...' : '';
         var link = document.getElementById('hero_link');
         link.href = postUrl(item);
         if (item.thumbnail) {

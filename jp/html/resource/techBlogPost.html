@@ -95,10 +95,10 @@
     }
 
     function render(post) {
-        document.title = (post.title || 'TECH BLOG') + ' | NARNIA LABS';
+        document.title = (post.title_jp || post.title || 'TECH BLOG') + ' | NARNIA LABS';
 
         document.getElementById('post_cate').textContent = post.category || '';
-        document.getElementById('post_tit').textContent = post.title || '';
+        document.getElementById('post_tit').textContent = post.title_jp || post.title || '';
         document.getElementById('post_author').textContent = post.author || '';
         document.getElementById('post_date').textContent = formatDate(post.published_date);
 

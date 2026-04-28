@@ -20,7 +20,7 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>순서</th>
+                        <th style="text-align:center;width:60px;">순서</th>
                         <th>메뉴명</th>
                         <th>링크 URL</th>
                         <th>새 탭</th>
@@ -31,7 +31,7 @@
                 <tbody>
                     @forelse($menus as $menu)
                     <tr data-href="{{ route('resource-menus.edit', $menu->id) }}" style="cursor:pointer;">
-                        <td style="color:#999;">{{ $menu->sort_order }}</td>
+                        <td style="text-align:center;color:#999;">{{ $menu->sort_order }}</td>
                         <td style="font-weight:600;">{{ $menu->title }}</td>
                         <td style="color:#0066cc;font-size:12px;max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
                             <a href="{{ $menu->url }}" target="_blank" onclick="event.stopPropagation();" style="color:#0066cc;">{{ $menu->url }}</a>

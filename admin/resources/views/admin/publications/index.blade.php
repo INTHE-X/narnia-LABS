@@ -17,13 +17,13 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>번호</th><th>제목</th><th>저자</th><th>카테고리</th>
+                        <th style="text-align:center;width:60px;">번호</th><th>제목</th><th>저자</th><th>카테고리</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($publications as $item)
                     <tr data-href="{{ route('publications.edit', $item->id) }}" style="cursor:pointer;">
-                        <td>{{ $item->id }}</td>
+                        <td style="text-align:center;">{{ $item->id }}</td>
                         <td style="max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $item->title }}</td>
                         <td style="color:#888;">{{ $item->author }}</td>
                         <td>{{ $item->category }}</td>

@@ -184,7 +184,7 @@
             mainW.innerHTML += '<div class="swiper-slide"><img src="' + imgSrc(ev) + '" alt=""></div>';
             infoW.innerHTML += '<div class="swiper-slide"><div class="ev_info_inner">'
                 + '<span class="ev_tag"># ' + ev.category + '</span>'
-                + '<h3 class="ev_info_tit">' + ev.title + '</h3>'
+                + '<h3 class="ev_info_tit">' + (ev.title_jp || ev.title) + '</h3>'
                 + '<p class="ev_info_date">' + ev.start_date + '</p>'
                 + (ev.link ? '<a href="' + ev.link + '" class="ev_info_link" target="_blank"><span>[</span><em>製品のお問い合わせ</em><i><img src="' + ARROW_IMG + '" alt=""></i><span>]</span></a>' : '')
                 + '</div></div>';
@@ -216,7 +216,7 @@
                 + '<div class="img"><figure><img src="' + imgSrc(ev) + '" alt="#"></figure></div>'
                 + '<div class="txt">'
                 + '<span class="cate"># ' + ev.category + '</span>'
-                + '<h3 class="tit">' + ev.title + '</h3>'
+                + '<h3 class="tit">' + (ev.title_jp || ev.title) + '</h3>'
                 + '<span class="date">' + ev.start_date + '</span>'
                 + '</div></div></a></li>';
         }).join('');

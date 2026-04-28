@@ -139,6 +139,13 @@
     var shown = 0;
     var currentFilter = 'all';
 
+    function stripHtml(html) {
+        if (!html) return '';
+        var tmp = document.createElement('div');
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || '';
+    }
+
     function formatDate(str) {
         if (!str) return '';
         // published_date: YYYY-MM-DD or ISO string
@@ -154,8 +161,8 @@
     function renderHero(item) {
         if (!item) { document.getElementById('hero_area').style.display = 'none'; return; }
         document.getElementById('hero_cate').textContent = item.category ? '#' + item.category : '';
-        document.getElementById('hero_tit').textContent = item.title || '';
-        document.getElementById('hero_desc').textContent = item.description ? item.description.substring(0, 100) + '...' : '';
+        document.getElementById('hero_tit').textContent = item.title_jp || item.title || '';
+        document.getElementById('hero_desc').textContent = item.description ? stripHtml(item.description).substring(0, 100) + '...' : '';
         var link = document.getElementById('hero_link');
         link.href = postUrl(item);
         if (item.thumbnail) {
@@ -177,7 +184,7 @@
                         '<span class="cate">' + cate + '</span>' +
                         (date ? '<span class="date">' + date + '</span>' : '') +
                     '</div>' +
-                    '<h4 class="tit">' + (item.title || '') + '</h4>' +
+                    '<h4 class="tit">' + (item.title_jp || item.title || '') + '</h4>' +
                 '</div>' +
             '</a>' +
         '</li>';
@@ -187,7 +194,7 @@
         var keyword = (document.getElementById('tba_search_input').value || '').trim().toLowerCase();
         filtered = allItems.filter(function(item) {
             var matchCat = currentFilter === 'all' || (item.category || '').toLowerCase() === currentFilter.toLowerCase();
-            var matchKey = !keyword || (item.title || '').toLowerCase().includes(keyword) || (item.description || '').toLowerCase().includes(keyword);
+            var matchKey = !keyword || (item.title_jp || item.title || '').toLowerCase().includes(keyword) || (item.description_jp || item.description || '').toLowerCase().includes(keyword);
             return matchCat && matchKey;
         });
         shown = 0;

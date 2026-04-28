@@ -146,8 +146,12 @@ class TechBlogController extends Controller
         $items = $query->get()->map(fn($b) => [
             'id'             => $b->id,
             'title'          => $b->title,
+            'title_en'       => $b->title_en,
+            'title_jp'       => $b->title_jp,
             'category'       => $b->category,
             'description'    => $b->description,
+            'description_en' => $b->description_en,
+            'description_jp' => $b->description_jp,
             'thumbnail'      => $b->image_url,
             'published_date' => $b->published_date,
         ]);

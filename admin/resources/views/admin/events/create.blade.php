@@ -42,8 +42,12 @@
                         </div>
                     </div>
                     <div class="field-row">
-                        <div class="field-label">Title (English)</div>
+                        <div class="field-label">제목 (EN)</div>
                         <div class="field-value"><input type="text" name="title_en" value="{{ old('title_en') }}" placeholder="Title in English"></div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-label">제목 (JP)</div>
+                        <div class="field-value"><input type="text" name="title_jp" value="{{ old('title_jp') }}" placeholder="日本語タイトル"></div>
                     </div>
                     <div class="stacked-form-row">
                         <div class="stacked-field">
@@ -72,26 +76,16 @@
                             <span class="stacked-label">정렬 순서</span>
                             <input type="number" name="sort_order" value="{{ old('sort_order', 0) }}" min="0">
                         </div>
-                        <div class="stacked-field">
+                    </div>
+                    <div class="stacked-form-row">
+                        <div class="stacked-field" style="grid-column:1/-1;">
                             <span class="stacked-label">슬라이드 노출</span>
-                            <div class="stacked-toggle">
+                            <div class="stacked-toggle" style="text-align:left;">
                                 <label class="img-toggle-wrap" for="is_featured">
                                     <input type="checkbox" id="is_featured" name="is_featured" value="1" {{ old('is_featured') ? 'checked' : '' }}>
                                     <span class="img-toggle-btn"></span>
                                 </label>
                             </div>
-                        </div>
-                    </div>
-                    <div class="stacked-form-row full">
-                        <div class="stacked-field">
-                            <span class="stacked-label">설명</span>
-                            <textarea name="description" rows="4" placeholder="이벤트 설명을 입력하세요">{{ old('description') }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">Description (English)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_en" rows="4" placeholder="Description in English">{{ old('description_en') }}</textarea>
                         </div>
                     </div>
                 </div>

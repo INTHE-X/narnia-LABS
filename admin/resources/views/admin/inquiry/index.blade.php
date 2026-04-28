@@ -12,13 +12,13 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>번호</th><th>회사명</th><th>담당자</th><th>이메일</th><th>문의 내용</th><th>접수일</th>
+                        <th style="text-align:center;width:60px;">번호</th><th>회사명</th><th>담당자</th><th>이메일</th><th>문의 내용</th><th>접수일</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($inquiries as $inquiry)
                     <tr data-href="{{ route('inquiry.show', $inquiry->id) }}" style="cursor:pointer;">
-                        <td>{{ $inquiry->id }}</td>
+                        <td style="text-align:center;">{{ $inquiry->id }}</td>
                         <td>{{ $inquiry->company }}</td>
                         <td>{{ $inquiry->name }}</td>
                         <td>{{ $inquiry->email }}</td>

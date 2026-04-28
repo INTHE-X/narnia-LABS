@@ -68,6 +68,7 @@
         .edd_img.is-youtube .edd-play-btn { display: flex; }
         .edd_img.is-youtube:hover .edd-play-btn { background: rgba(200,0,0,1); transform: translate(-50%,-50%) scale(1.1); }
         .edd-play-btn svg { margin-left: 5px; }
+        .edd_img.is-youtube figure { cursor: pointer; }
         .edd-yt-frame {
             width: 100%; aspect-ratio: 16/9;
             border: none; border-radius: 8px;
@@ -282,9 +283,9 @@
                     link.rel = 'noopener';
                 }
                 if (category) category.textContent = item.category || 'Education';
-                if (title) title.textContent = item.title || '';
+                if (title) title.textContent = item.title_jp || item.title || '';
                 if (date)  date.textContent  = item.date  || '';
-                document.title = 'NARNIA LABS - ' + (item.title || 'EDUCATION');
+                document.title = 'NARNIA LABS - ' + (item.title_jp || item.title || 'EDUCATION');
 
                 // 스켈레톤 削除 & コンテンツ表示
                 if (skeleton) skeleton.style.display = 'none';
@@ -386,10 +387,22 @@
         if (errorMsg) errorMsg.style.display = 'none';
     }
 
-    function getYoutubeId(url) {
+    function getYoutubeEmbed(url) {
         if (!url) return null;
-        var m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|v\/))([\w-]{11})/);
-        return m ? m[1] : null;
+        if (!/youtube\.com|youtu\.be/.test(url)) return null;
+        var embedBase = 'https://www.youtube.com/embed/';
+        var params = '?autoplay=1&rel=0&modestbranding=1';
+        var listMatch = url.match(/[?&]list=([\w-]+)/);
+        if (url.indexOf('youtube.com/playlist') !== -1 && listMatch) {
+            return embedBase + 'videoseries?list=' + listMatch[1] + '&autoplay=1&rel=0&modestbranding=1';
+        }
+        var vidMatch = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|v\/))([\w-]{11})/);
+        if (vidMatch) {
+            var ep = embedBase + vidMatch[1] + params;
+            if (listMatch) ep += '&list=' + listMatch[1];
+            return ep;
+        }
+        return null;
     }
 })();
 </script>

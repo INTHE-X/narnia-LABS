@@ -99,7 +99,7 @@
                 + '<a href="javascript:void(0)">'
                 + '<div class="pbap_bullet_inner">'
                 + '<span class="cate">[ ' + item.category + ' ]</span>'
-                + '<strong class="tit">' + item.title + '</strong>'
+                + '<strong class="tit">' + (item.title_jp || item.title) + '</strong>'
                 + '<p class="author">' + (item.author || '') + '</p>'
                 + '</div></a></li>';
         }).join('');
@@ -122,9 +122,9 @@
                 + '<div class="pb_slide_inner">'
                 + '<span class="cate">' + item.category + '</span>'
                 + '<div class="txt">'
-                + '<h3>' + item.title + '</h3>'
+                + '<h3>' + (item.title_jp || item.title) + '</h3>'
                 + '<span class="author">' + (item.author || '') + '</span>'
-                + (item.description ? '<p class="desc">' + item.description + '</p>' : '')
+                + ((item.description_jp || item.description) ? '<p class="desc">' + (item.description_jp || item.description) + '</p>' : '')
                 + (item.source ? '<p class="source">' + item.source + '</p>' : '')
                 + '</div>'
                 + '<div class="link"><a href="' + (item.link || '#') + '"' + (item.link ? ' target="_blank"' : '') + '>'

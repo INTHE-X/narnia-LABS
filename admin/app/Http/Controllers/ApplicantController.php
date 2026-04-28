@@ -51,4 +51,16 @@ class ApplicantController extends Controller
         return redirect()->back()
             ->with('success', '신청자가 삭제되었습니다.');
     }
+
+    /**
+     * 선택 삭제 (bulk delete)
+     */
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (!empty($ids)) {
+            EducationApplicant::whereIn('id', $ids)->delete();
+        }
+        return redirect()->back()->with('success', count($ids) . '명의 신청자가 삭제되었습니다.');
+    }
 }

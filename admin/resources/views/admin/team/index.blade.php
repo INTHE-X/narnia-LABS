@@ -18,7 +18,7 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>번호</th>
+                        <th style="text-align:center;width:60px;">번호</th>
                         <th>이미지</th>
                         <th>제목</th>
                         <th>카테고리</th>
@@ -27,7 +27,7 @@
                 <tbody>
                     @forelse ($teams as $team)
                     <tr data-href="{{ route('team.edit', $team->id) }}" style="cursor:pointer;">
-                        <td>{{ $team->id }}</td>
+                        <td style="text-align:center;">{{ $team->id }}</td>
                         <td>
                             @if($team->image_url)
                                 <img src="{{ $team->image_url }}"

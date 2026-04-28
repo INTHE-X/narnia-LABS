@@ -131,6 +131,28 @@ Route::get('/admin/run-migrate-case-studies', function() {
     }
 });
 
+// educations 다국어 컬럼 마이그레이션 (임시)
+Route::get('/admin/run-migrate-educations', function() {
+    try {
+        \DB::table('migrations')->where('migration', '2026_04_28_025230_add_multilang_to_educations_table')->delete();
+        Artisan::call('migrate', ['--force' => true, '--path' => 'database/migrations/2026_04_28_025230_add_multilang_to_educations_table.php']);
+        return '✅ ' . Artisan::output();
+    } catch (\Exception $e) {
+        return '⚠️ ' . $e->getMessage();
+    }
+});
+
+// events title_jp 컬럼 마이그레이션 (임시)
+Route::get('/admin/run-migrate-events-jp', function() {
+    try {
+        \DB::table('migrations')->where('migration', '2026_04_28_032400_add_title_jp_to_events_table')->delete();
+        Artisan::call('migrate', ['--force' => true, '--path' => 'database/migrations/2026_04_28_032400_add_title_jp_to_events_table.php']);
+        return '✅ ' . Artisan::output();
+    } catch (\Exception $e) {
+        return '⚠️ ' . $e->getMessage();
+    }
+});
+
 // ── Public API (인증 불필요) ──────────────────────────────
 Route::get('/admin/api/events', [EventController::class, 'apiIndex']);
 Route::get('/admin/api/case-studies', [CaseStudyController::class, 'apiIndex']);
@@ -191,6 +213,7 @@ Route::prefix('admin')->group(function () {
         Route::resource('publications', PublicationController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
         Route::resource('tech-blogs', TechBlogController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
         Route::resource('applicants', ApplicantController::class)->only(['index', 'show', 'destroy']);
+        Route::delete('applicants-bulk-delete', [ApplicantController::class, 'bulkDestroy'])->name('applicants.bulkDestroy');
 
         // Resource 헤더 메뉴 관리
         Route::resource('resource-menus', ResourceMenuController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);

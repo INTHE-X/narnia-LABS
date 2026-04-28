@@ -21,7 +21,6 @@
                         <th>제목</th>
                         <th>시작일</th>
                         <th>종료일</th>
-                        <th style="text-align:center;">상태</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,10 +37,9 @@
                         <td>{{ $event->title }}</td>
                         <td>{{ $event->start_date }}</td>
                         <td>{{ $event->end_date }}</td>
-                        <td style="text-align:center;"><span class="badge badge-success">진행중</span></td>
                     </tr>
                     @empty
-                    <tr><td colspan="6"><div class="empty-state"><p>등록된 이벤트가 없습니다.</p></div></td></tr>
+                    <tr><td colspan="5"><div class="empty-state"><p>등록된 이벤트가 없습니다.</p></div></td></tr>
                     @endforelse
                 </tbody>
             </table>

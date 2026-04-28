@@ -62,24 +62,7 @@
                         <div class="field-label">정렬 순서</div>
                         <div class="field-value"><input type="number" name="sort_order" value="{{ old('sort_order', 0) }}" min="0" style="max-width:120px;"></div>
                     </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description" rows="4" placeholder="교육 내용 설명 (국문)">{{ old('description') }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명 (EN)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_en" rows="4" placeholder="Description (English)">{{ old('description_en') }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명 (JP)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_jp" rows="4" placeholder="説明 (日本語)">{{ old('description_jp') }}</textarea>
-                        </div>
-                    </div>
+
 
                     {{-- ── PDF / 자료 첨부 ── --}}
                     <div class="field-row align-top">

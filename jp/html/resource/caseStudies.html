@@ -136,7 +136,7 @@
                 + '<div class="img"><figure><img src="' + imgSrc(item) + '" alt="#"></figure></div>'
                 + '<div class="txt_area">'
                 + '<div class="cate">' + tagsHtml + '</div>'
-                + '<h3 class="tit">' + (item.title_en || item.title) + '</h3>'
+                + '<h3 class="tit">' + (item.title_jp || item.title) + '</h3>'
                 + '<div class="link"><a href="' + (item.link || '#') + '"' + (item.link ? ' target="_blank"' : '') + '>製品のお問い合わせ<i><img src="' + ARROW_IMG + '" alt="#"></i></a></div>'
                 + '</div></div></div>';
         }).join('');
@@ -192,7 +192,7 @@
                 return '<li><a href="caseStudiesDetail.html?id=' + item.id + '">'
                     + '<div class="csdl_inner">'
                     + '<div class="img"><figure><img src="' + imgSrc(item) + '" alt="#"></figure></div>'
-                    + '<div class="desc"><h3>' + (item.title_en || item.title) + '</h3><div class="cate">' + tagsHtml + '</div></div>'
+                    + '<div class="desc"><h3>' + (item.title_jp || item.title) + '</h3><div class="cate">' + tagsHtml + '</div></div>'
                     + '</div></a></li>';
             }).join('');
 

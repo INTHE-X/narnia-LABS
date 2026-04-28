@@ -181,6 +181,36 @@ function updateBulkBtn() {
     var checked = document.querySelectorAll('.row-checkbox:checked').length;
     bulkBtn.disabled = checked === 0;
 }
+
+if (bulkBtn) {
+    bulkBtn.addEventListener('click', function() {
+        var checked = document.querySelectorAll('.row-checkbox:checked');
+        if (checked.length === 0) return;
+        if (!confirm(checked.length + '명의 신청자를 삭제하시겠습니까?')) return;
+
+        var form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '{{ route('applicants.bulkDestroy') }}';
+
+        var csrf = document.createElement('input');
+        csrf.type = 'hidden'; csrf.name = '_token'; csrf.value = '{{ csrf_token() }}';
+        form.appendChild(csrf);
+
+        var method = document.createElement('input');
+        method.type = 'hidden'; method.name = '_method'; method.value = 'DELETE';
+        form.appendChild(method);
+
+        checked.forEach(function(cb) {
+            var input = document.createElement('input');
+            input.type = 'hidden'; input.name = 'ids[]'; input.value = cb.value;
+            form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+    });
+}
+
 </script>
 
 @endsection

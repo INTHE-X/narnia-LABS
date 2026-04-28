@@ -44,8 +44,12 @@
                         <div class="field-value"><input type="text" name="title" value="{{ old('title', $event->title) }}" placeholder="이벤트 제목을 입력하세요" required></div>
                     </div>
                     <div class="field-row">
-                        <div class="field-label">Title (English)</div>
+                        <div class="field-label">제목 (EN)</div>
                         <div class="field-value"><input type="text" name="title_en" value="{{ old('title_en', $event->title_en ?? '') }}" placeholder="Title in English"></div>
+                    </div>
+                    <div class="field-row">
+                        <div class="field-label">제목 (JP)</div>
+                        <div class="field-value"><input type="text" name="title_jp" value="{{ old('title_jp', $event->title_jp ?? '') }}" placeholder="日本語タイトル"></div>
                     </div>
                     <div class="field-row">
                         <div class="field-label">카테고리 *</div>
@@ -79,18 +83,6 @@
                             <input type="checkbox" id="is_featured" name="is_featured" value="1" {{ old('is_featured', $event->is_featured) ? 'checked' : '' }}>
                             <span class="img-toggle-btn"></span>
                         </label>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description" rows="4" placeholder="이벤트 설명을 입력하세요">{{ old('description', $event->description) }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">Description (English)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_en" rows="4" placeholder="Description in English">{{ old('description_en', $event->description_en ?? '') }}</textarea>
-                        </div>
                     </div>
                 </div>
             </div>

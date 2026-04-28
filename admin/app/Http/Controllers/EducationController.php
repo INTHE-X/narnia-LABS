@@ -167,6 +167,8 @@ class EducationController extends Controller
             return [
                 'id'          => $e->id,
                 'title'       => $e->title,
+                'title_en'    => $e->title_en,
+                'title_jp'    => $e->title_jp,
                 'category'    => $e->category,
                 'description' => $e->description,
                 'image_url'   => $e->image_url,
@@ -188,12 +190,14 @@ class EducationController extends Controller
         return response()->json([
             'id'          => $e->id,
             'title'       => $e->title,
+            'title_en'    => $e->title_en,
+            'title_jp'    => $e->title_jp,
             'category'    => $e->category,
             'description' => $e->description,
             'image_url'   => $e->image_url,
             'link'        => $e->link,
             'date'        => $e->formatted_date,
-            'pdf_files'   => $e->pdf_files,   // [['name'=>'파일명.pdf','url'=>'/admin/...'], ...]
+            'pdf_files'   => $e->pdf_files,
         ])->header('Access-Control-Allow-Origin', '*');
     }
 

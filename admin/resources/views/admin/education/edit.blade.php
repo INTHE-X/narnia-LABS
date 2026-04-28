@@ -66,24 +66,7 @@
                         <div class="field-label">정렬 순서</div>
                         <div class="field-value"><input type="number" name="sort_order" value="{{ old('sort_order', $education->sort_order) }}" min="0" style="max-width:120px;"></div>
                     </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description" rows="4">{{ old('description', $education->description) }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명 (EN)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_en" rows="4" placeholder="Description (English)">{{ old('description_en', $education->description_en) }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명 (JP)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_jp" rows="4" placeholder="説明 (日本語)">{{ old('description_jp', $education->description_jp) }}</textarea>
-                        </div>
-                    </div>
+
 
                     {{-- ── 기존 첨부 자료 ── --}}
                     @if($education->pdf_files && count($education->pdf_files) > 0)

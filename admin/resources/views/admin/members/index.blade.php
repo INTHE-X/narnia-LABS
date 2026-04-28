@@ -16,13 +16,13 @@
             <table class="data-table">
                 <thead>
                     <tr>
-                        <th>번호</th><th>아이디</th><th>이름</th><th>휴대전화</th><th>이메일</th><th>권한</th><th>등록일</th>
+                        <th style="text-align:center;width:60px;">번호</th><th>아이디</th><th>이름</th><th>휴대전화</th><th>이메일</th><th>권한</th><th>등록일</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($members as $member)
                     <tr data-href="{{ route('members.edit', $member->id) }}" style="cursor:pointer;">
-                        <td>{{ $member->id }}</td>
+                        <td style="text-align:center;">{{ $member->id }}</td>
                         <td>{{ $member->username ?? $member->name }}</td>
                         <td>{{ $member->name ?? '-' }}</td>
                         <td>{{ $member->phone ?? '-' }}</td>

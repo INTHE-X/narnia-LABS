@@ -143,7 +143,7 @@
         txtWrapper.innerHTML = featured.map(function (item) {
             return '<div class="swiper-slide"><div class="nvts_inner"><div class="desc">'
                 + '<span class="date">' + (item.date || '') + '</span>'
-                + '<h3 class="tit">' + item.title + '</h3>'
+                + '<h3 class="tit">' + (item.title_en || item.title) + '</h3>'
                 + '<a href="' + (item.link || '#') + '"' + (item.link ? ' target="_blank"' : '') + ' class="link">[   Read Article  →   ]</a>'
                 + '</div></div></div>';
         }).join('');
@@ -170,7 +170,7 @@
             + '<div class="img"><figure><img src="' + imgSrc(item, FALLBACK_LIST) + '" alt="#"></figure></div>'
             + '<div class="desc">'
             + '<div class="cate"><span>' + item.category + '</span><span>' + (item.date || '') + '</span></div>'
-            + '<h3 class="tit">' + item.title + '</h3>'
+            + '<h3 class="tit">' + (item.title_en || item.title) + '</h3>'
             + (item.source ? '<span class="link_desc">' + item.source + '</span>' : '')
             + '</div></a></article>';
     }
