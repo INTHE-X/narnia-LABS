@@ -214,7 +214,7 @@ function initComingSoonPopup() {
 
 // ── 어드민 팝업 (API 연동) ─────────────────────────────
 async function initAdminPopup() {
-    const API = 'https://narnialabs.mycafe24.com/admin/api/popups';
+    const API = '/admin/api/popups';
     const DISMISS_PREFIX = 'popup_dismissed_';
 
     let popups = [];
@@ -317,7 +317,7 @@ async function initAdminPopup() {
         // 이미지
         if (popup.image) {
             const img = document.createElement('img');
-            img.src = 'https://narnialabs.mycafe24.com' + popup.image;
+            img.src = '' + popup.image;
             img.alt = popup.title || '팝업';
             if (popup.link_url) {
                 img.style.cursor = 'pointer';
@@ -507,6 +507,31 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 li.classList.toggle('is_open', isOpening);
                 sub.style.maxHeight = isOpening ? sub.scrollHeight + 'px' : '';
+
+                // 열릴 때: 모든 항목(정적+동적)에 transitionDelay를 JS로 직접 설정
+                // CSS nth-child 규칙 의존 제거 → 동적 추가 항목도 항상 올바른 순서
+                if (isOpening) {
+                    // 1) 모든 항목 transition:none + opacity:0 강제 (시작 상태 확정)
+                    Array.from(sub.children).forEach(item => {
+                        item.style.transition = 'none';
+                        item.style.opacity = '0';
+                        item.style.transform = 'translateY(12px)';
+                    });
+                    // 2) 강제 reflow: 브라우저가 위 상태를 계산
+                    void sub.offsetHeight;
+                    // 3) transition 복원 + delay를 위치(index) 기반으로 직접 지정
+                    Array.from(sub.children).forEach((item, i) => {
+                        item.style.transition = '';
+                        item.style.opacity = '';
+                        item.style.transform = '';
+                        item.style.transitionDelay = (0.08 + i * 0.06) + 's';
+                    });
+                } else {
+                    // 닫힐 때: delay 초기화
+                    Array.from(sub.children).forEach(item => {
+                        item.style.transitionDelay = '';
+                    });
+                }
             });
         });
 
@@ -678,7 +703,7 @@ document.addEventListener("DOMContentLoaded", () => {
  */
 (function() {
     const CONSENT_KEY = 'narnia_cookie_consent';
-    const apiBase = 'https://narnialabs.mycafe24.com/admin/api/seo';
+    const apiBase = '/admin/api/seo';
 
     async function loadSEO() {
         // 1. 현재 페이지 키 파악
@@ -713,20 +738,26 @@ document.addEventListener("DOMContentLoaded", () => {
             // 3. 메타 태그 최적화 (항상 적용 - 동의 불필요)
             if (pageData) applyMetaTags(pageData);
 
-            // 4. 추적 스크립트 제어 (동의 여부 체크)
-            const consent = localStorage.getItem(CONSENT_KEY);
-            const scriptsToRun = [];
-            if (globalData && globalData.head_script) scriptsToRun.push(globalData.head_script);
-            if (pageData && pageData.head_script) scriptsToRun.push(pageData.head_script);
+            // 4a. head_script 내 <meta> 태그는 동의 없이 즉시 삽입 (네이버 소유확인 등)
+            const allHeadScripts = [];
+            if (globalData && globalData.head_script) allHeadScripts.push(globalData.head_script);
+            if (pageData && pageData.head_script) allHeadScripts.push(pageData.head_script);
+            allHeadScripts.forEach(s => injectMetaTags(s));
 
-            if (consent === 'granted') {
-                // 이미 동의함 -> 스크립트 실행
-                scriptsToRun.forEach(s => injectScript(s));
+            // 4b. <script> 태그는 쿠키 동의 후 실행
+            //     단, 국문(kor) 사이트는 쿠키 동의 배너 없이 즉시 실행
+            const consent = localStorage.getItem(CONSENT_KEY);
+            const scriptsToRun = allHeadScripts;
+            const isKor = detectLang() === 'kor';
+
+            if (isKor || consent === 'granted') {
+                // 국문이거나 이미 동의함 -> 스크립트 즉시 실행
+                scriptsToRun.forEach(s => injectScriptTags(s));
             } else if (!consent) {
-                // 동의 정보 없음 -> 배너 띄우기
+                // 동의 정보 없음 -> 배너 띄우기 (영문/일문만)
                 showConsentBanner(scriptsToRun);
             } else {
-                // 거절함 -> 어떤 추적 스크립트도 실행하지 않음
+                // 거절함 -> 추적 스크립트 차단
                 console.log('Narnia Labs: Tracking scripts are blocked by user consent policy.');
             }
 
@@ -804,7 +835,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById('narnia_cookie_accept').onclick = () => {
             localStorage.setItem(CONSENT_KEY, 'granted');
             document.getElementById('narnia_cookie_banner').remove();
-            scriptsToRun.forEach(s => injectScript(s)); // 즉시 실행
+            scriptsToRun.forEach(s => injectScriptTags(s)); // 즉시 실행
             // location.reload(); // 완벽한 적용을 위해 필요한 경우만 활성화
         };
 
@@ -850,18 +881,35 @@ document.addEventListener("DOMContentLoaded", () => {
         el.setAttribute('content', content);
     }
 
-    function injectScript(html) {
+    // <meta> 태그만 즉시 삽입 (동의 불필요 - 네이버 소유확인 등)
+    function injectMetaTags(html) {
         if (!html) return;
         const temp = document.createElement('div');
         temp.innerHTML = html.trim();
         Array.from(temp.childNodes).forEach(node => {
-            if (node.tagName === 'SCRIPT') {
+            if (node.nodeType === 1 && node.tagName === 'META') {
+                // 이미 동일한 name/property가 있으면 덮어쓰기
+                const name = node.getAttribute('name') || node.getAttribute('property');
+                if (name) {
+                    const existing = document.head.querySelector(`meta[name="${name}"], meta[property="${name}"]`);
+                    if (existing) { existing.setAttribute('content', node.getAttribute('content')); return; }
+                }
+                document.head.appendChild(node.cloneNode(true));
+            }
+        });
+    }
+
+    // <script> 태그만 삽입 (쿠키 동의 후)
+    function injectScriptTags(html) {
+        if (!html) return;
+        const temp = document.createElement('div');
+        temp.innerHTML = html.trim();
+        Array.from(temp.childNodes).forEach(node => {
+            if (node.nodeType === 1 && node.tagName === 'SCRIPT') {
                 const script = document.createElement('script');
                 Array.from(node.attributes).forEach(attr => script.setAttribute(attr.name, attr.value));
                 script.innerHTML = node.innerHTML;
                 document.head.appendChild(script);
-            } else {
-                document.head.appendChild(node.cloneNode(true));
             }
         });
     }
@@ -870,5 +918,218 @@ document.addEventListener("DOMContentLoaded", () => {
         document.addEventListener('DOMContentLoaded', loadSEO);
     } else {
         loadSEO();
+    }
+})();
+
+(function(){
+    function init(){
+        const screen = document.querySelector('.loading_screen');
+        if(!screen) return;
+        if(typeof gsap === 'undefined') return;
+        const ring = screen.querySelector('.ring_group');
+        if(!ring) return;
+        const dots = ring.querySelectorAll('.dot');
+        if(!dots.length) return;
+        const lead = ring.querySelector('.dot_lead');
+        const rest = Array.from(dots).slice(1);
+        const counterEl = screen.querySelector('.loading_counter .num');
+        const barFill = screen.querySelector('.loading_counter .counter_bar i');
+        ring.appendChild(lead);
+
+        const visual = screen.querySelector('.loading_visual');
+        let logoWrap = visual ? visual.querySelector('.loading_logo') : null;
+        if(visual && !logoWrap){
+            logoWrap = document.createElement('div');
+            logoWrap.className = 'loading_logo';
+            const logoImg = document.createElement('img');
+            logoImg.src = './assets/img/common/logo_symbol_wh.svg';
+            logoImg.alt = '';
+            logoImg.setAttribute('aria-hidden', 'true');
+            logoWrap.appendChild(logoImg);
+            visual.appendChild(logoWrap);
+        }
+        const counterWrapEl = screen.querySelector('.loading_counter');
+
+        const COUNT = dots.length;
+        const RADIUS = 130;
+        const xAt = i => RADIUS * Math.cos((i / COUNT) * Math.PI * 2 - Math.PI / 2);
+        const yAt = i => RADIUS * Math.sin((i / COUNT) * Math.PI * 2 - Math.PI / 2);
+
+        gsap.set(dots, { x: 0, y: 0, opacity: 0, scale: 1, transformOrigin: '50% 50%' });
+        if(counterWrapEl) gsap.set(counterWrapEl, { opacity: 0, y: 12 });
+        if(logoWrap) gsap.set(logoWrap, { opacity: 0 });
+
+        const counter = { val: 0 };
+
+        document.documentElement.classList.add('is_loading');
+
+        const startTime = Date.now();
+        const MIN_LOADING_TIME = 2500;
+        const HOLD_CAP = 92;
+
+        let entryDone = false;
+        let countCapped = false;
+        let pageReady = (document.readyState === 'complete');
+        let exited = false;
+        let ringSpin = null;
+        let countTween = null;
+
+        if(!pageReady){
+            window.addEventListener('load', function onLoad(){
+                pageReady = true;
+                window.removeEventListener('load', onLoad);
+                tryExit();
+            });
+        }
+
+        function updateCounterDOM(){
+            const v = Math.round(counter.val);
+            if(counterEl) counterEl.textContent = String(v).padStart(3, '0');
+            if(barFill) barFill.style.width = v + '%';
+        }
+
+        function tryExit(){
+            if(exited) return;
+            if(!entryDone || !countCapped || !pageReady) return;
+            const elapsed = Date.now() - startTime;
+            if(elapsed < MIN_LOADING_TIME){
+                setTimeout(tryExit, MIN_LOADING_TIME - elapsed);
+                return;
+            }
+            exited = true;
+            playExit();
+        }
+
+        function startLoadingPhase(){
+            ringSpin = gsap.to(ring, {
+                rotation: '+=360',
+                svgOrigin: '0 0',
+                duration: 2.4,
+                ease: 'none',
+                repeat: -1
+            });
+
+            if(logoWrap){
+                gsap.to(logoWrap, {
+                    opacity: 1,
+                    duration: 1.1,
+                    ease: 'power1.inOut'
+                });
+            }
+
+            countTween = gsap.to(counter, {
+                val: HOLD_CAP,
+                duration: 1.1,
+                ease: 'power1.out',
+                onUpdate: updateCounterDOM,
+                onComplete(){
+                    countCapped = true;
+                    tryExit();
+                }
+            });
+        }
+
+        function playExit(){
+            if(ringSpin) ringSpin.kill();
+            if(countTween) countTween.kill();
+
+            const exitTl = gsap.timeline({
+                onComplete(){
+                    screen.style.display = 'none';
+                    document.documentElement.classList.remove('is_loading');
+                }
+            });
+
+            exitTl.to(counter, {
+                val: 100,
+                duration: 0.3,
+                ease: 'power2.out',
+                onUpdate: updateCounterDOM
+            });
+
+            if(counterWrapEl){
+                exitTl.to(counterWrapEl, {
+                    opacity: 0,
+                    y: -8,
+                    duration: 0.3,
+                    ease: 'power2.in'
+                }, '+=0.2');
+            } else {
+                exitTl.to({}, { duration: 0.3 }, '+=0.2');
+            }
+
+            if(logoWrap){
+                exitTl.to(logoWrap, {
+                    opacity: 0,
+                    duration: 0.3,
+                    ease: 'power2.in'
+                }, '<');
+            }
+
+            exitTl.to(dots, {
+                x: 0,
+                y: 0,
+                duration: 0.45,
+                ease: 'power3.inOut',
+                stagger: { each: 0.014, from: 'random' }
+            }, '<+0.05')
+            .to(screen, {
+                opacity: 0,
+                duration: 0.4,
+                ease: 'power2.in'
+            }, '+=0.1');
+        }
+
+        const entryTl = gsap.timeline({
+            onComplete(){
+                entryDone = true;
+                startLoadingPhase();
+                tryExit();
+            }
+        });
+
+        entryTl.to(dots, {
+            opacity: 1,
+            duration: 0.4,
+            ease: 'power2.out'
+        })
+        .to(dots, {
+            scale: 1.35,
+            duration: 0.14,
+            ease: 'power2.out'
+        })
+        .to(dots, {
+            scale: 1,
+            duration: 0.26,
+            ease: 'power2.inOut'
+        })
+        .addLabel('spread', '+=0.1')
+        .to(lead, {
+            x: 0,
+            y: -RADIUS,
+            duration: 0.62,
+            ease: 'expo.out'
+        }, 'spread')
+        .to(rest, {
+            x: i => xAt(i + 1),
+            y: i => yAt(i + 1),
+            duration: 0.68,
+            stagger: 0.025,
+            ease: 'expo.out'
+        }, 'spread+=0.06');
+
+        if(counterWrapEl){
+            entryTl.to(counterWrapEl, {
+                opacity: 1,
+                y: 0,
+                duration: 0.35,
+                ease: 'power2.out'
+            }, 'spread+=0.25');
+        }
+    }
+    if(document.readyState === 'loading'){
+        document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+        init();
     }
 })();
