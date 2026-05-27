@@ -12,18 +12,21 @@ class Education extends Model
         'title', 'category', 'description',
         'title_en', 'description_en',
         'title_jp', 'description_jp',
-        'image_path', 'pdf_paths', 'link', 'published_at', 'sort_order',
+        'image_path', 'pdf_paths', 'link', 'published_at', 'sort_order', 'is_visible', 'is_aslanx', 'google_links',
     ];
 
     protected $casts = [
         'published_at' => 'datetime',
-        'pdf_paths'    => 'array',   // JSON → PHP array 자동 변환
+        'pdf_paths'    => 'array',
+        'is_visible'   => 'boolean',
+        'is_aslanx'    => 'boolean',
+        'google_links' => 'array',
     ];
 
     public function getImageUrlAttribute(): ?string
     {
         if (!$this->image_path) return null;
-        return '/admin/' . $this->image_path;
+        return '/' . $this->image_path;
     }
 
     public function getFormattedDateAttribute(): string
@@ -38,17 +41,27 @@ class Education extends Model
      */
     public function getPdfFilesAttribute(): array
     {
-        $paths = $this->pdf_paths ?? [];
-        return array_map(function ($path) {
-            // path 예: uploads/education_pdfs/uuid__filename.pdf
-            $basename = basename($path);
-            // uuid__ 접두사 제거해서 원본 파일명 복원
+        // 파일 첨부
+        $files = array_map(function ($path) {
+            $basename     = basename($path);
             $originalName = preg_replace('/^[a-f0-9\-]{36}__/', '', $basename);
             return [
+                'type' => 'file',
                 'name' => $originalName,
-                'url'  => '/admin/' . $path,
+                'url'  => '/' . $path,
             ];
-        }, $paths);
+        }, $this->pdf_paths ?? []);
+
+        // Google 링크
+        $links = array_map(function ($link) {
+            return [
+                'type' => 'url',
+                'name' => $link['name'] ?? 'Google 링크',
+                'url'  => $link['url']  ?? '#',
+            ];
+        }, $this->google_links ?? []);
+
+        return array_merge($files, $links);
     }
 
     /**

@@ -1,9 +1,44 @@
 Options -Indexes
 RewriteEngine On
 
+# www.narnia.ai → narnia.ai 리다이렉트 (www 제거)
+RewriteCond %{HTTP_HOST} ^www\.narnia\.ai$ [NC]
+RewriteRule ^(.*)$ https://narnia.ai/$1 [R=301,L]
+
 # 실제 파일이 존재하면 그대로 서빙
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^ - [L]
+
+# ── 구 URL → 새 URL 301 리다이렉트 (구글 인덱스 정정용) ──
+# 단축형 경로 (이전 사이트 구조)
+RewriteRule ^contact-us(.*)$                https://narnia.ai/kor/html/contact/contactUs.html [R=301,L]
+RewriteRule ^solution/?$                    https://narnia.ai/kor/html/solution/deepGenerativeDesign.html [R=301,L]
+RewriteRule ^resource/?$                    https://narnia.ai/kor/html/resource/techBlog.html [R=301,L]
+RewriteRule ^dataset(.*)$                   https://narnia.ai/kor/html/resource/publication.html [R=301,L]
+RewriteRule ^news/?$                        https://narnia.ai/kor/html/company/news.html [R=301,L]
+RewriteRule ^about(.*)$                     https://narnia.ai/kor/html/company/about.html [R=301,L]
+RewriteRule ^team(.*)$                      https://narnia.ai/kor/html/company/team.html [R=301,L]
+RewriteRule ^company/news(.*)$              https://narnia.ai/kor/html/company/news.html [R=301,L]
+RewriteRule ^company/about(.*)$             https://narnia.ai/kor/html/company/about.html [R=301,L]
+RewriteRule ^company/team(.*)$              https://narnia.ai/kor/html/company/team.html [R=301,L]
+RewriteRule ^aslanX/aslanX(.*)$             https://narnia.ai/kor/html/aslanX/aslanX.html [R=301,L]
+RewriteRule ^resource/caseStudies(.*)$      https://narnia.ai/kor/html/resource/caseStudies.html [R=301,L]
+RewriteRule ^resource/education(.*)$        https://narnia.ai/kor/html/resource/education.html [R=301,L]
+RewriteRule ^resource/publication(.*)$      https://narnia.ai/kor/html/resource/publication.html [R=301,L]
+RewriteRule ^resource/events(.*)$           https://narnia.ai/kor/html/resource/events.html [R=301,L]
+RewriteRule ^resource/techBlog(.*)$         https://narnia.ai/kor/html/resource/techBlog.html [R=301,L]
+RewriteRule ^solution/deepGenerativeDesign(.*)$ https://narnia.ai/kor/html/solution/deepGenerativeDesign.html [R=301,L]
+RewriteRule ^solution/evaluation(.*)$       https://narnia.ai/kor/html/solution/evaluation.html [R=301,L]
+RewriteRule ^solution/generation(.*)$       https://narnia.ai/kor/html/solution/generation.html [R=301,L]
+RewriteRule ^solution/optimization(.*)$     https://narnia.ai/kor/html/solution/optimization.html [R=301,L]
+RewriteRule ^solution/recommendation(.*)$   https://narnia.ai/kor/html/solution/recommendation.html [R=301,L]
+RewriteRule ^contact/contactUs(.*)$         https://narnia.ai/kor/html/contact/contactUs.html [R=301,L]
+
+# /sitemap.xml → Laravel(admin) 으로 내부 라우팅
+RewriteRule ^sitemap\.xml$ admin/public/index.php [QSA,L]
+
+# /rss.xml → Laravel(admin) 으로 내부 라우팅 (RSS)
+RewriteRule ^rss\.xml$ admin/public/index.php [QSA,L]
 
 # admin/uploads/ → admin/public/uploads/ 직접 서빙 (Laravel 우회)
 RewriteRule ^admin/uploads/(.*)$ admin/public/uploads/$1 [L]

@@ -7,13 +7,13 @@
 
     <link rel="stylesheet" href="../../../assets/css/reset.css">
     <link rel="stylesheet" href="../../../assets/css/common.css">
-    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css?v=20260430">
     <link rel="stylesheet" href="../../../assets/css/sub.css">
     <link rel="stylesheet" href="../../../assets/css/responsive.css">
      <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
 
-    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/js/common.js?v=20260430"></script>
     <script src="../../../assets/plugin/jquery.js"></script>
     <script src="../../../assets/js/sub.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -86,7 +86,7 @@
 
 <script>
 (function () {
-    var API_URL = 'https://narnialabs.mycafe24.com/admin/api/publications';
+    var API_URL = '/admin/api/publications';
     var ARROW_IMG = '/assets/img/common/link_arrow_wh.svg';
     var allItems = [];
     var filtered = [];
@@ -99,7 +99,7 @@
                 + '<a href="javascript:void(0)">'
                 + '<div class="pbap_bullet_inner">'
                 + '<span class="cate">[ ' + item.category + ' ]</span>'
-                + '<strong class="tit">' + (item.title_jp || item.title) + '</strong>'
+                + '<strong class="tit">' + (item.title_jp || item.title_en || item.title) + '</strong>'
                 + '<p class="author">' + (item.author || '') + '</p>'
                 + '</div></a></li>';
         }).join('');
@@ -122,9 +122,9 @@
                 + '<div class="pb_slide_inner">'
                 + '<span class="cate">' + item.category + '</span>'
                 + '<div class="txt">'
-                + '<h3>' + (item.title_jp || item.title) + '</h3>'
+                + '<h3>' + (item.title_jp || item.title_en || item.title) + '</h3>'
                 + '<span class="author">' + (item.author || '') + '</span>'
-                + ((item.description_jp || item.description) ? '<p class="desc">' + (item.description_jp || item.description) + '</p>' : '')
+                + ((item.description_jp || item.description_en || item.description) ? '<p class="desc">' + (item.description_jp || item.description_en || item.description) + '</p>' : '')
                 + (item.source ? '<p class="source">' + item.source + '</p>' : '')
                 + '</div>'
                 + '<div class="link"><a href="' + (item.link || '#') + '"' + (item.link ? ' target="_blank"' : '') + '>'

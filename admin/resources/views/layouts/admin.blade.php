@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', '어드민') — NARNIA LABS</title>
     <meta name="description" content="@yield('description', '나니아랩스 관리자 페이지')">
-    <link rel="stylesheet" href="https://narnialabs.mycafe24.com/admin/css/admin.css?v=20260428">
+    <link rel="icon" type="image/svg+xml" href="/assets/img/common/favicon.svg">
+    <link rel="stylesheet" href="/admin/css/admin.css?v=20260428">
     @stack('head')
 </head>
 <body>
@@ -31,7 +32,7 @@
         <!-- 로고 -->
         <div class="sidebar-logo">
             <a href="{{ route('dashboard') }}" style="display: flex; justify-content: center;">
-                <img src="https://narnialabs.mycafe24.com/assets/img/common/logo.svg" alt="NARNIA LABS" style="max-width: 140px; height: auto; filter: brightness(0) invert(1);">
+                <img src="/assets/img/common/logo.svg" alt="NARNIA LABS" style="max-width: 140px; height: auto; filter: brightness(0) invert(1);">
             </a>
         </div>
 
@@ -114,6 +115,18 @@
                 팀 소개 관리
             </a>
 
+            <!-- AslanX -->
+            <div class="nav-section-title">AslanX</div>
+
+            <a href="{{ route('aslanx-interviews.index') }}" class="nav-link {{ request()->routeIs('aslanx-interviews.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                    <line x1="9" y1="10" x2="15" y2="10"/>
+                    <line x1="9" y1="14" x2="13" y2="14"/>
+                </svg>
+                인터뷰 관리
+            </a>
+
             <!-- 교육 -->
             <div class="nav-section-title">교육</div>
 
@@ -175,7 +188,7 @@
 
         <!-- 사이트 바로가기 (하단 고정) -->
         <div class="sidebar-footer">
-            <a href="https://narnialabs.mycafe24.com/index.html" target="_blank" class="btn-site-link" id="site-link-btn">
+            <a href="https://narnia.ai" target="_blank" class="btn-site-link" id="site-link-btn">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
                     <polyline points="15 3 21 3 21 9"/>
@@ -211,7 +224,7 @@
     </div>
 </div>
 
-<script src="https://narnialabs.mycafe24.com/admin/js/admin.js?v=20260428"></script>
+<script src="/admin/js/admin.js?v=20260428"></script>
 @stack('scripts')
 
 </body>

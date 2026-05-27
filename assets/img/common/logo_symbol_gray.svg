@@ -1,4 +1,11 @@
 <svg width="32" height="26" viewBox="0 0 32 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M16.1737 26L8.94714 23.6053V0.000442505H0V26H16.1737Z" fill="#242424" fill-opacity="0.2"/>
-<path d="M15.8263 0L23.0529 2.3947V25.9996H32V0H15.8263Z" fill="#242424" fill-opacity="0.2"/>
+<g clip-path="url(#clip0_6236_5432)">
+<path d="M16.1737 0.000442505L8.94714 2.39514V26H0V0.000442505H16.1737Z" fill="#242424" fill-opacity="0.2"/>
+<path d="M15.8281 26L23.0547 23.6053V0.000400543H32.0018V26H15.8281Z" fill="#242424" fill-opacity="0.2"/>
+</g>
+<defs>
+<clipPath id="clip0_6236_5432">
+<rect width="32" height="26" fill="white" transform="matrix(1 0 0 -1 0 26)"/>
+</clipPath>
+</defs>
 </svg>

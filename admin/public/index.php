@@ -6,11 +6,9 @@ use Illuminate\Http\Request;
 define('LARAVEL_START', microtime(true));
 
 // 배포 후 캐시 초기화 (1회 자동 실행)
-$deployFlag = __DIR__ . '/../storage/framework/.deploy_v7';
+$deployFlag = __DIR__ . '/../storage/framework/.deploy_v8';
 if (!file_exists($deployFlag)) {
-    // PHP OPcache 초기화
     if (function_exists('opcache_reset')) { opcache_reset(); }
-    // 뷰 캐시 삭제
     $viewDir = __DIR__ . '/../storage/framework/views';
     if (is_dir($viewDir)) {
         foreach (glob($viewDir . '/*.php') as $f) { @unlink($f); }

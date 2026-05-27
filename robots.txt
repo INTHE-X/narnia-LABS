@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+User-agent: Yeti
+Allow: /
+
+Sitemap: https://narnia.ai/sitemap.xml
+Sitemap: https://narnia.ai/rss.xml

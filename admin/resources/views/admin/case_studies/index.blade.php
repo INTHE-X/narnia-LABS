@@ -22,6 +22,8 @@
                         <th>제목</th>
                         <th>카테고리</th>
                         <th>태그</th>
+                        <th style="text-align:center;">메인 노출</th>
+                        <th style="text-align:center;">게시 공개</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,9 +40,23 @@
                         <td>{{ $item->title }}</td>
                         <td>{{ $item->category }}</td>
                         <td style="font-size:.8rem;color:#aaa;">{{ $item->tags }}</td>
+                        <td style="text-align:center;">
+                            <span style="display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600;
+                                background:{{ $item->is_featured ? '#e8f5e9' : '#f5f5f5' }};
+                                color:{{ $item->is_featured ? '#388e3c' : '#aaa' }};">
+                                {{ $item->is_featured ? '노출' : '-' }}
+                            </span>
+                        </td>
+                        <td style="text-align:center;">
+                            <span style="display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600;
+                                background:{{ $item->is_published ? '#e3f2fd' : '#f5f5f5' }};
+                                color:{{ $item->is_published ? '#1565c0' : '#aaa' }};">
+                                {{ $item->is_published ? '공개' : '비공개' }}
+                            </span>
+                        </td>
                     </tr>
                     @empty
-                    <tr><td colspan="5"><div class="empty-state"><p>등록된 케이스스터디가 없습니다.</p></div></td></tr>
+                    <tr><td colspan="7"><div class="empty-state"><p>등록된 케이스스터디가 없습니다.</p></div></td></tr>
                     @endforelse
                 </tbody>
             </table>

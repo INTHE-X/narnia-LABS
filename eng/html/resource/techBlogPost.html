@@ -7,13 +7,13 @@
 
     <link rel="stylesheet" href="../../../assets/css/reset.css">
     <link rel="stylesheet" href="../../../assets/css/common.css">
-    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css?v=20260430">
     <link rel="stylesheet" href="../../../assets/css/sub.css">
     <link rel="stylesheet" href="../../../assets/css/responsive.css">
      <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
 
-    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/js/common.js?v=20260430"></script>
     <script src="../../../assets/plugin/jquery.js"></script>
     <script src="../../../assets/js/sub.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -76,7 +76,7 @@
 
 <script>
 (function () {
-    var API = 'https://narnialabs.mycafe24.com/admin/api/tech-blogs';
+    var API = '/admin/api/tech-blogs';
 
     function getParam(name) {
         var params = new URLSearchParams(window.location.search);
@@ -105,7 +105,8 @@
         // 썸네일
 
         // 본문: 에디터 HTML 직접 렌더링 (썸네일 이미지 중복 제거)
-        var body = post.description || '';
+        // 본문: EN 우선, 없으면 KO fallback
+        var body = post.description_en || post.description || '';
         if (post.thumbnail) {
             try {
                 var parser = new DOMParser();

@@ -28,7 +28,7 @@ class TeamController extends Controller
             'description'    => 'required|string',
             'description_en' => 'nullable|string',
             'description_jp' => 'nullable|string',
-            'image'          => 'nullable|image|max:5120',
+            'image'          => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,bmp,svg|max:5120',
             'sort_order'     => 'nullable|integer',
         ]);
 
@@ -63,7 +63,7 @@ class TeamController extends Controller
             'description'    => 'required|string',
             'description_en' => 'nullable|string',
             'description_jp' => 'nullable|string',
-            'image'          => 'nullable|image|max:5120',
+            'image'          => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,bmp,svg|max:5120',
             'sort_order'     => 'nullable|integer',
         ]);
 

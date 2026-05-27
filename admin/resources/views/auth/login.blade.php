@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>관리자 로그인 — NARNIA LABS</title>
     <meta name="description" content="나니아랩스 관리자 로그인 페이지입니다.">
-    <link rel="stylesheet" href="https://narnialabs.mycafe24.com/admin/css/admin.css">
+    <link rel="icon" type="image/svg+xml" href="/assets/img/common/favicon.svg">
+    <link rel="stylesheet" href="/admin/css/admin.css">
     <style>
         body, html {
             margin: 0;
@@ -163,7 +164,7 @@
         .login-side-bg {
             flex: 7;
             background-color: #000;
-            background-image: url('https://narnialabs.mycafe24.com/assets/img/sub/about_bg.png');
+            background-image: url('/assets/img/sub/about_bg.png');
             background-size: cover;
             background-position: center;
             position: relative;
@@ -186,8 +187,8 @@
     <!-- 왼쪽 폼 영역 -->
     <div class="login-side-form">
         <div class="login-brand-logo" style="display: flex; align-items: center; gap: 10px;">
-            <img src="https://narnialabs.mycafe24.com/assets/img/common/logo_symbol_color.svg" alt="Narnia Labs Symbol" style="height: 32px; width: auto;">
-            <img src="https://narnialabs.mycafe24.com/assets/img/common/NARNIA%20LABS.svg" alt="Narnia Labs Text" style="height: 20px; width: auto; margin-top: 2px;">
+            <img src="/assets/img/common/logo_symbol_color.svg" alt="Narnia Labs Symbol" style="height: 32px; width: auto;">
+            <img src="/assets/img/common/NARNIA%20LABS.svg" alt="Narnia Labs Text" style="height: 20px; width: auto; margin-top: 2px;">
         </div>
         
         <div class="login-welcome">

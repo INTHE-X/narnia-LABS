@@ -53,7 +53,21 @@
                     </div>
                     <div class="field-row">
                         <div class="field-label">카테고리</div>
-                        <div class="field-value"><input type="text" name="category" value="{{ old('category', $techBlog->category) }}" placeholder="예: AI, 딥러닝, 클라우드 등"></div>
+                        <div class="field-value">
+                            @php $currentCat = old('category', $techBlog->category); @endphp
+                            <input type="hidden" name="category" id="category-hidden" value="{{ $currentCat }}">
+                            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                                @foreach(['Tech','Product','Culture'] as $cat)
+                                <button type="button"
+                                    onclick="selectCategory('{{ $cat }}', this)"
+                                    data-cat="{{ $cat }}"
+                                    class="cat-tag"
+                                    style="padding:6px 16px;border-radius:20px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid {{ $currentCat === $cat ? '#111' : '#ddd' }};background:{{ $currentCat === $cat ? '#111' : '#f5f5f5' }};color:{{ $currentCat === $cat ? '#fff' : '#555' }};transition:all .2s;">
+                                    {{ $cat }}
+                                </button>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                     <div class="field-row">
                         <div class="field-label">작성 날짜</div>
@@ -73,12 +87,14 @@
                 </div>
             </div>
 
-            {{-- 에디터 영역 (전체 너비) --}}
+            {{-- 에디터 영역 --}}
+            @foreach([['ko','내용 (KO)','description',$techBlog->description],['en','내용 (EN)','description_en',$techBlog->description_en ?? ''],['jp','내용 (JP)','description_jp',$techBlog->description_jp ?? '']] as [$lang,$label,$field,$val])
             <div style="padding:20px 24px 0;">
-                <div style="font-size:13px;color:var(--gray-600);font-weight:500;margin-bottom:8px;">내용</div>
-                <div id="editor" style="min-height:400px;"></div>
-                <textarea name="description" id="description-hidden" style="display:none;">{{ old('description', $techBlog->description) }}</textarea>
+                <div style="font-size:13px;color:var(--gray-600);font-weight:500;margin-bottom:8px;">{{ $label }}</div>
+                <div id="editor-{{ $lang }}" style="min-height:400px;"></div>
+                <textarea name="{{ $field }}" id="{{ $field }}-hidden" style="display:none;">{{ old($field, $val) }}</textarea>
             </div>
+            @endforeach
 
             <div class="img-form-actions" style="justify-content:space-between;">
                 <div class="img-form-actions-left">
@@ -99,33 +115,51 @@
 
 <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <script>
-var initialContent = document.getElementById('description-hidden').value || '';
+function selectCategory(cat, el) {
+    document.getElementById('category-hidden').value = cat;
+    document.querySelectorAll('.cat-tag').forEach(function(btn) {
+        btn.style.background = '#f5f5f5';
+        btn.style.color = '#555';
+        btn.style.borderColor = '#ddd';
+    });
+    el.style.background = '#111';
+    el.style.color = '#fff';
+    el.style.borderColor = '#111';
+}
 
-var editor = new toastui.Editor({
-    el: document.getElementById('editor'),
-    height: '500px',
-    initialEditType: 'wysiwyg',
-    previewStyle: 'vertical',
-    placeholder: '블로그 내용을 입력하세요. 이미지는 툴바의 이미지 버튼 또는 드래그&드롭으로 추가하세요.',
-    initialValue: initialContent,
-    hooks: {
-        addImageBlobHook: function(blob, callback) {
-            var formData = new FormData();
-            formData.append('image', blob);
-            fetch('/admin/api/tech-blogs/upload-image', {
-                method: 'POST',
-                body: formData
-            })
-            .then(function(r){ return r.json(); })
-            .then(function(data){ callback(data.url, '이미지'); })
-            .catch(function(){ alert('이미지 업로드에 실패했습니다.'); });
-        }
-    },
-    language: 'ko-KR'
-});
+function makeEditor(elId, initialValue) {
+    return new toastui.Editor({
+        el: document.getElementById(elId),
+        height: '500px',
+        initialEditType: 'wysiwyg',
+        previewStyle: 'vertical',
+        placeholder: '블로그 내용을 입력하세요.',
+        initialValue: initialValue || '',
+        hooks: {
+            addImageBlobHook: function(blob, callback) {
+                var formData = new FormData();
+                formData.append('image', blob);
+                fetch('/admin/api/tech-blogs/upload-image', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(r){ return r.json(); })
+                .then(function(data){ callback(data.url, '이미지'); })
+                .catch(function(){ alert('이미지 업로드에 실패했습니다.'); });
+            }
+        },
+        language: 'ko-KR'
+    });
+}
+
+var editorKo = makeEditor('editor-ko', document.getElementById('description-hidden').value);
+var editorEn = makeEditor('editor-en', document.getElementById('description_en-hidden').value);
+var editorJp = makeEditor('editor-jp', document.getElementById('description_jp-hidden').value);
 
 function submitForm() {
-    document.getElementById('description-hidden').value = editor.getHTML();
+    document.getElementById('description-hidden').value    = editorKo.getHTML();
+    document.getElementById('description_en-hidden').value = editorEn.getHTML();
+    document.getElementById('description_jp-hidden').value = editorJp.getHTML();
     document.getElementById('tb-form').submit();
 }
 </script>

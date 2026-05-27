@@ -142,6 +142,26 @@ Route::get('/admin/run-migrate-educations', function() {
     }
 });
 
+// educations is_visible 컬럼 마이그레이션 (임시)
+Route::get('/admin/run-migrate-education-visibility', function() {
+    try {
+        Artisan::call('migrate', ['--force' => true, '--path' => 'database/migrations/2026_05_26_000001_add_is_visible_to_educations_table.php']);
+        return '✅ ' . Artisan::output();
+    } catch (\Exception $e) {
+        return '⚠️ ' . $e->getMessage();
+    }
+});
+
+// educations google_links 컬럼 마이그레이션 (임시)
+Route::get('/admin/run-migrate-education-google-links', function() {
+    try {
+        Artisan::call('migrate', ['--force' => true, '--path' => 'database/migrations/2026_05_26_000002_add_google_links_to_educations_table.php']);
+        return '✅ ' . Artisan::output();
+    } catch (\Exception $e) {
+        return '⚠️ ' . $e->getMessage();
+    }
+});
+
 // events title_jp 컬럼 마이그레이션 (임시)
 Route::get('/admin/run-migrate-events-jp', function() {
     try {
@@ -169,8 +189,13 @@ Route::get('/admin/api/seo', [SeoController::class, 'apiGet']);
 Route::get('/admin/api/popups', [PopupController::class, 'apiIndex']);
 Route::get('/admin/api/clients', [ClientController::class, 'apiIndex']);
 Route::get('/admin/api/tech-blogs', [TechBlogController::class, 'apiIndex']);
+Route::get('/admin/api/aslanx-interviews', [\App\Http\Controllers\AslanxInterviewController::class, 'apiIndex']);
 Route::post('/admin/api/tech-blogs/upload-image', [TechBlogController::class, 'uploadEditorImage']);
+Route::post('/admin/api/case-studies/upload-image', [CaseStudyController::class, 'uploadEditorImage']);
 Route::get('/admin/sitemap.xml', [SeoController::class, 'sitemap']);
+Route::get('/sitemap.xml', [SeoController::class, 'sitemap']); // narnia.ai/sitemap.xml 직접 접근
+Route::get('/rss.xml', [SeoController::class, 'feed']);       // narnia.ai/rss.xml RSS
+Route::get('/admin/rss.xml', [SeoController::class, 'feed']); // 구버전 호환
 
 // 문의 접수 (공개 API)
 Route::post('/admin/api/inquiries', [InquiryController::class, 'apiStore']);
@@ -210,6 +235,7 @@ Route::prefix('admin')->group(function () {
 
         // 교육
         Route::resource('education', EducationController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+        Route::patch('education/{id}/toggle-visibility', [EducationController::class, 'toggleVisibility'])->name('education.toggleVisibility');
         Route::resource('publications', PublicationController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
         Route::resource('tech-blogs', TechBlogController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
         Route::resource('applicants', ApplicantController::class)->only(['index', 'show', 'destroy']);
@@ -229,7 +255,26 @@ Route::prefix('admin')->group(function () {
         Route::get('seo/{key}/edit', [SeoController::class, 'edit'])->name('seo.edit');
         Route::put('seo/{key}', [SeoController::class, 'update'])->name('seo.update');
         Route::resource('members', MemberController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
+
+        // AslanX 인터뷰 관리
+        Route::resource('aslanx-interviews', \App\Http\Controllers\AslanxInterviewController::class)
+            ->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
     });
 
 });
 
+/* ── 임시: is_aslanx 마이그레이션 실행 (사용 후 이 블록 삭제) ── */
+Route::get('/run-aslanx-migration', function(\Illuminate\Http\Request $request) {
+    if ($request->query('token') !== 'narnia-aslanx-2026') {
+        abort(403, 'Forbidden');
+    }
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', [
+            '--path'  => 'database/migrations/2026_05_27_000001_add_is_aslanx_to_educations_table.php',
+            '--force' => true,
+        ]);
+        return '✅ Migration done: ' . \Illuminate\Support\Facades\Artisan::output();
+    } catch (\Exception $e) {
+        return '❌ Error: ' . $e->getMessage();
+    }
+});

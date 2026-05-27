@@ -767,6 +767,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function showConsentBanner(scriptsToRun) {
+        // 국문 사이트는 쿠키 배너 비표시
+        if (detectLang() === 'kor') return;
         if (document.getElementById('narnia_cookie_banner')) return;
 
         const lang = detectLang();

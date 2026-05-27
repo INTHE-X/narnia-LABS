@@ -7,13 +7,13 @@
 
     <link rel="stylesheet" href="../../../assets/css/reset.css">
     <link rel="stylesheet" href="../../../assets/css/common.css">
-    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css?v=20260430">
     <link rel="stylesheet" href="../../../assets/css/sub.css">
     <link rel="stylesheet" href="../../../assets/css/responsive.css">
      <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
 
-    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/js/common.js?v=20260430"></script>
     <script src="../../../assets/plugin/jquery.js"></script>
     <script src="../../../assets/js/sub.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -131,9 +131,9 @@
 
 <script>
 (function () {
-    var API = 'https://narnialabs.mycafe24.com/admin/api/tech-blogs';
+    var API = '/admin/api/tech-blogs';
     var FALLBACK_IMG = '../../../assets/img/sub/techblog_list_ex_Img.png';
-    var PAGE_SIZE = 6;
+    var PAGE_SIZE = 20;
     var allItems = [];
     var filtered = [];
     var shown = 0;
@@ -194,9 +194,26 @@
         var keyword = (document.getElementById('tba_search_input').value || '').trim().toLowerCase();
         filtered = allItems.filter(function(item) {
             var matchCat = currentFilter === 'all' || (item.category || '').toLowerCase() === currentFilter.toLowerCase();
-            var matchKey = !keyword || (item.title || '').toLowerCase().includes(keyword) || (item.description || '').toLowerCase().includes(keyword);
+            var matchKey = !keyword ||
+                (item.title || '').toLowerCase().includes(keyword) ||
+                (item.description || '').toLowerCase().includes(keyword);
             return matchCat && matchKey;
         });
+
+        // 검색어 있을 때 관련도 순 정렬 (제목 일치 > 제목 포함 > 본문 포함)
+        if (keyword) {
+            filtered.sort(function(a, b) {
+                function score(item) {
+                    var t = (item.title || '').toLowerCase();
+                    if (t === keyword) return 3;           // 제목 완전일치
+                    if (t.startsWith(keyword)) return 2;   // 제목 앞부분 일치
+                    if (t.includes(keyword)) return 1;     // 제목 포함
+                    return 0;                              // 본문만 포함
+                }
+                return score(b) - score(a);
+            });
+        }
+
         shown = 0;
         document.getElementById('tba_list').innerHTML = '';
         loadMore();

@@ -73,7 +73,7 @@
                             <label for="og_image">OG Image URL (1200×630 권장)</label>
                             <input type="text" id="og_image" name="og_image"
                                 value="{{ old('og_image', $setting->og_image) }}"
-                                placeholder="https://narnialabs.mycafe24.com/admin/uploads/...">
+                                placeholder="https://narnia.ai/assets/img/common/og_image.png">
                         </div>
                     </div>
                 </div>
@@ -86,7 +86,7 @@
                             <label for="canonical_url">Canonical URL (비우면 현재 URL)</label>
                             <input type="text" id="canonical_url" name="canonical_url"
                                 value="{{ old('canonical_url', $setting->canonical_url) }}"
-                                placeholder="https://narnialabs.mycafe24.com/...">
+                                placeholder="https://narnia.ai/...">
                         </div>
                         <div class="form-field" style="display:flex;align-items:center;gap:.5rem;">
                             <input type="checkbox" id="index_allow" name="index_allow" value="1"
@@ -160,7 +160,7 @@
                             <div id="preview-title" style="font-size:1.1rem;color:#1a0dab;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
                                 {{ $setting->meta_title ?: '(제목 없음)' }}
                             </div>
-                            <div style="font-size:.82rem;color:#006621;margin:.2rem 0;">narnialabs.mycafe24.com{{ $setting->page_url }}</div>
+                            <div style="font-size:.82rem;color:#006621;margin:.2rem 0;">narnia.ai{{ $setting->page_url }}</div>
                             <div id="preview-desc" style="font-size:.85rem;color:#545454;line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">
                                 {{ $setting->meta_description ?: '(설명 없음)' }}
                             </div>
@@ -179,7 +179,7 @@
                                 <div style="width:100%;height:120px;background:#1e3a5f;display:flex;align-items:center;justify-content:center;color:#555;font-size:.8rem;">OG 이미지 없음</div>
                             @endif
                             <div style="padding:.7rem;background:#fff;">
-                                <div style="font-size:.7rem;color:#888;text-transform:uppercase;">NARNIALABS.MYCAFE24.COM</div>
+                                <div style="font-size:.7rem;color:#888;text-transform:uppercase;">NARNIA.AI</div>
                                 <div style="font-size:.9rem;font-weight:600;color:#1c1e21;margin:.2rem 0;">{{ $setting->og_title ?: $setting->meta_title ?: '(제목 없음)' }}</div>
                                 <div style="font-size:.82rem;color:#606770;">{{ $setting->og_description ?: $setting->meta_description ?: '(설명 없음)' }}</div>
                             </div>

@@ -3324,37 +3324,45 @@ $(document).ready(function(){
     }
 
     // techBlog_post 공유 aside 스크롤
-    var tbpShare = document.querySelector('#techblog_post .tbp_share');
-    var tbpContent = document.querySelector('#techblog_post .tbp_content');
-    var tbpImg = document.querySelector('#techblog_post .tbp_content .tbp_img');
-    if(tbpShare && tbpContent && tbpImg){
-        var shareHeight = tbpShare.offsetHeight;
-        var initialTop = tbpImg.offsetTop + tbpImg.offsetHeight - shareHeight;
-        tbpShare.style.top = initialTop + 'px';
+    (function initTbpShare() {
+        var tbpShare = document.querySelector('#techblog_post .tbp_share');
+        var tbpContent = document.querySelector('#techblog_post .tbp_content');
+        var tbpTopEl = document.querySelector('#techblog_post .tbp_top');
+        var tbpImg = document.querySelector('#techblog_post .tbp_content .tbp_img');
 
-        var bottomGap = 40;
+        if (!tbpShare || !tbpContent) return;
+        if (tbpShare._tbpShareInited) return;
 
-        function recalcShareDimensions(){
+        var shareHeight, initialTop, bottomGap = 40;
+
+        function recalc() {
             shareHeight = tbpShare.offsetHeight;
-            initialTop = tbpImg.offsetTop + tbpImg.offsetHeight - shareHeight;
+            if (tbpImg) {
+                initialTop = tbpImg.offsetTop + tbpImg.offsetHeight - shareHeight;
+            } else {
+                initialTop = 0;
+            }
+            tbpShare.style.top = initialTop + 'px';
         }
 
-        function updateSharePosition(){
+        function updateSharePosition() {
             var contentRect = tbpContent.getBoundingClientRect();
             var contentPaddingBottom = parseFloat(getComputedStyle(tbpContent).paddingBottom) || 0;
-            var imgRect = tbpImg.getBoundingClientRect();
-            var asideBottom = imgRect.bottom;
+            // 기준점: 이미지가 있으면 이미지, 없으면 tbp_top(제목영역) 하단
+            var refEl = tbpImg || tbpTopEl;
+            var refRect = refEl ? refEl.getBoundingClientRect() : contentRect;
+            var asideBottom = refRect.bottom;
             var contentRight = contentRect.right;
             var docWidth = document.documentElement.clientWidth;
             var fixedBottom = window.innerHeight - shareHeight - bottomGap;
             var triggerLine = window.innerHeight - bottomGap;
             var contentInnerBottom = contentRect.bottom - contentPaddingBottom;
 
-            if(asideBottom > triggerLine){
+            if (asideBottom > triggerLine) {
                 tbpShare.classList.remove('is_fixed', 'is_bottom');
                 tbpShare.style.top = initialTop + 'px';
                 tbpShare.style.right = '';
-            } else if(contentInnerBottom > triggerLine){
+            } else if (contentInnerBottom > triggerLine) {
                 tbpShare.classList.add('is_fixed');
                 tbpShare.classList.remove('is_bottom');
                 tbpShare.style.top = fixedBottom + 'px';
@@ -3367,20 +3375,70 @@ $(document).ready(function(){
             }
         }
 
+        recalc();
         updateSharePosition();
         window.addEventListener('scroll', updateSharePosition);
-        window.addEventListener('resize', function(){
-            recalcShareDimensions();
-            updateSharePosition();
-        });
+        window.addEventListener('resize', function () { recalc(); updateSharePosition(); });
 
-        var shareResizeObserver = new ResizeObserver(function(){
-            recalcShareDimensions();
-            updateSharePosition();
-        });
-        shareResizeObserver.observe(tbpContent);
-        shareResizeObserver.observe(tbpImg);
-    }
+        if (typeof ResizeObserver !== 'undefined') {
+            var shareResizeObserver = new ResizeObserver(function () { recalc(); updateSharePosition(); });
+            shareResizeObserver.observe(tbpContent);
+            if (tbpImg) shareResizeObserver.observe(tbpImg);
+        }
+
+        tbpShare._tbpShareInited = true;
+    })();
+
+    // 콘텐츠 Ajax 로드 후 재초기화용 전역 함수
+    window.reinitTbpShare = function () {
+        var tbpShare = document.querySelector('#techblog_post .tbp_share');
+        if (tbpShare) tbpShare._tbpShareInited = false;
+        // 위 IIFE 재실행
+        var tbpContent = document.querySelector('#techblog_post .tbp_content');
+        var tbpTopEl = document.querySelector('#techblog_post .tbp_top');
+        var tbpImg = document.querySelector('#techblog_post .tbp_content .tbp_img');
+        if (!tbpShare || !tbpContent) return;
+        var shareHeight = tbpShare.offsetHeight;
+        var initialTop = tbpImg ? (tbpImg.offsetTop + tbpImg.offsetHeight - shareHeight) : 0;
+        tbpShare.style.top = initialTop + 'px';
+        var bottomGap = 40;
+        function recalc() {
+            shareHeight = tbpShare.offsetHeight;
+            initialTop = tbpImg ? (tbpImg.offsetTop + tbpImg.offsetHeight - shareHeight) : 0;
+            tbpShare.style.top = initialTop + 'px';
+        }
+        function updateSharePosition() {
+            var contentRect = tbpContent.getBoundingClientRect();
+            var contentPaddingBottom = parseFloat(getComputedStyle(tbpContent).paddingBottom) || 0;
+            var refEl = tbpImg || tbpTopEl;
+            var refRect = refEl ? refEl.getBoundingClientRect() : contentRect;
+            var asideBottom = refRect.bottom;
+            var contentRight = contentRect.right;
+            var docWidth = document.documentElement.clientWidth;
+            var fixedBottom = window.innerHeight - shareHeight - bottomGap;
+            var triggerLine = window.innerHeight - bottomGap;
+            var contentInnerBottom = contentRect.bottom - contentPaddingBottom;
+            if (asideBottom > triggerLine) {
+                tbpShare.classList.remove('is_fixed', 'is_bottom');
+                tbpShare.style.top = initialTop + 'px';
+                tbpShare.style.right = '';
+            } else if (contentInnerBottom > triggerLine) {
+                tbpShare.classList.add('is_fixed');
+                tbpShare.classList.remove('is_bottom');
+                tbpShare.style.top = fixedBottom + 'px';
+                tbpShare.style.right = (docWidth - contentRight) + 'px';
+            } else {
+                tbpShare.classList.remove('is_fixed');
+                tbpShare.classList.add('is_bottom');
+                tbpShare.style.top = '';
+                tbpShare.style.right = '';
+            }
+        }
+        recalc();
+        updateSharePosition();
+        window.addEventListener('scroll', updateSharePosition);
+        window.addEventListener('resize', function () { recalc(); updateSharePosition(); });
+    };
 
     // techBlog_post 최신글 Swiper
     var tbprSlideEl = document.querySelector('#techblog_post .tbpr_slide');
@@ -3937,64 +3995,8 @@ $(document).ready(function(){
         });
     });
 
-    // techBlog_post 공유 aside 스크롤
-    var tbpShare = document.querySelector('#techblog_post .tbp_share');
-    var tbpContent = document.querySelector('#techblog_post .tbp_content');
-    var tbpImg = document.querySelector('#techblog_post .tbp_content .tbp_img');
-    if(tbpShare && tbpContent && tbpImg){
-        var shareHeight = tbpShare.offsetHeight;
-        var initialTop = tbpImg.offsetTop + tbpImg.offsetHeight - shareHeight;
-        tbpShare.style.top = initialTop + 'px';
-
-        var bottomGap = 40;
-
-        function recalcShareDimensions(){
-            shareHeight = tbpShare.offsetHeight;
-            initialTop = tbpImg.offsetTop + tbpImg.offsetHeight - shareHeight;
-        }
-
-        function updateSharePosition(){
-            var contentRect = tbpContent.getBoundingClientRect();
-            var contentPaddingBottom = parseFloat(getComputedStyle(tbpContent).paddingBottom) || 0;
-            var imgRect = tbpImg.getBoundingClientRect();
-            var asideBottom = imgRect.bottom;
-            var contentRight = contentRect.right;
-            var docWidth = document.documentElement.clientWidth;
-            var fixedBottom = window.innerHeight - shareHeight - bottomGap;
-            var triggerLine = window.innerHeight - bottomGap;
-            var contentInnerBottom = contentRect.bottom - contentPaddingBottom;
-
-            if(asideBottom > triggerLine){
-                tbpShare.classList.remove('is_fixed', 'is_bottom');
-                tbpShare.style.top = initialTop + 'px';
-                tbpShare.style.right = '';
-            } else if(contentInnerBottom > triggerLine){
-                tbpShare.classList.add('is_fixed');
-                tbpShare.classList.remove('is_bottom');
-                tbpShare.style.top = fixedBottom + 'px';
-                tbpShare.style.right = (docWidth - contentRight) + 'px';
-            } else {
-                tbpShare.classList.remove('is_fixed');
-                tbpShare.classList.add('is_bottom');
-                tbpShare.style.top = '';
-                tbpShare.style.right = '';
-            }
-        }
-
-        updateSharePosition();
-        window.addEventListener('scroll', updateSharePosition);
-        window.addEventListener('resize', function(){
-            recalcShareDimensions();
-            updateSharePosition();
-        });
-
-        var shareResizeObserver = new ResizeObserver(function(){
-            recalcShareDimensions();
-            updateSharePosition();
-        });
-        shareResizeObserver.observe(tbpContent);
-        shareResizeObserver.observe(tbpImg);
-    }
+    // techBlog_post 공유 aside 스크롤 (2차 실행 방지 - reinitTbpShare로 통합)
+    if (typeof window.reinitTbpShare !== 'undefined') { /* skip duplicate */ }
 
     // techBlog_post 최신글 Swiper
     var tbprSlideEl = document.querySelector('#techblog_post .tbpr_slide');

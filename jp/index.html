@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
     <link rel="stylesheet" href="../assets/css/reset.css">
     <link rel="stylesheet" href="../assets/css/common.css">
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/style.css?v=20260430">
     <link rel="stylesheet" href="../assets/css/main.css">
     <link rel="stylesheet" href="../assets/css/responsive.css">
 
@@ -19,10 +19,51 @@
     <script src="https://unpkg.com/lenis@1.3.18/dist/lenis.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
-    <script src="../assets/js/common.js"></script>
+    <script src="../assets/js/common.js?v=20260430"></script>
     <script src="../assets/js/main.js"></script>
 </head>
 <body class="jp">
+    <!--
+    <div class="loading_screen">
+        <div class="loading_visual">
+        <svg class="loading_svg" viewBox="-200 -200 400 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g class="ring_group">
+                <circle class="dot dot_lead" r="7"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+                <circle class="dot" r="6"></circle>
+            </g>
+        </svg>
+        <div class="loading_logo">
+            <img src="../assets/img/common/logo_symbol_wh.svg" alt="" aria-hidden="true">
+        </div>
+        </div>
+        <div class="loading_counter">
+            <span class="status_dot"></span>
+            <span class="label">Initializing System</span>
+            <span class="counter_bar"><i></i></span>
+            <span class="num">000</span>
+            <span class="div">/</span>
+            <span class="max">100</span>
+        </div>
+    </div>
+    -->
     <div id="wrap">
         <!-- include -->
         <header id="header"></header>
@@ -67,10 +108,10 @@
             <div class="mv_bot">
                 <div class="container">
                     <div class="mv_tit">
-                        <span class="min_tit">Agentic AI Platform</span>
+                        <span class="min_tit">Agentic AI-driven Autonomous Design</span>
                         <h2>NARNIA LABS</h2>
+                        <div class="cross_deco color1"></div>
                     </div>
-                    <div class="cross_deco color1"></div>
                     <div class="grid_barcode">
                         <div class="top">
                             <figure>
@@ -509,6 +550,33 @@
                         preload="auto"
                     ></video>
                 </div>
+                <div class="asn_ts_step1">
+                    <div class="asn_ts_step1_txt">
+                        <span>AslanX Flow & Studio</span>
+                        <strong>
+                            あなたのエンジニアリングデータを「AIデータ」へ、
+                            <br>
+                            AslanXが生まれ変わらせます。
+                        </strong>
+                    </div>
+                </div>
+                <div class="asn_ts_step2">
+                    <div class="asn_ts_step2_txt">
+                        <div class="top">
+                            <h3>AslanX</h3>
+                            <span>Flow & Studio</span>
+                        </div>
+                        <div class="bot">
+                            <p>
+                                AslanXは人工知能技術を基盤に、
+                                <br>
+                                製造業の製品開発プロセスを革新する
+                                <br>
+                                <strong>Agentic AI</strong> プラットフォームです。
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
         <section id="newDesign" class="section_hideHeader">
@@ -647,105 +715,124 @@
                         経験なしには完成できない技術。<br class="mobile"> ナニアラボ（NARNIA LABS）が解決した実戦問題を確認してください。
                     </h2>
                 </div>
-                <div class="mpj_slide_area" role="region" aria-roledescription="スライド" aria-label="実戦プロジェクト">
-                    <div class="mpj_tab_item active" role="tabpanel" aria-label="スライド 1 / 3">
-                        <div class="mpj_tab_img">
-                            <figure>
-                                <img src="../assets/img/main/mpj_img01.png" alt="#">
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="mpj_tab_item" role="tabpanel" aria-label="スライド 2 / 3">
-                        <div class="mpj_tab_img">
-                            <figure>
-                                <img src="../assets/img/main/mpj_img01.png" alt="#">
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="mpj_tab_item" role="tabpanel" aria-label="スライド 3 / 3">
-                        <div class="mpj_tab_img">
-                            <figure>
-                                <img src="../assets/img/main/mpj_img01.png" alt="#">
-                            </figure>
-                        </div>
-                    </div>
-                    <div class="mpj_desc_area">
-                        <div class="mpj_desc active">
-                            <span class="top_cate">Automobile</span>
-                            <h3>鋳造部品のリブデザイン生成01</h3>
-                            <ul class="sub_cate">
-                                <li>Generator</li>
-                                <li>Evaluator</li>
-                            </ul>
-                        </div>
-                        <div class="mpj_desc">
-                            <span class="top_cate">Automobile</span>
-                            <h3>鋳造部品のリブデザイン 生成02</h3>
-                            <ul class="sub_cate">
-                                <li>Generator</li>
-                                <li>Evaluator</li>
-                            </ul>
-                        </div>
-                        <div class="mpj_desc">
-                            <span class="top_cate">Automobile</span>
-                            <h3>鋳造部品のリブデザイン 生成03</h3>
-                            <ul class="sub_cate">
-                                <li>Generator</li>
-                                <li>Evaluator</li>
-                            </ul>
-                        </div>
-                    </div>
+                <div class="mpj_slide_area" id="mpj_slide_area" role="region" aria-roledescription="スライド" aria-label="実戦プロジェクト">
+                    <!-- API로 동적 렌더링 -->
+                    <div class="mpj_desc_area" id="mpj_desc_area"></div>
                     <div class="mpj_bullet_area" role="tablist" aria-label="プロジェクト選択">
-                        <div class="mpj_bullet_scrollBox">
-                            <div class="mpj_bullet" role="tab" aria-selected="true" aria-label="鋳造部品のリブデザイン生成" tabindex="0">
-                                <span class="cross tl" aria-hidden="true"></span>
-                                <span class="cross tr" aria-hidden="true"></span>
-                                <span class="cross bl" aria-hidden="true"></span>
-                                <span class="cross br" aria-hidden="true"></span>
-                                <a href="#" tabindex="-1">
-                                    <span class="top_cate">[ Automobile ]</span>
-                                    <strong>鋳造部品のリブデザイン 生成</strong>
-                                    <ul class="sub_cate">
-                                        <li># Generator</li>
-                                        <li># Evaluator</li>
-                                    </ul>
-                                </a>
-                            </div>
-                            <div class="mpj_bullet" role="tab" aria-selected="false" aria-label="TVスタンドの逆設計" tabindex="-1">
-                                <span class="cross tl" aria-hidden="true"></span>
-                                <span class="cross tr" aria-hidden="true"></span>
-                                <span class="cross bl" aria-hidden="true"></span>
-                                <span class="cross br" aria-hidden="true"></span>
-                                <a href="#" tabindex="-1">
-                                    <span class="top_cate">[ Electronics ]</span>
-                                    <strong>TVスタンドの逆設計（Inverse Design）</strong>
-                                    <ul class="sub_cate">
-                                        <li># Generator</li>
-                                        <li># Evaluator</li>
-                                        <li># Optimizer</li>
-                                    </ul>
-                                </a>
-                            </div>
-                            <div class="mpj_bullet" role="tab" aria-selected="false" aria-label="車両スモールオーバーラップ衝突試験結果の予測" tabindex="-1">
-                                <span class="cross tl" aria-hidden="true"></span>
-                                <span class="cross tr" aria-hidden="true"></span>
-                                <span class="cross bl" aria-hidden="true"></span>
-                                <span class="cross br" aria-hidden="true"></span>
-                                <a href="#" tabindex="-1">
-                                    <span class="top_cate">[ Automobile ]</span>
-                                    <strong>車両スモールオーバーラップ衝突試験結果の予測</strong>
-                                    <ul class="sub_cate">
-                                        <li># Generator</li>
-                                    </ul>
-                                </a>
-                            </div>
-                        </div>
+                        <div class="mpj_bullet_scrollBox" id="mpj_bullet_scrollBox"></div>
                     </div>
                     <div class="mpj_fraction" aria-live="polite" aria-atomic="true">
                         <span class="current">01</span> / <span class="total">03</span>
                     </div>
                 </div>
             </div>
+            <script>
+            (function(){
+                var FALLBACK_IMG = '../assets/img/main/mpj_img01.png';
+                var CASE_DETAIL_URL = '/jp/html/resource/caseStudiesDetail.html';
+
+                function tagsToArray(tags) {
+                    if (!tags) return [];
+                    if (Array.isArray(tags)) return tags;
+                    return tags.split(',').map(function(t){ return t.trim(); }).filter(Boolean);
+                }
+
+                function buildSlider(items) {
+                    var slideArea = document.getElementById('mpj_slide_area');
+                    var descArea  = document.getElementById('mpj_desc_area');
+                    var bulletBox = document.getElementById('mpj_bullet_scrollBox');
+                    var total     = items.length;
+
+                    items.forEach(function(item, i) {
+                        var tabDiv = document.createElement('div');
+                        tabDiv.className = 'mpj_tab_item' + (i === 0 ? ' active' : '');
+                        tabDiv.setAttribute('role', 'tabpanel');
+                        tabDiv.setAttribute('aria-label', 'スライド ' + (i+1) + ' / ' + total);
+                        var imgSrc = (item.image_url && item.image_url !== '') ? item.image_url : FALLBACK_IMG;
+                        tabDiv.innerHTML = '<div class="mpj_tab_img"><figure><img src="' + imgSrc + '" alt="' + (item.title_jp || item.title || '') + '"></figure></div>';
+                        slideArea.insertBefore(tabDiv, descArea);
+                    });
+
+                    items.forEach(function(item, i) {
+                        var tags = tagsToArray(item.tags);
+                        var tagsHtml = tags.map(function(t){ return '<li>' + t + '</li>'; }).join('');
+                        var href = item.link ? item.link : (CASE_DETAIL_URL + '?id=' + item.id);
+                        var displayTitle = item.title_jp || item.title || '';
+                        var a = document.createElement('a');
+                        a.className = 'mpj_desc' + (i === 0 ? ' active' : '');
+                        a.href = href;
+                        a.innerHTML =
+                            '<span class="top_cate">' + (item.category || '') + '</span>' +
+                            '<h3>' + displayTitle + '</h3>' +
+                            (tagsHtml ? '<ul class="sub_cate">' + tagsHtml + '</ul>' : '');
+                        descArea.appendChild(a);
+                    });
+
+                    items.forEach(function(item, i) {
+                        var tags = tagsToArray(item.tags);
+                        var tagsHtml = tags.map(function(t){ return '<li># ' + t + '</li>'; }).join('');
+                        var href = item.link ? item.link : (CASE_DETAIL_URL + '?id=' + item.id);
+                        var displayTitle = item.title_jp || item.title || '';
+                        var div = document.createElement('div');
+                        div.className = 'mpj_bullet';
+                        div.setAttribute('role', 'tab');
+                        div.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+                        div.setAttribute('aria-label', displayTitle);
+                        div.setAttribute('tabindex', i === 0 ? '0' : '-1');
+                        div.innerHTML =
+                            '<span class="cross tl" aria-hidden="true"></span>' +
+                            '<span class="cross tr" aria-hidden="true"></span>' +
+                            '<span class="cross bl" aria-hidden="true"></span>' +
+                            '<span class="cross br" aria-hidden="true"></span>' +
+                            '<a href="' + href + '" tabindex="-1">' +
+                                '<span class="top_cate">[ ' + (item.category || '') + ' ]</span>' +
+                                '<strong>' + displayTitle + '</strong>' +
+                                (tagsHtml ? '<ul class="sub_cate">' + tagsHtml + '</ul>' : '') +
+                            '</a>';
+                        bulletBox.appendChild(div);
+                    });
+
+                    var totalEl = document.querySelector('#main_activeProjects .mpj_fraction .total');
+                    if (totalEl) totalEl.textContent = String(total).padStart(2, '0');
+
+                    var attempts = 0;
+                    function tryInitMpj() {
+                        if (typeof window.initMpj === 'function') {
+                            window.initMpj();
+                        } else if (attempts++ < 30) {
+                            setTimeout(tryInitMpj, 100);
+                        }
+                    }
+                    tryInitMpj();
+                }
+
+                fetch('/admin/api/case-studies?featured=1')
+                    .then(function(r){ return r.json(); })
+                    .then(function(items){
+                        if (items.length > 0) {
+                            buildSlider(items.slice(0, 3));
+                        } else {
+                            return fetch('/admin/api/case-studies')
+                                .then(function(r){ return r.json(); })
+                                .then(function(all){
+                                    var latest = all.slice(0, 3);
+                                    if (latest.length === 0) { buildFallback(); return; }
+                                    buildSlider(latest);
+                                });
+                        }
+                    })
+                    .catch(function(){ buildFallback(); });
+
+                function buildFallback() {
+                    var fallback = [
+                        { id:0, title:'鋳造部品のリブデザイン生成', title_jp:'鋳造部品のリブデザイン生成', category:'Automobile', tags:['Generator','Evaluator'], image_url:'', link:'#' },
+                        { id:0, title:'TVスタンドの逆設計（Inverse Design）', title_jp:'TVスタンドの逆設計（Inverse Design）', category:'Electronics', tags:['Generator','Evaluator','Optimizer'], image_url:'', link:'#' },
+                        { id:0, title:'車両スモールオーバーラップ衝突試験結果の予測', title_jp:'車両スモールオーバーラップ衝突試験結果の予測', category:'Automobile', tags:['Generator'], image_url:'', link:'#' }
+                    ];
+                    buildSlider(fallback);
+                }
+            })();
+            </script>
         </section>
         <section id="main_clients" class="sec_white02">
             <div class="grid_deco nbt">
@@ -820,7 +907,7 @@
                         tryRebuild();
                     }
 
-                    fetch('https://narnialabs.mycafe24.com/admin/api/clients')
+                    fetch('/admin/api/clients')
                         .then(function(r){ return r.json(); })
                         .then(function(items){ applyClients(items); })
                         .catch(function(){ /* API 失敗時に既存のハードコーディング fallback を維持 */ });

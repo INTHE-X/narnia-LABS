@@ -7,13 +7,27 @@
 
     <link rel="stylesheet" href="../../../assets/css/reset.css">
     <link rel="stylesheet" href="../../../assets/css/common.css">
-    <link rel="stylesheet" href="../../../assets/css/style.css">
-    <link rel="stylesheet" href="../../../assets/css/sub.css">
-    <link rel="stylesheet" href="../../../assets/css/responsive.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css?v=20260430">
+    <link rel="stylesheet" href="../../../assets/css/sub.css?v=20260527">
+    <link rel="stylesheet" href="../../../assets/css/responsive.css?v=20260527">
      <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
+<style>
+/* 볼드 텍스트 크기 강제 리셋 */
+#techblog_post .tbp_content .tbp_text strong,
+#techblog_post .tbp_content .tbp_text b {
+    font-size: inherit !important;
+    font-weight: 700 !important;
+    display: inline !important;
+    color: inherit !important;
+    line-height: inherit !important;
+    letter-spacing: inherit !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+</style>
 
-    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/js/common.js?v=20260430"></script>
     <script src="../../../assets/plugin/jquery.js"></script>
     <script src="../../../assets/js/sub.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -76,7 +90,7 @@
 
 <script>
 (function () {
-    var API = 'https://narnialabs.mycafe24.com/admin/api/tech-blogs';
+    var API = '/admin/api/tech-blogs';
 
     function getParam(name) {
         var params = new URLSearchParams(window.location.search);
@@ -104,8 +118,17 @@
 
         // 썸네일
 
-        // 본문: 에디터 HTML 직접 렌더링 (썸네일 이미지 중복 제거)
-        var body = post.description || '';
+        // 현재 언어 감지 (URL 경로 기준)
+        var lang = 'ko';
+        var path = window.location.pathname;
+        if (path.indexOf('/eng/') !== -1) lang = 'en';
+        else if (path.indexOf('/jpn/') !== -1) lang = 'jp';
+
+        // 본문: 언어별 우선 선택 → 없으면 KO fallback
+        var body = '';
+        if (lang === 'jp') body = post.description_jp || post.description_en || post.description || '';
+        else if (lang === 'en') body = post.description_en || post.description || '';
+        else body = post.description || '';
         if (post.thumbnail) {
             try {
                 var parser = new DOMParser();
@@ -134,6 +157,11 @@
 
         document.getElementById('tbp_loading').style.display = 'none';
         document.getElementById('tbp_body').style.display = 'block';
+
+        // 공유 버튼 스크롤 동작 재초기화 (display:none → block 후)
+        setTimeout(function () {
+            if (typeof window.reinitTbpShare === 'function') window.reinitTbpShare();
+        }, 100);
     }
 
     var id = getParam('id');

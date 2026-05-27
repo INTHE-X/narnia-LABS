@@ -1,7 +1,9 @@
 <div class="header_container">
     <div class="header_logo">
         <h1>
-            <a href="/">NARNIA LABS</a>
+            <a href="/">
+                <img src="/assets/img/common/main_logo.svg" alt="NARNIA LABS">
+            </a>
         </h1>
     </div>
     <div class="right">
@@ -63,7 +65,7 @@
                         <li><a href="/kor/html/resource/education.html">Education</a></li>
                         <li><a href="/kor/html/resource/events.html">Events</a></li>
                         <li><a href="/kor/html/resource/publication.html">Publications</a></li>
-                        <li><a href="https://narnialabs.mycafe24.com/kor/html/resource/techBlog.html">Tech Blog</a></li>
+                        <li><a href="/kor/html/resource/techBlog.html">Tech Blog</a></li>
                         <!-- 어드민에서 추가한 동적 메뉴가 여기에 자동 삽입됩니다 -->
                     </ul>
                 </li>
@@ -131,13 +133,12 @@
                     <span>Resource</span>
                     <i class="ico_arrow"></i>
                 </a>
-                <ul class="mob_sub">
+                <ul class="mob_sub" id="mob-resource-sub">
                     <li><a href="/kor/html/resource/caseStudies.html">Case studies</a></li>
                     <li><a href="/kor/html/resource/education.html">Education</a></li>
                     <li><a href="/kor/html/resource/events.html">Events</a></li>
                     <li><a href="/kor/html/resource/publication.html">Publications</a></li>
-                    <li class="outer_link"><a href="/kor/html/resource/techBlog.html">Tech blog <i class="ico_outer_link"></i></a></li>
-                    <li class="outer_link"><a href="https://dataset.narnia.ai">Dataset <i class="ico_outer_link"></i></a></li>
+                    <li><a href="/kor/html/resource/techBlog.html">Tech blog</a></li>
                 </ul>
             </li>
         </ul>
@@ -156,25 +157,77 @@
 
 <script>
 (function () {
-    var API = 'https://narnialabs.mycafe24.com/admin/api/resource-menus';
+    var API = '/admin/api/resource-menus';
     var list = document.getElementById('resource-floor2');
-    if (!list) return;
+    var mobList = document.getElementById('mob-resource-sub');
+    if (!list && !mobList) return;
 
     fetch(API)
         .then(function (r) { return r.json(); })
         .then(function (items) {
-            var baseIndex = list.children.length;
-            items.forEach(function (item, idx) {
-                var li = document.createElement('li');
-                li.className = 'outer_link';
-                li.style.setProperty('--i', baseIndex + idx);
-                var a = document.createElement('a');
-                a.href = item.url;
-                if (item.is_external) a.target = '_blank';
-                a.innerHTML = item.title + (item.is_external ? ' <i class="ico_outer_link"></i>' : '');
-                li.appendChild(a);
-                list.appendChild(li);
-            });
+            // PC 메뉴
+            if (list) {
+                var baseIndex = list.children.length;
+                items.forEach(function (item, idx) {
+                    var li = document.createElement('li');
+                    li.className = item.is_external ? 'outer_link' : '';
+                    li.style.setProperty('--i', baseIndex + idx);
+                    var a = document.createElement('a');
+                    a.href = item.url;
+                    if (item.is_external) a.target = '_blank';
+                    a.innerHTML = item.title + (item.is_external ? ' <i class="ico_outer_link"></i>' : '');
+                    li.appendChild(a);
+                    list.appendChild(li);
+                });
+            }
+            // 모바일 메뉴
+            if (mobList) {
+                var newItems = [];
+                items.forEach(function (item) {
+                    var li = document.createElement('li');
+                    li.className = item.is_external ? 'outer_link' : '';
+                    var a = document.createElement('a');
+                    a.href = item.url;
+                    if (item.is_external) a.target = '_blank';
+                    a.innerHTML = item.title + (item.is_external ? ' <i class="ico_outer_link"></i>' : '');
+                    li.appendChild(a);
+                    // transition:none 포함해 초기 숨김 상태 완전 고정
+                    li.style.opacity = '0';
+                    li.style.transform = 'translateY(12px)';
+                    li.style.transition = 'none';
+                    mobList.appendChild(li);
+                    newItems.push(li);
+                });
+                // reflow 강제: 브라우저가 위 hidden 상태를 실제로 계산하게 함
+                void mobList.offsetHeight;
+                // 열려있는 경우 maxHeight 재계산
+                var parentLi = mobList.closest('.has_sub');
+                if (parentLi && parentLi.classList.contains('is_open')) {
+                    mobList.style.maxHeight = mobList.scrollHeight + 'px';
+                }
+                // triple rAF:
+                // 1) transition:none 제거(CSS transition 복원) → 2) reflow → 3) opacity 제거(transition 발동)
+                requestAnimationFrame(function () {
+                    // 1단계: transition 복원 (아직 opacity는 0 유지)
+                    newItems.forEach(function (li) {
+                        li.style.transition = '';
+                    });
+                    // 강제 reflow: 복원된 transition이 브라우저에 반영
+                    void mobList.offsetHeight;
+                    requestAnimationFrame(function () {
+                        // 2단계: opacity/transform 제거 → CSS open 상태 opacity:1 로 transition 발동
+                        newItems.forEach(function (li) {
+                            li.style.opacity = '';
+                            li.style.transform = '';
+                        });
+                        // maxHeight 최종 확인
+                        var parentLi2 = mobList.closest('.has_sub');
+                        if (parentLi2 && parentLi2.classList.contains('is_open')) {
+                            mobList.style.maxHeight = mobList.scrollHeight + 'px';
+                        }
+                    });
+                });
+            }
         })
         .catch(function () {
             // API 실패 시 조용히 무시

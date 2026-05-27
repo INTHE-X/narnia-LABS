@@ -32,7 +32,7 @@ class TechBlogController extends Controller
             'published_date' => 'nullable|date',
             'sort_order'     => 'nullable|integer',
             'is_active'      => 'nullable|boolean',
-            'image'          => 'nullable|image|max:5120',
+            'image'          => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,bmp,svg|max:5120',
         ]);
 
         if ($request->hasFile('image')) {
@@ -77,7 +77,7 @@ class TechBlogController extends Controller
             'published_date' => 'nullable|date',
             'sort_order'     => 'nullable|integer',
             'is_active'      => 'nullable|boolean',
-            'image'          => 'nullable|image|max:5120',
+            'image'          => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,bmp,svg|max:5120',
         ]);
 
         if ($request->hasFile('image')) {

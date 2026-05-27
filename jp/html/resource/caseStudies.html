@@ -7,13 +7,13 @@
 
     <link rel="stylesheet" href="../../../assets/css/reset.css">
     <link rel="stylesheet" href="../../../assets/css/common.css">
-    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css?v=20260430">
     <link rel="stylesheet" href="../../../assets/css/sub.css">
     <link rel="stylesheet" href="../../../assets/css/responsive.css">
      <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
 
-    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/js/common.js?v=20260430"></script>
     <script src="../../../assets/plugin/jquery.js"></script>
     <script src="../../../assets/js/sub.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -66,7 +66,6 @@
                             <div class="swiper-wrapper" id="csd-slide-wrapper">
                                 <!-- APIで動的生成 -->
                             </div>
-                            <div class="csd_pagination"></div>
                             <div class="blur_txtDeco">
                                 <div class="inner">
                                     <div class="dots"></div>
@@ -76,6 +75,15 @@
                                     </figure>
                                 </div>
                             </div>
+                        </div>
+                        <div class="csd_nav" style="width:max-content;display:flex;align-items:center;gap:16px;margin-top:16px;margin-left:auto;">
+                            <button type="button" class="csd_prev" aria-label="前のスライド" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:none;border:none;color:#fff;cursor:pointer;padding:0;flex-shrink:0;opacity:0.7;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;display:block;"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                            </button>
+                            <div class="csd_pagination" style="display:flex;align-items:center;gap:44px;"></div>
+                            <button type="button" class="csd_next" aria-label="次のスライド" style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:none;border:none;color:#fff;cursor:pointer;padding:0;flex-shrink:0;opacity:0.7;">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;display:block;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -116,7 +124,7 @@
 
 <script>
 (function() {
-    var API_URL = 'https://narnialabs.mycafe24.com/admin/api/case-studies';
+    var API_URL = '/admin/api/case-studies';
     var FALLBACK_IMG = '/assets/img/sub/case_studies_main_slide01.png';
     var ARROW_IMG = '/assets/img/common/arrow_3dots.svg';
 
@@ -136,8 +144,8 @@
                 + '<div class="img"><figure><img src="' + imgSrc(item) + '" alt="#"></figure></div>'
                 + '<div class="txt_area">'
                 + '<div class="cate">' + tagsHtml + '</div>'
-                + '<h3 class="tit">' + (item.title_jp || item.title) + '</h3>'
-                + '<div class="link"><a href="' + (item.link || '#') + '"' + (item.link ? ' target="_blank"' : '') + '>製品のお問い合わせ<i><img src="' + ARROW_IMG + '" alt="#"></i></a></div>'
+                + '<h3 class="tit">' + (item.title_jp || item.title_en || item.title) + '</h3>'
+                + '<div class="link"><a href="/jp/html/contact/contactUs.html">製品のお問い合わせ<i><img src="' + ARROW_IMG + '" alt="#"></i></a></div>'
                 + '</div></div></div>';
         }).join('');
 
@@ -154,6 +162,10 @@
                 speed: 600,
                 loop: featured.length > 1,
                 autoplay: featured.length > 1 ? { delay: 6000, disableOnInteraction: false } : false,
+                navigation: {
+                    prevEl: '.csd_prev',
+                    nextEl: '.csd_next',
+                },
                 pagination: { el: '.csd_pagination', clickable: true },
             });
         }
@@ -192,7 +204,7 @@
                 return '<li><a href="caseStudiesDetail.html?id=' + item.id + '">'
                     + '<div class="csdl_inner">'
                     + '<div class="img"><figure><img src="' + imgSrc(item) + '" alt="#"></figure></div>'
-                    + '<div class="desc"><h3>' + (item.title_jp || item.title) + '</h3><div class="cate">' + tagsHtml + '</div></div>'
+                    + '<div class="desc"><h3>' + (item.title_jp || item.title_en || item.title) + '</h3><div class="cate">' + tagsHtml + '</div></div>'
                     + '</div></a></li>';
             }).join('');
 

@@ -30,7 +30,7 @@ class CaseStudyController extends Controller
             'description_en' => 'nullable|string',
             'title_jp'       => 'nullable|string|max:500',
             'description_jp' => 'nullable|string',
-            'image'        => 'nullable|image|max:5120',
+            'image'        => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,bmp,svg|max:5120',
             'link'         => 'nullable|url|max:500',
             'is_featured'  => 'nullable|boolean',
             'is_published' => 'nullable|boolean',
@@ -73,7 +73,7 @@ class CaseStudyController extends Controller
             'description_en' => 'nullable|string',
             'title_jp'       => 'nullable|string|max:500',
             'description_jp' => 'nullable|string',
-            'image'        => 'nullable|image|max:5120',
+            'image'        => 'nullable|file|mimes:jpg,jpeg,png,gif,webp,bmp,svg|max:5120',
             'link'         => 'nullable|url|max:500',
             'is_featured'  => 'nullable|boolean',
             'is_published' => 'nullable|boolean',
@@ -112,6 +112,16 @@ class CaseStudyController extends Controller
         return redirect()->route('case-studies.index')->with('success', '케이스스터디가 삭제되었습니다.');
     }
 
+    public function uploadEditorImage(Request $request)
+    {
+        $request->validate(['image' => 'required|file|mimes:jpg,jpeg,png,gif,webp|max:10240']);
+        $dir = public_path('uploads/case_studies/editor');
+        if (!is_dir($dir)) mkdir($dir, 0755, true);
+        $filename = \Illuminate\Support\Str::uuid() . '.' . $request->file('image')->getClientOriginalExtension();
+        $request->file('image')->move($dir, $filename);
+        return response()->json(['url' => '/admin/uploads/case_studies/editor/' . $filename]);
+    }
+
     public function toggleFeatured(string $id)
     {
         $caseStudy = CaseStudy::findOrFail($id);
@@ -128,6 +138,11 @@ class CaseStudyController extends Controller
         if ($request->filled('category')) {
             $query->where('category', $request->category);
         }
+
+        if ($request->boolean('featured')) {
+            $query->where('is_featured', true);
+        }
+
 
         $items = $query->get()->map(function ($c) {
             return [

@@ -1,5 +1,10 @@
 @extends('layouts.admin')
 @section('title', '케이스스터디 등록')
+
+@push('head')
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+@endpush
+
 @section('content')
 <div class="content-header">
     <div class="content-header-inner"><h1 class="page-title">케이스스터디 등록</h1></div>
@@ -12,7 +17,7 @@
                 <ul style="margin:0;padding-left:1.2rem;">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
             </div>
         @endif
-        <form action="{{ route('case-studies.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('case-studies.store') }}" method="POST" enctype="multipart/form-data" id="cs-form">
             @csrf
             <div class="img-form-layout" style="grid-template-columns:360px 1fr;">
                 <div class="img-form-panel">
@@ -79,33 +84,60 @@
                             <span class="img-toggle-btn"></span>
                         </label>
                     </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description" rows="4" placeholder="상세 설명">{{ old('description') }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명 (EN)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_en" rows="4" placeholder="Description in English">{{ old('description_en') }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명 (JP)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_jp" rows="4" placeholder="Description in Japanese">{{ old('description_jp') }}</textarea>
-                        </div>
-                    </div>
                 </div>
             </div>
+
+            {{-- 에디터 영역 --}}
+            @foreach([['ko','설명 (KO)','description'],['en','설명 (EN)','description_en'],['jp','설명 (JP)','description_jp']] as [$lang,$label,$field])
+            <div style="padding:20px 24px 0;">
+                <div style="font-size:13px;color:var(--gray-600);font-weight:500;margin-bottom:8px;">{{ $label }}</div>
+                <div id="editor-{{ $lang }}" style="min-height:300px;"></div>
+                <textarea name="{{ $field }}" id="{{ $field }}-hidden" style="display:none;">{{ old($field) }}</textarea>
+            </div>
+            @endforeach
+
             <div class="img-form-actions">
                 <div class="img-form-actions-left">
-                    <button type="submit" class="btn btn-primary">등록하기</button>
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">등록하기</button>
                     <a href="{{ route('case-studies.index') }}" class="btn btn-secondary">취소</a>
                 </div>
             </div>
         </form>
     </div>
 </div>
+
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script>
+function makeEditor(elId, initialValue) {
+    return new toastui.Editor({
+        el: document.getElementById(elId),
+        height: '350px',
+        initialEditType: 'wysiwyg',
+        previewStyle: 'vertical',
+        initialValue: initialValue || '',
+        hooks: {
+            addImageBlobHook: function(blob, callback) {
+                var fd = new FormData();
+                fd.append('image', blob);
+                fetch('/admin/api/case-studies/upload-image', { method: 'POST', body: fd })
+                    .then(function(r){ return r.json(); })
+                    .then(function(d){ callback(d.url, '이미지'); })
+                    .catch(function(){ alert('이미지 업로드에 실패했습니다.'); });
+            }
+        },
+        language: 'ko-KR'
+    });
+}
+
+var editorKo = makeEditor('editor-ko', document.getElementById('description-hidden').value);
+var editorEn = makeEditor('editor-en', document.getElementById('description_en-hidden').value);
+var editorJp = makeEditor('editor-jp', document.getElementById('description_jp-hidden').value);
+
+function submitForm() {
+    document.getElementById('description-hidden').value    = editorKo.getHTML();
+    document.getElementById('description_en-hidden').value = editorEn.getHTML();
+    document.getElementById('description_jp-hidden').value = editorJp.getHTML();
+    document.getElementById('cs-form').submit();
+}
+</script>
 @endsection

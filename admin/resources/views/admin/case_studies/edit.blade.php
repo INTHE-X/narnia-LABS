@@ -1,5 +1,10 @@
 @extends('layouts.admin')
 @section('title', '케이스스터디 수정')
+
+@push('head')
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css">
+@endpush
+
 @section('content')
 <div class="content-header">
     <div class="content-header-inner"><h1 class="page-title">케이스스터디 수정</h1></div>
@@ -12,7 +17,7 @@
                 <ul style="margin:0;padding-left:1.2rem;">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
             </div>
         @endif
-        <form action="{{ route('case-studies.update', $caseStudy->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('case-studies.update', $caseStudy->id) }}" method="POST" enctype="multipart/form-data" id="cs-form">
             @csrf @method('PUT')
             <div class="img-form-layout" style="grid-template-columns:360px 1fr;">
                 <div class="img-form-panel">
@@ -70,53 +75,79 @@
                         <div class="field-value"><input type="number" name="sort_order" value="{{ old('sort_order', $caseStudy->sort_order) }}" min="0" style="max-width:120px;"></div>
                     </div>
                     <div class="field-row">
-                        <div class="field-label">슬라이드 노출</div>
-                        <label class="img-toggle-wrap" for="is_featured">
-                            <input type="checkbox" id="is_featured" name="is_featured" value="1" {{ old('is_featured', $caseStudy->is_featured) ? 'checked' : '' }}>
-                            <span class="img-toggle-btn"></span>
-                        </label>
-                    </div>
-                    <div class="field-row">
                         <div class="field-label">게시 공개</div>
                         <label class="img-toggle-wrap" for="is_published">
                             <input type="checkbox" id="is_published" name="is_published" value="1" {{ old('is_published', $caseStudy->is_published ?? 1) ? 'checked' : '' }}>
                             <span class="img-toggle-btn"></span>
                         </label>
                     </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description" rows="4">{{ old('description', $caseStudy->description) }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명 (EN)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_en" rows="4" placeholder="Description in English">{{ old('description_en', $caseStudy->description_en ?? '') }}</textarea>
-                        </div>
-                    </div>
-                    <div class="field-row align-top">
-                        <div class="field-label">설명 (JP)</div>
-                        <div class="field-value" style="padding-top:12px;padding-bottom:12px;">
-                            <textarea name="description_jp" rows="4" placeholder="Description in Japanese">{{ old('description_jp', $caseStudy->description_jp ?? '') }}</textarea>
-                        </div>
+                    <div class="field-row">
+                        <div class="field-label">메인 노출</div>
+                        <label class="img-toggle-wrap" for="is_featured">
+                            <input type="checkbox" id="is_featured" name="is_featured" value="1" {{ old('is_featured', $caseStudy->is_featured) ? 'checked' : '' }}>
+                            <span class="img-toggle-btn"></span>
+                        </label>
                     </div>
                 </div>
             </div>
+
+            {{-- 에디터 영역 --}}
+            @foreach([['ko','설명 (KO)','description',$caseStudy->description],['en','설명 (EN)','description_en',$caseStudy->description_en ?? ''],['jp','설명 (JP)','description_jp',$caseStudy->description_jp ?? '']] as [$lang,$label,$field,$val])
+            <div style="padding:20px 24px 0;">
+                <div style="font-size:13px;color:var(--gray-600);font-weight:500;margin-bottom:8px;">{{ $label }}</div>
+                <div id="editor-{{ $lang }}" style="min-height:300px;"></div>
+                <textarea name="{{ $field }}" id="{{ $field }}-hidden" style="display:none;">{{ old($field, $val) }}</textarea>
+            </div>
+            @endforeach
+
             <div class="img-form-actions" style="justify-content:space-between;">
                 <div class="img-form-actions-left">
-                    <button type="submit" class="btn btn-primary">수정하기</button>
+                    <button type="button" class="btn btn-primary" onclick="submitForm()">수정하기</button>
                     <a href="{{ route('case-studies.index') }}" class="btn btn-secondary">취소</a>
                 </div>
                 <button type="button" class="btn btn-danger" onclick="document.getElementById('cs-delete-form').submit()">삭제</button>
             </div>
         </form>
 
-        {{-- 삭제 form은 수정 form 바깥에 위치 --}}
         <form id="cs-delete-form" method="POST" action="{{ route('case-studies.destroy', $caseStudy->id) }}"
               onsubmit="return confirm('정말 삭제하시겠습니까?')">
             @csrf @method('DELETE')
         </form>
     </div>
 </div>
+
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script>
+function makeEditor(elId, initialValue) {
+    return new toastui.Editor({
+        el: document.getElementById(elId),
+        height: '350px',
+        initialEditType: 'wysiwyg',
+        previewStyle: 'vertical',
+        initialValue: initialValue || '',
+        hooks: {
+            addImageBlobHook: function(blob, callback) {
+                var fd = new FormData();
+                fd.append('image', blob);
+                fetch('/admin/api/case-studies/upload-image', { method: 'POST', body: fd })
+                    .then(function(r){ return r.json(); })
+                    .then(function(d){ callback(d.url, '이미지'); })
+                    .catch(function(){ alert('이미지 업로드에 실패했습니다.'); });
+            }
+        },
+        language: 'ko-KR'
+    });
+}
+
+var editorKo = makeEditor('editor-ko', document.getElementById('description-hidden').value);
+var editorEn = makeEditor('editor-en', document.getElementById('description_en-hidden').value);
+var editorJp = makeEditor('editor-jp', document.getElementById('description_jp-hidden').value);
+
+function submitForm() {
+    document.getElementById('description-hidden').value    = editorKo.getHTML();
+    document.getElementById('description_en-hidden').value = editorEn.getHTML();
+    document.getElementById('description_jp-hidden').value = editorJp.getHTML();
+    document.getElementById('cs-form').submit();
+}
+</script>
 @endsection

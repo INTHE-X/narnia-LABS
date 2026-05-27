@@ -22,6 +22,7 @@
                         <th>제목</th>
                         <th>출처</th>
                         <th>날짜</th>
+                        <th style="text-align:center;">상단노출</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -38,9 +39,16 @@
                         <td style="max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ $item->title }}</td>
                         <td style="color:#888;">{{ $item->source }}</td>
                         <td>{{ $item->published_at?->format('Y-m-d') ?? '-' }}</td>
+                        <td style="text-align:center;">
+                            <span style="display:inline-block;padding:2px 10px;border-radius:12px;font-size:.75rem;font-weight:600;
+                                background:{{ $item->is_featured ? '#e8f5e9' : '#f5f5f5' }};
+                                color:{{ $item->is_featured ? '#388e3c' : '#aaa' }};">
+                                {{ $item->is_featured ? '노출' : '-' }}
+                            </span>
+                        </td>
                     </tr>
                     @empty
-                    <tr><td colspan="5"><div class="empty-state"><p>등록된 뉴스가 없습니다.</p></div></td></tr>
+                    <tr><td colspan="6"><div class="empty-state"><p>등록된 뉴스가 없습니다.</p></div></td></tr>
                     @endforelse
                 </tbody>
             </table>

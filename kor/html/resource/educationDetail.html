@@ -7,13 +7,13 @@
 
     <link rel="stylesheet" href="../../../assets/css/reset.css">
     <link rel="stylesheet" href="../../../assets/css/common.css">
-    <link rel="stylesheet" href="../../../assets/css/style.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css?v=20260430">
     <link rel="stylesheet" href="../../../assets/css/sub.css">
     <link rel="stylesheet" href="../../../assets/css/responsive.css">
      <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
 
-    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/js/common.js?v=20260430"></script>
     <script src="../../../assets/plugin/jquery.js"></script>
     <script src="../../../assets/js/sub.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -134,9 +134,24 @@
                             <div class="cross_deco color1 rt"></div>
                             <div class="cross_deco color1 lb"></div>
                             <div class="cross_deco color1 rb"></div>
-                            <div class="cont">
+                            <div class="cont" style="position:relative;">
+                                <!-- 자료 없음 딤 오버레이 -->
+                                <div id="edd-no-material" style="display:none;position:absolute;inset:0;z-index:20;background:rgba(0,0,0,0.72);backdrop-filter:blur(3px);border-radius:inherit;display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="1.5" style="width:48px;height:48px;">
+                                        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/>
+                                        <polyline points="13 2 13 9 20 9"/>
+                                        <line x1="9" y1="14" x2="15" y2="14" stroke-opacity="0.5"/>
+                                        <line x1="9" y1="18" x2="12" y2="18" stroke-opacity="0.5"/>
+                                    </svg>
+                                    <p style="color:rgba(255,255,255,0.75);font-size:15px;font-weight:500;margin:0;text-align:center;line-height:1.6;">해당 영상은<br>별도의 교육자료가 없습니다.</p>
+                                </div>
                                 <div class="edd_success" id="edd-success" style="display:none; text-align:center; padding: 30px 20px;">
-                                    <div style="font-size:42px; margin-bottom:12px;">✅</div>
+                                    <div style="margin-bottom:14px;">
+                                        <svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:56px;height:56px;">
+                                            <circle cx="28" cy="28" r="27" stroke="#fff" stroke-width="2" opacity="0.2"/>
+                                            <polyline points="16,28 24,36 40,20" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
                                     <strong style="font-size:17px; display:block; margin-bottom:6px;">신청이 완료되었습니다!</strong>
                                     <p style="color:#888; font-size:13px; margin-bottom:20px;">아래 버튼을 클릭하여 자료를 다운로드하세요.</p>
                                     <!-- 다운로드 버튼 목록 (JS로 주입) -->
@@ -240,7 +255,7 @@
 
 <script>
 (function () {
-    var API_BASE    = 'https://narnialabs.mycafe24.com/admin/api/education';
+    var API_BASE    = '/admin/api/education';
     var FALLBACK_IMG = '../../../assets/img/sub/edd_img01.png';
 
     function getParam(key) {
@@ -264,6 +279,15 @@
                 var date     = document.getElementById('edd-date');
                 var skeleton = document.getElementById('edd-skeleton');
                 var cont     = document.getElementById('edd-cont');
+
+                // 자료 없을 때 우측 딤 오버레이 표시
+                var noMaterial = document.getElementById('edd-no-material');
+                if (noMaterial) {
+                    var hasFiles = item.pdf_files && item.pdf_files.length > 0;
+                    if (!hasFiles) {
+                        noMaterial.style.display = 'flex';
+                    }
+                }
 
                 if (img) {
                     img.src = item.image_url || FALLBACK_IMG;
@@ -367,8 +391,8 @@
                                 a.href = f.url;
                                 a.download = f.name;
                                 a.target = '_blank';
-                                a.style.cssText = 'display:inline-flex;align-items:center;gap:7px;padding:9px 18px;background:#0066cc;color:#fff;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;width:100%;max-width:320px;box-sizing:border-box;justify-content:center;';
-                                a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
+                                a.style.cssText = 'display:inline-flex;align-items:center;gap:10px;padding:12px 20px;background:#111;color:#fff;border-radius:6px;font-size:13px;font-weight:600;text-decoration:none;width:100%;max-width:340px;box-sizing:border-box;justify-content:center;';
+                                a.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" style="width:20px;height:20px;flex-shrink:0;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>'
                                            + f.name;
                                 dlLinks.appendChild(a);
                             });

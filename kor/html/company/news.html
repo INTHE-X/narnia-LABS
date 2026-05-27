@@ -7,13 +7,13 @@
 
     <link rel="stylesheet" href="../../../assets/css/reset.css">
     <link rel="stylesheet" href="../../../assets/css/common.css">
-    <link rel="stylesheet" href="../../../assets/css/style.css">
-    <link rel="stylesheet" href="../../../assets/css/sub.css">
-    <link rel="stylesheet" href="../../../assets/css/responsive.css">
+    <link rel="stylesheet" href="../../../assets/css/style.css?v=20260430">
+    <link rel="stylesheet" href="../../../assets/css/sub.css?v=20260526">
+    <link rel="stylesheet" href="../../../assets/css/responsive.css?v=20260526">
      <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css">
 
-    <script src="../../../assets/js/common.js"></script>
+    <script src="../../../assets/js/common.js?v=20260430"></script>
     <script src="../../../assets/plugin/jquery.js"></script>
     <script src="../../../assets/js/sub.js"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
@@ -78,9 +78,15 @@
                     </div>
                 </div>
                 <div class="nv_pagination">
+                    <button id="nv_prev_btn" aria-label="이전" style="background:none;border:none;color:#fff;cursor:pointer;padding:4px;opacity:0.7;display:flex;align-items:center;flex-shrink:0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;display:block;"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                    </button>
                     <span class="nv_pag_current">01</span>
                     <div class="nv_pag_bar"><div class="nv_pag_ticks"></div><div class="nv_pag_fill"></div></div>
                     <span class="nv_pag_total">01</span>
+                    <button id="nv_next_btn" aria-label="다음" style="background:none;border:none;color:#fff;cursor:pointer;padding:4px;opacity:0.7;display:flex;align-items:center;flex-shrink:0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;display:block;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </button>
                 </div>
             </div>
         </section>
@@ -121,7 +127,7 @@
 
 <script>
 (function () {
-    var API_URL = 'https://narnialabs.mycafe24.com/admin/api/news';
+    var API_URL = '/admin/api/news';
     var FALLBACK_IMG = '/assets/img/sub/news_slide01.png';
     var FALLBACK_LIST = '/assets/img/sub/news_list01.png';
     var PAGE_SIZE = 8;
@@ -249,6 +255,41 @@
         })
         .catch(function (err) { console.warn('News API 로드 실패:', err); });
 })();
+    /* ── 뉴스 수동 화살표 ── */
+    (function(){
+        var prevBtn = document.getElementById('nv_prev_btn');
+        var nextBtn = document.getElementById('nv_next_btn');
+
+        function getCurrentIndex(){
+            var el = document.querySelector('.nv_pag_current');
+            return el ? parseInt(el.textContent, 10) - 1 : 0;
+        }
+        function getTotal(){
+            var el = document.querySelector('.nv_pag_total');
+            return el ? parseInt(el.textContent, 10) : 0;
+        }
+
+        if(prevBtn){
+            prevBtn.addEventListener('click', function(){
+                if(!window.nvSlideManager) return;
+                var cur = getCurrentIndex();
+                var total = getTotal();
+                if(!total) return;
+                var prev = cur - 1 < 0 ? total - 1 : cur - 1;
+                window.nvSlideManager.goTo(prev);
+            });
+        }
+        if(nextBtn){
+            nextBtn.addEventListener('click', function(){
+                if(!window.nvSlideManager) return;
+                var cur = getCurrentIndex();
+                var total = getTotal();
+                if(!total) return;
+                var next = cur + 1 >= total ? 0 : cur + 1;
+                window.nvSlideManager.goTo(next);
+            });
+        }
+    })();
 </script>
 
 </body>

@@ -44,7 +44,7 @@ table {
 
 *{
 	box-sizing: border-box;
-    word-break: keep-all;
+    /* word-break: keep-all; */
 }
 
 a{
@@ -73,4 +73,8 @@ button{
 
 html{
 	scroll-behavior: smooth;
+}
+
+html[lang="ko"] *{
+	word-break: keep-all;
 }
