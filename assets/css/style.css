@@ -339,6 +339,7 @@ section{
     position: fixed;
     width: 100%;
     height: 85px;
+    min-height: 85px; /* CLS 방지: JS 로드 전에도 헤더 공간 확보 */
     position: fixed;
     left: 0;
     top: 0;
@@ -349,6 +350,7 @@ section{
     inset: 0% 0% auto;
     transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.5s ease;
     border-bottom: 1px solid rgba(43, 43, 43, 1);
+    contain: layout; /* CLS 방지: 헤더 내부 변화가 외부 레이아웃에 영향 안 주도록 */
 }
 
 /* #header::after{
