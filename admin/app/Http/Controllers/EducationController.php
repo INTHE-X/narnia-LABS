@@ -41,6 +41,9 @@ class EducationController extends Controller
         if (\Illuminate\Support\Facades\Schema::hasColumn('educations', 'is_aslanx')) {
             $data['is_aslanx'] = $request->has('is_aslanx') ? 1 : 0;
         }
+        if (\Illuminate\Support\Facades\Schema::hasColumn('educations', 'aslanx_sort_order')) {
+            $data['aslanx_sort_order'] = (int) $request->input('aslanx_sort_order', 0);
+        }
 
         // google_links: [{name:..., url:...}] 형태로 정제
         $rawLinks = $request->input('google_links', []);
@@ -111,6 +114,9 @@ class EducationController extends Controller
         if (\Illuminate\Support\Facades\Schema::hasColumn('educations', 'is_aslanx')) {
             $data['is_aslanx'] = $request->has('is_aslanx') ? 1 : 0;
         }
+        if (\Illuminate\Support\Facades\Schema::hasColumn('educations', 'aslanx_sort_order')) {
+            $data['aslanx_sort_order'] = (int) $request->input('aslanx_sort_order', 0);
+        }
 
         // google_links 처리
         $rawLinks = $request->input('google_links', []);
@@ -159,7 +165,7 @@ class EducationController extends Controller
         $data['sort_order'] = $data['sort_order'] ?? $education->sort_order;
 
         // 모델 fillable에 없는 키 제거 (pdfs, remove_pdfs, image 등)
-        $allowed = ['title','category','description','title_en','description_en','title_jp','description_jp','image_path','pdf_paths','link','published_at','sort_order','is_visible','is_aslanx','google_links'];
+        $allowed = ['title','category','description','title_en','description_en','title_jp','description_jp','image_path','pdf_paths','link','published_at','sort_order','is_visible','is_aslanx','aslanx_sort_order','google_links'];
         $data = array_intersect_key($data, array_flip($allowed));
 
         $education->update($data);
@@ -207,7 +213,10 @@ class EducationController extends Controller
             $query->where('category', $request->category);
         }
         if ($request->boolean('aslanx') && \Illuminate\Support\Facades\Schema::hasColumn('educations', 'is_aslanx')) {
-            $query->where('is_aslanx', true);
+            $query->where('is_aslanx', true)
+                  ->reorder()                          // 기존 sort_order/published_at 정렬 초기화
+                  ->orderBy('aslanx_sort_order')       // AslanX 지정 순서 최우선
+                  ->orderByDesc('published_at');       // 같은 순서면 최신순
         }
 
         $items = $query->get()->map(function ($e) {

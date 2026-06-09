@@ -102,6 +102,14 @@
                             <p style="margin:4px 0 0;font-size:11px;color:#999;">AslanX 페이지 영상 섹션에 표시됩니다.</p>
                         </div>
                     </div>
+                    <div class="field-row">
+                        <div class="field-label">AslanX 노출 순서</div>
+                        <div class="field-value">
+                            <input type="number" name="aslanx_sort_order" min="0" style="max-width:100px;"
+                                value="{{ old('aslanx_sort_order', $education->aslanx_sort_order ?? 0) }}">
+                            <p style="margin:4px 0 0;font-size:11px;color:#999;">숫자가 작을수록 AslanX 페이지에서 먼저 표시됩니다. (0 = 기본)</p>
+                        </div>
+                    </div>
 
 
                     {{-- ── 기존 첨부 자료 (파일) ── --}}

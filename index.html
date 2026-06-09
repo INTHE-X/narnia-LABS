@@ -30,6 +30,8 @@
       href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
     <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css" />
+    <!-- LCP 이미지 preload: WebP 지원 브라우저에서 즉시 로드 -->
+    <link rel="preload" as="image" href="./assets/img/main/mv_img.webp" type="image/webp" fetchpriority="high" />
     <link rel="stylesheet" href="./assets/css/reset.css" />
     <link rel="stylesheet" href="./assets/css/common.css" />
     <link rel="stylesheet" href="./assets/css/style.css" />
@@ -109,7 +111,16 @@
             <div class="mvc_inner">
               <div class="mvc_bg">
                 <figure>
-                  <img src="./assets/img/main/mv_img.png" alt="" />
+                  <picture>
+                    <source srcset="./assets/img/main/mv_img.webp" type="image/webp" />
+                    <img
+                      src="./assets/img/main/mv_img.png"
+                      alt=""
+                      fetchpriority="high"
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </picture>
                 </figure>
                 <div class="blur_txtDeco">
                   <div class="inner">

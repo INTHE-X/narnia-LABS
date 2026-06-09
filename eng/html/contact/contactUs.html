@@ -53,13 +53,13 @@
                             <div class="ctpg_top">
                                 <div class="ctpg_img">
                                     <figure>
-                                        <img src="../../../assets/img/sub/ctpg_img.png" alt="나니아랩스 기술 이미지">
+                                        <img src="../../../assets/img/sub/ctpg_img.png" alt="NARNIA LABS Technology Image">
                                     </figure>
                                 </div>
                                 <p class="ctpg_txt">
-                                    나니아랩스의 기술을 지금,
+                                    Experience NARNIA LABS'
                                     <br>
-                                    바로 경험해보세요.
+                                    technology right now.
                                 </p>
                             </div>
                             <div class="ctpg_indicator">
@@ -73,14 +73,14 @@
                                 <div class="cfa_item active" data-step="1">
                                     <span class="cfa_num">[ <b>01</b> <i>/</i> 06 ]</span>
                                     <label class="cfa_tit">
-                                        안녕하세요!
+                                        Hello!
                                         <br>
-                                        회사 또는 소속 기관의 공식 명칭을 입력해 주세요.
+                                        Please enter the official name of your company or organization.
                                     </label>
                                     <div class="cfa_field">
                                         <input type="text" name="company">
                                         <span class="cfa_placeholder">
-                                            회사명을 입력해주세요
+                                            Enter your company name
                                             <span class="cfa_star">*</span>
                                         </span>
                                     </div>
@@ -88,12 +88,12 @@
                                 <div class="cfa_item" data-step="2">
                                     <span class="cfa_num">[ <b>02</b> <i>/</i> 06 ]</span>
                                     <label class="cfa_tit">
-                                        본 문의를 담당하실 분의 성함을 입력해 주세요.
+                                        Please enter the name of the person handling this inquiry.
                                     </label>
                                     <div class="cfa_field">
                                         <input type="text" name="manager">
                                         <span class="cfa_placeholder">
-                                            담당자명을 입력해주세요
+                                            Enter contact person's name
                                             <span class="cfa_star">*</span>
                                         </span>
                                     </div>
@@ -101,12 +101,12 @@
                                 <div class="cfa_item" data-step="3">
                                     <span class="cfa_num">[ <b>03</b> <i>/</i> 06 ]</span>
                                     <label class="cfa_tit">
-                                        담당자의 직책 또는 역할을 입력해 주세요.
+                                        Please enter the contact person's title or role.
                                     </label>
                                     <div class="cfa_field">
                                         <input type="text" name="position">
                                         <span class="cfa_placeholder">
-                                            직책을 입력해주세요
+                                            Enter job title
                                             <span class="cfa_star">*</span>
                                         </span>
                                     </div>
@@ -114,12 +114,12 @@
                                 <div class="cfa_item" data-step="4">
                                     <span class="cfa_num">[ <b>04</b> <i>/</i> 06 ]</span>
                                     <label class="cfa_tit">
-                                        회신을 받을 수 있는 회사 이메일을 입력해 주세요.
+                                        Please enter your company email address for our reply.
                                     </label>
                                     <div class="cfa_field">
                                         <input type="email" name="email">
                                         <span class="cfa_placeholder">
-                                            회사 이메일을 입력해주세요
+                                            Enter your company email
                                             <span class="cfa_star">*</span>
                                         </span>
                                     </div>
@@ -127,12 +127,12 @@
                                 <div class="cfa_item" data-step="5">
                                     <span class="cfa_num">[ <b>05</b> <i>/</i> 06 ]</span>
                                     <label class="cfa_tit">
-                                        필요 시 빠른 연락이 가능한 휴대전화번호를 입력해 주세요.
+                                        Please enter a mobile phone number for quick contact if needed.
                                     </label>
                                     <div class="cfa_field">
                                         <input type="tel" name="phone">
                                         <span class="cfa_placeholder">
-                                            전화번호를 입력해주세요
+                                            Enter phone number
                                             <span class="cfa_star">*</span>
                                         </span>
                                     </div>
@@ -140,20 +140,20 @@
                                 <div class="cfa_item" data-step="6">
                                     <span class="cfa_num">[ <b>06</b> <i>/</i> 06 ]</span>
                                     <label class="cfa_tit">
-                                        요청하시는 내용과 관련된 배경, 목적, 필요사항을
+                                        Please describe in detail the background, purpose,
                                         <br>
-                                        구체적으로 작성해 주세요.
+                                        and requirements of your request.
                                     </label>
                                     <div class="cfa_field">
                                         <textarea name="message" rows="3"></textarea>
                                         <span class="cfa_placeholder">
-                                            문의내용을 입력해주세요
+                                            Enter your inquiry
                                             <span class="cfa_star">*</span>
                                         </span>
                                     </div>
                                 </div>
                                 <button type="submit" class="cfa_submit" disabled>
-                                    <span class="cfa_submit_txt">문의하기</span>
+                                    <span class="cfa_submit_txt">Submit Inquiry</span>
                                 </button>
                             </form>
                         </div>
@@ -185,12 +185,12 @@ window.addEventListener('load', function () {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-    // Laravel 422 오류 → 한국어 메시지 변환
+    // Laravel 422 error → English message mapping
     var errorMessages = {
-        'company':  '회사명을 입력해주세요.',
-        'name':     '담당자명을 입력해주세요.',
-        'email':    '이메일 형식이 맞지 않습니다.',
-        'message':  '문의 내용을 입력해주세요.',
+        'company':  'Please enter your company name.',
+        'name':     'Please enter the contact person\'s name.',
+        'email':    'The email format is invalid.',
+        'message':  'Please enter your inquiry.',
     };
 
     submitBtn.addEventListener('click', function (e) {
@@ -222,15 +222,15 @@ window.addEventListener('load', function () {
             setTimeout(function() { step.focus(); }, 400);
         };
 
-        if (!data.company) { alert('회사명을 입력해주세요.'); scrollToField('company'); return; }
-        if (!data.name)    { alert('담당자명을 입력해주세요.'); scrollToField('manager'); return; }
-        if (!data.email)   { alert('이메일을 입력해주세요.'); scrollToField('email'); return; }
-        if (!isValidEmail(data.email)) { alert('이메일 형식이 맞지 않습니다.\n예) example@company.com'); scrollToField('email'); return; }
-        if (!data.message) { alert('문의 내용을 입력해주세요.'); scrollToField('message'); return; }
+        if (!data.company) { alert('Please enter your company name.'); scrollToField('company'); return; }
+        if (!data.name)    { alert('Please enter the contact person\'s name.'); scrollToField('manager'); return; }
+        if (!data.email)   { alert('Please enter your email address.'); scrollToField('email'); return; }
+        if (!isValidEmail(data.email)) { alert('The email format is invalid.\ne.g.) example@company.com'); scrollToField('email'); return; }
+        if (!data.message) { alert('Please enter your inquiry.'); scrollToField('message'); return; }
 
         submitBtn.disabled = true;
         var txtEl = submitBtn.querySelector('.cfa_submit_txt');
-        if (txtEl) txtEl.textContent = '전송 중...';
+        if (txtEl) txtEl.textContent = 'Sending...';
 
         fetch(API_URL, {
             method: 'POST',
@@ -246,11 +246,11 @@ window.addEventListener('load', function () {
                     Object.keys(errors).forEach(function(field) {
                         msg += (errorMessages[field] || errors[field][0]) + '\n';
                     });
-                    throw new Error(msg.trim() || '입력 내용을 확인해주세요.');
+                    throw new Error(msg.trim() || 'Please check your input.');
                 });
             }
             if (!res.ok) {
-                throw new Error('서버 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.');
+                throw new Error('A server error has occurred. Please try again later.');
             }
             return res.json();
         })
@@ -259,7 +259,7 @@ window.addEventListener('load', function () {
             submitBtn.style.display = 'none';
             var done = document.createElement('div');
             done.style.cssText = 'padding:40px 0; text-align:left;';
-            done.innerHTML = '<p style="font-size:22px; font-weight:600; color:#fff; line-height:1.6;">문의가 접수되었습니다.<br><span style="font-size:16px; font-weight:400; color:rgba(255,255,255,0.6);">빠른 시일 내에 답변 드리겠습니다.</span></p>';
+            done.innerHTML = '<p style="font-size:22px; font-weight:600; color:#fff; line-height:1.6;">Your inquiry has been submitted.<br><span style="font-size:16px; font-weight:400; color:rgba(255,255,255,0.6);">We will get back to you as soon as possible.</span></p>';
             form.appendChild(done);
 
             // 성공 메시지가 보이도록 상단으로 스크롤
@@ -272,7 +272,7 @@ window.addEventListener('load', function () {
         .catch(function (err) {
             submitBtn.disabled = false;
             submitBtn.classList.add('is-ready');
-            if (txtEl) txtEl.textContent = '문의하기';
+            if (txtEl) txtEl.textContent = 'Submit Inquiry';
             alert(err.message);
         });
     });

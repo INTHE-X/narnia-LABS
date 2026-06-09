@@ -12,7 +12,7 @@ class Education extends Model
         'title', 'category', 'description',
         'title_en', 'description_en',
         'title_jp', 'description_jp',
-        'image_path', 'pdf_paths', 'link', 'published_at', 'sort_order', 'is_visible', 'is_aslanx', 'google_links',
+        'image_path', 'pdf_paths', 'link', 'published_at', 'sort_order', 'is_visible', 'is_aslanx', 'aslanx_sort_order', 'google_links',
     ];
 
     protected $casts = [
