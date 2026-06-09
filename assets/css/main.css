@@ -75,6 +75,9 @@
 
 #main_visual .mvc_bg figure img{
     display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1690 / 1032; /* CLS 방지: 이미지 로드 전 공간 확보 */
 }
 
 #main_visual .mv_content .blur_txtDeco{
